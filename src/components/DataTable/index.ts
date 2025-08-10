@@ -27,6 +27,9 @@ export { ColumnVisibilityButton } from './ColumnVisibilityButton'
 export { ColumnVisibilityPopup } from './ColumnVisibilityPopup'
 export { MobileColumnVisibility } from './MobileColumnVisibility'
 
+// Group Management Components
+export { GroupAssignmentPopup } from './GroupAssignmentPopup'
+
 // Constants
 export {
   TABLE_CONFIG,

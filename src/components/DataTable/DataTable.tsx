@@ -41,6 +41,8 @@ import { TABLE_CONFIG, CSS_CLASSES, COLUMN_CONFIGS } from './constants'
 import { UserData, ContextMenuState } from './types'
 import { mockUserData } from './data'
 import { useContextMenu, useKeyboardShortcuts } from './hooks'
+import { ColumnVisibilityPopup } from './ColumnVisibilityPopup'
+import { GroupAssignmentPopup } from './GroupAssignmentPopup'
 
 const columnHelper = createColumnHelper<UserData>()
 
@@ -106,10 +108,19 @@ const DataTable: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [tagSearch, setTagSearch] = useState('')
 
+  // Global Tag Management functionality
+  const [showGlobalTagModal, setShowGlobalTagModal] = useState(false)
+  const [globalTagSearch, setGlobalTagSearch] = useState('')
+  const [globalSelectedTags, setGlobalSelectedTags] = useState<string[]>([])
+
   // Edit user functionality
   const [showEditModal, setShowEditModal] = useState(false)
   const [editingUser, setEditingUser] = useState<UserData | null>(null)
   const [editFormData, setEditFormData] = useState<Partial<UserData>>({})
+
+  // Group assignment functionality
+  const [showGroupAssignmentModal, setShowGroupAssignmentModal] = useState(false)
+  const [availableGroups] = useState(['DefaultGro', 'Premium', 'Standard', 'VIP'])
 
   // Search functionality
   const [searchValue, setSearchValue] = useState('')
@@ -928,6 +939,43 @@ const DataTable: React.FC = () => {
     )
   }
 
+  // Global Tag Management handlers
+  const handleOpenGlobalTagModal = () => {
+    setGlobalSelectedTags([])
+    setGlobalTagSearch('')
+    setShowGlobalTagModal(true)
+  }
+
+  const handleGlobalTagToggle = (tag: string) => {
+    setGlobalSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    )
+  }
+
+  const handleGlobalSelectAllTags = () => {
+    setGlobalSelectedTags([...availableTags])
+  }
+
+  const handleGlobalSelectNoneTags = () => {
+    setGlobalSelectedTags([])
+  }
+
+  const handleSaveGlobalTags = () => {
+    // Here you can implement logic to apply selected tags to multiple users
+    // For now, we'll just close the modal
+    setShowGlobalTagModal(false)
+    setGlobalSelectedTags([])
+    setGlobalTagSearch('')
+  }
+
+  const getGlobalFilteredTags = () => {
+    return availableTags.filter(tag => 
+      tag.toLowerCase().includes(globalTagSearch.toLowerCase())
+    )
+  }
+
   // Edit user handlers
   const handleOpenEditModal = (user: UserData) => {
     setEditingUser(user)
@@ -972,6 +1020,18 @@ const DataTable: React.FC = () => {
       setShowEditModal(false)
       setEditingUser(null)
       setEditFormData({})
+    }
+  }
+
+  // Group assignment handlers
+  const handleOpenGroupAssignmentModal = () => {
+    setShowGroupAssignmentModal(true)
+  }
+
+  const handleAssignGroup = (userId: string, group: string) => {
+    const userIndex = mockUserData.findIndex(user => user.id === userId)
+    if (userIndex !== -1) {
+      mockUserData[userIndex] = { ...mockUserData[userIndex], group }
     }
   }
 
@@ -1050,7 +1110,7 @@ const DataTable: React.FC = () => {
                 <button 
                   className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
                   title="Group Management - Manage user groups and permissions"
-                  onClick={() => console.log('Group Management clicked')}
+                  onClick={handleOpenGroupAssignmentModal}
                 >
                   <Users2 className="w-4 h-4" />
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
@@ -1062,7 +1122,7 @@ const DataTable: React.FC = () => {
                 <button 
                   className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
                   title="Tag Management - Manage user tags and labels"
-                  onClick={() => console.log('Tag Management clicked')}
+                  onClick={handleOpenGlobalTagModal}
                 >
                   <Tag className="w-4 h-4" />
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
@@ -1175,98 +1235,11 @@ const DataTable: React.FC = () => {
       </div>
 
       {/* Column Visibility Popup */}
-      {columnVisibilityMenu.show && (
-        <div
-          data-column-menu
-          className="fixed bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-xl z-50 min-w-[280px] max-h-[400px] overflow-y-auto transition-all duration-200 ease-out"
-          style={{
-            left: columnVisibilityMenu.x - 140,
-            top: columnVisibilityMenu.y
-          }}
-        >
-          <div className="p-4 border-b border-gray-200 dark:border-gray-600">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-              Column Visibility
-            </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Show or hide table columns
-            </p>
-
-          </div>
-          
-                            <div className="p-4 space-y-3">
-                    {table.getAllColumns()
-                      .filter(column => column.getCanHide())
-                      .map(column => (
-                        <label 
-                          key={`${column.id}-${column.getIsVisible()}`} 
-                          className="flex items-center space-x-3 cursor-pointer"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={column.getIsVisible()}
-                            onChange={(e) => {
-                              e.stopPropagation()
-                              console.log('=== COLUMN TOGGLE DEBUG ===')
-                              console.log('Column ID:', column.id)
-                              console.log('Column Header:', column.columnDef.header)
-                              console.log('Before toggle - Column visibility:', column.getIsVisible())
-                              console.log('Before toggle - State:', table.getState().columnVisibility)
-                              
-                              // Direct state update
-                              const newState = {...columnVisibility}
-                              newState[column.id] = !column.getIsVisible()
-                              
-                              console.log('Setting new state:', newState)
-                              setColumnVisibility(newState)
-                              
-                              console.log('=== END DEBUG ===')
-                            }}
-                            onClick={(e) => e.stopPropagation()}
-                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                          />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">
-                            {column.columnDef.header as string}
-                          </span>
-                        </label>
-                      ))}
-                  </div>
-          
-          <div className="p-4 border-t border-gray-200 dark:border-gray-600 flex justify-between">
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                console.log('Show All clicked')
-                table.toggleAllColumnsVisible(true)
-                console.log('Column visibility after Show All:', table.getState().columnVisibility)
-                // Force re-render
-                setTimeout(() => {
-                  setColumnVisibility({...table.getState().columnVisibility})
-                }, 50)
-              }}
-              className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
-            >
-              Show All
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                console.log('Hide All clicked')
-                table.toggleAllColumnsVisible(false)
-                console.log('Column visibility after Hide All:', table.getState().columnVisibility)
-                // Force re-render
-                setTimeout(() => {
-                  setColumnVisibility({...table.getState().columnVisibility})
-                }, 50)
-              }}
-              className="text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium"
-            >
-              Hide All
-            </button>
-          </div>
-        </div>
-      )}
+      <ColumnVisibilityPopup 
+        table={table}
+        columnVisibilityMenu={columnVisibilityMenu}
+        onClose={closeColumnVisibilityMenu}
+      />
 
       {/* Table Container */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -2429,6 +2402,115 @@ const DataTable: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Global Tag Management Modal */}
+      {showGlobalTagModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Tag Management
+              </h2>
+              <button
+                onClick={() => setShowGlobalTagModal(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              {/* Tag Selection */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Manage Tags
+                </label>
+                
+                {/* Selected Tags Display */}
+                <div className="mb-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      {globalSelectedTags.length} Tags selected
+                    </span>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={handleGlobalSelectAllTags}
+                        className="px-3 py-1 text-xs font-medium text-white bg-green-600 rounded hover:bg-green-700 transition-colors"
+                      >
+                        All
+                      </button>
+                      <button
+                        onClick={handleGlobalSelectNoneTags}
+                        className="px-3 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                      >
+                        None
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Search */}
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    placeholder="Search tags..."
+                    value={globalTagSearch}
+                    onChange={(e) => setGlobalTagSearch(e.target.value)}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                {/* Tag List */}
+                <div className="max-h-48 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-md">
+                  {getGlobalFilteredTags().map((tag) => (
+                    <label
+                      key={tag}
+                      className={`flex items-center px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                        globalSelectedTags.includes(tag) ? 'bg-green-50 dark:bg-green-900/20' : ''
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={globalSelectedTags.includes(tag)}
+                        onChange={() => handleGlobalTagToggle(tag)}
+                        className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      />
+                      <span className="ml-3 text-sm text-gray-900 dark:text-white">{tag}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
+              <button
+                onClick={() => setShowGlobalTagModal(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+              >
+                Close
+              </button>
+              <button
+                onClick={handleSaveGlobalTags}
+                className="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 transition-colors"
+              >
+                Apply Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Group Assignment Modal */}
+      <GroupAssignmentPopup
+        isOpen={showGroupAssignmentModal}
+        onClose={() => setShowGroupAssignmentModal(false)}
+        selectedUsers={Object.keys(rowSelection).map(id => mockUserData.find(user => user.id === id)).filter(Boolean) as UserData[]}
+        onAssignGroups={handleAssignGroup}
+        availableGroups={availableGroups}
+      />
 
       {/* Edit User Modal */}
       {showEditModal && editingUser && (

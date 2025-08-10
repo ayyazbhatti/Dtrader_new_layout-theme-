@@ -69,6 +69,8 @@ const DataTable: React.FC = () => {
     columnId: '',
     columnName: ''
   })
+
+  // Column visibility state
   const [columnVisibilityMenu, setColumnVisibilityMenu] = useState<{
     show: boolean
     x: number
@@ -193,6 +195,7 @@ const DataTable: React.FC = () => {
         ),
         enableSorting: false,
         enableResizing: false,
+        enableHiding: false, // Selection column should not be hideable
         size: 50,
       }),
 
@@ -209,6 +212,7 @@ const DataTable: React.FC = () => {
         ),
         size: 80,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Bot status
@@ -224,6 +228,7 @@ const DataTable: React.FC = () => {
         ),
         size: 100,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Account ID
@@ -233,6 +238,7 @@ const DataTable: React.FC = () => {
         size: 120,
         enableGlobalFilter: true,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Name
@@ -242,6 +248,7 @@ const DataTable: React.FC = () => {
         size: 150,
         enableGlobalFilter: true,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Email
@@ -251,6 +258,7 @@ const DataTable: React.FC = () => {
         size: 200,
         enableGlobalFilter: true,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Group
@@ -260,6 +268,7 @@ const DataTable: React.FC = () => {
         size: 120,
         enableGlobalFilter: true,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Referral
@@ -269,6 +278,7 @@ const DataTable: React.FC = () => {
         size: 100,
         enableGlobalFilter: true,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Leverage
@@ -277,6 +287,7 @@ const DataTable: React.FC = () => {
         cell: ({ getValue }) => <span className="text-right">{getValue()}</span>,
         size: 100,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Balance
@@ -289,6 +300,7 @@ const DataTable: React.FC = () => {
         ),
         size: 120,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Equity
@@ -301,6 +313,7 @@ const DataTable: React.FC = () => {
         ),
         size: 120,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Margin Level
@@ -318,6 +331,7 @@ const DataTable: React.FC = () => {
         },
         size: 130,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Unrealized PnL
@@ -329,6 +343,7 @@ const DataTable: React.FC = () => {
         },
         size: 140,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Realized PnL
@@ -340,6 +355,7 @@ const DataTable: React.FC = () => {
         },
         size: 140,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Bot Profit
@@ -351,6 +367,7 @@ const DataTable: React.FC = () => {
         },
         size: 120,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Bot Setting
@@ -359,6 +376,7 @@ const DataTable: React.FC = () => {
         cell: ({ getValue }) => <span className="text-sm">{getValue()}</span>,
         size: 140,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Bot Subscription
@@ -395,6 +413,7 @@ const DataTable: React.FC = () => {
         },
         size: 130,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Bot Enabled
@@ -431,6 +450,7 @@ const DataTable: React.FC = () => {
         },
         size: 120,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Show Bot Settings
@@ -467,6 +487,7 @@ const DataTable: React.FC = () => {
         },
         size: 130,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Tags Column
@@ -494,6 +515,7 @@ const DataTable: React.FC = () => {
         },
         size: 150,
         enableResizing: true,
+        enableHiding: true,
       }),
 
       // Actions Column
@@ -556,6 +578,7 @@ const DataTable: React.FC = () => {
         ),
         size: 120,
         enableResizing: true,
+        enableHiding: true,
       }),
     ],
     []
@@ -595,6 +618,23 @@ const DataTable: React.FC = () => {
     globalFilterFn: 'includesString',
     columnResizeDirection: 'ltr',
   })
+
+
+
+  // Initialize column visibility state after table creation
+  React.useEffect(() => {
+    if (table) {
+      // Initialize all columns as visible by default
+      const initialVisibility: VisibilityState = {}
+      table.getAllColumns().forEach(column => {
+        if (column.getCanHide()) {
+          initialVisibility[column.id] = true
+        }
+      })
+      setColumnVisibility(initialVisibility)
+      console.log('Initialized column visibility:', initialVisibility)
+    }
+  }, [table])
 
     // Event handlers for resize feedback
   const handleMouseMove = (e: MouseEvent) => {
@@ -663,13 +703,51 @@ const DataTable: React.FC = () => {
     setContextMenu(prev => ({ ...prev, show: false }))
   }
 
+
+
+  // Column visibility functions
   const handleColumnVisibilityMenu = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
+    
+    // Get the button element
+    const button = e.currentTarget as HTMLElement
+    const rect = button.getBoundingClientRect()
+    
+    // Calculate popup position relative to the button
+    const popupWidth = 280
+    const popupHeight = 400
+    const margin = 20
+    
+    let left = rect.left + (rect.width / 2)
+    let top = rect.bottom + 10
+    
+    // Adjust horizontal position to keep popup within viewport
+    if (left + (popupWidth / 2) > window.innerWidth - margin) {
+      left = window.innerWidth - (popupWidth / 2) - margin
+    }
+    if (left - (popupWidth / 2) < margin) {
+      left = (popupWidth / 2) + margin
+    }
+    
+    // Adjust vertical position to keep popup within viewport
+    if (top + popupHeight > window.innerHeight - margin) {
+      // Show above the button if there's not enough space below
+      top = rect.top - popupHeight - 10
+    }
+    if (top < margin) {
+      top = margin
+    }
+    
+    // Debug: Log column information
+    console.log('Opening column visibility menu')
+    console.log('All columns:', table.getAllColumns().map(col => ({ id: col.id, header: col.columnDef.header, canHide: col.getCanHide(), isVisible: col.getIsVisible() })))
+    console.log('Current column visibility state:', table.getState().columnVisibility)
+    
     setColumnVisibilityMenu(prev => ({
       show: !prev.show,
-      x: e.clientX,
-      y: e.clientY
+      x: left,
+      y: top
     }))
   }
 
@@ -955,17 +1033,7 @@ const DataTable: React.FC = () => {
                   </div>
                 </button>
 
-                <button 
-                  onClick={handleColumnVisibilityMenu}
-                  className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
-                  title="Column Visibility - Show/hide table columns"
-                >
-                  <Eye className="w-4 h-4" />
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
-                    Column Visibility
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
-                  </div>
-                </button>
+
 
                 <button 
                   className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
@@ -1017,6 +1085,18 @@ const DataTable: React.FC = () => {
 
                 <button 
                   className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
+                  title="Column Visibility - Show/hide table columns"
+                  onClick={handleColumnVisibilityMenu}
+                >
+                  <Eye className="w-4 h-4" />
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                    Column Visibility
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
+                  </div>
+                </button>
+
+                <button 
+                  className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
                   title="Settings - Configure table and display options"
                   onClick={() => console.log('Settings clicked')}
                 >
@@ -1028,6 +1108,8 @@ const DataTable: React.FC = () => {
                 </button>
                 </div>
               </div>
+              
+
               
               {/* Right Controls */}
               <div className="flex items-center space-x-2 ml-4">
@@ -1092,6 +1174,100 @@ const DataTable: React.FC = () => {
         </div>
       </div>
 
+      {/* Column Visibility Popup */}
+      {columnVisibilityMenu.show && (
+        <div
+          data-column-menu
+          className="fixed bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-xl z-50 min-w-[280px] max-h-[400px] overflow-y-auto transition-all duration-200 ease-out"
+          style={{
+            left: columnVisibilityMenu.x - 140,
+            top: columnVisibilityMenu.y
+          }}
+        >
+          <div className="p-4 border-b border-gray-200 dark:border-gray-600">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+              Column Visibility
+            </h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Show or hide table columns
+            </p>
+
+          </div>
+          
+                            <div className="p-4 space-y-3">
+                    {table.getAllColumns()
+                      .filter(column => column.getCanHide())
+                      .map(column => (
+                        <label 
+                          key={`${column.id}-${column.getIsVisible()}`} 
+                          className="flex items-center space-x-3 cursor-pointer"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={column.getIsVisible()}
+                            onChange={(e) => {
+                              e.stopPropagation()
+                              console.log('=== COLUMN TOGGLE DEBUG ===')
+                              console.log('Column ID:', column.id)
+                              console.log('Column Header:', column.columnDef.header)
+                              console.log('Before toggle - Column visibility:', column.getIsVisible())
+                              console.log('Before toggle - State:', table.getState().columnVisibility)
+                              
+                              // Direct state update
+                              const newState = {...columnVisibility}
+                              newState[column.id] = !column.getIsVisible()
+                              
+                              console.log('Setting new state:', newState)
+                              setColumnVisibility(newState)
+                              
+                              console.log('=== END DEBUG ===')
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
+                            {column.columnDef.header as string}
+                          </span>
+                        </label>
+                      ))}
+                  </div>
+          
+          <div className="p-4 border-t border-gray-200 dark:border-gray-600 flex justify-between">
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                console.log('Show All clicked')
+                table.toggleAllColumnsVisible(true)
+                console.log('Column visibility after Show All:', table.getState().columnVisibility)
+                // Force re-render
+                setTimeout(() => {
+                  setColumnVisibility({...table.getState().columnVisibility})
+                }, 50)
+              }}
+              className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+            >
+              Show All
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                console.log('Hide All clicked')
+                table.toggleAllColumnsVisible(false)
+                console.log('Column visibility after Hide All:', table.getState().columnVisibility)
+                // Force re-render
+                setTimeout(() => {
+                  setColumnVisibility({...table.getState().columnVisibility})
+                }, 50)
+              }}
+              className="text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium"
+            >
+              Hide All
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Table Container */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
         {/* Resize Indicator */}
@@ -1144,6 +1320,7 @@ const DataTable: React.FC = () => {
                 </button>
               ))}
           </div>
+
         </div>
 
         {/* Mobile Table */}

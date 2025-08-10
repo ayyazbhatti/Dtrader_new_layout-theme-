@@ -19,6 +19,14 @@ export {
   useKeyboardShortcuts,
 } from './hooks'
 
+// Column Visibility Hook
+export { useColumnVisibility } from './useColumnVisibility'
+
+// Column Visibility Components
+export { ColumnVisibilityButton } from './ColumnVisibilityButton'
+export { ColumnVisibilityPopup } from './ColumnVisibilityPopup'
+export { MobileColumnVisibility } from './MobileColumnVisibility'
+
 // Constants
 export {
   TABLE_CONFIG,

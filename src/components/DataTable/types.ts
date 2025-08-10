@@ -35,4 +35,19 @@ export interface FilterConfig {
   options?: string[]
   min?: number
   max?: number
+}
+
+export interface PriceDropAlertData {
+  symbol: string
+  title: string
+  quantity: number
+  allowUserChangeQuantity: boolean
+  sendEmailToOfflineUsers: boolean
+  sendNotificationsToOfflineUsers: boolean
+  comment: string
+}
+
+export interface SubscriptionDateData {
+  subscriptionOption: string
+  subscriptionEndDate: string
 } 

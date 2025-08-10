@@ -43,6 +43,10 @@ import { mockUserData } from './data'
 import { useContextMenu, useKeyboardShortcuts } from './hooks'
 import { ColumnVisibilityPopup } from './ColumnVisibilityPopup'
 import { GroupAssignmentPopup } from './GroupAssignmentPopup'
+import { BotAssignmentPopup } from './BotAssignmentPopup'
+import { PriceDropAlertPopup } from './PriceDropAlertPopup'
+import { SubscriptionDatePopup } from './SubscriptionDatePopup'
+import { PriceDropAlertData, SubscriptionDateData } from './types'
 
 const columnHelper = createColumnHelper<UserData>()
 
@@ -71,6 +75,9 @@ const DataTable: React.FC = () => {
     columnId: '',
     columnName: ''
   })
+
+  // User data state for managing updates
+  const [userData, setUserData] = useState<UserData[]>(mockUserData)
 
   // Column visibility state
   const [columnVisibilityMenu, setColumnVisibilityMenu] = useState<{
@@ -121,6 +128,27 @@ const DataTable: React.FC = () => {
   // Group assignment functionality
   const [showGroupAssignmentModal, setShowGroupAssignmentModal] = useState(false)
   const [availableGroups] = useState(['DefaultGro', 'Premium', 'Standard', 'VIP'])
+
+  // Bot assignment functionality
+  const [showBotAssignmentModal, setShowBotAssignmentModal] = useState(false)
+  const [availableBotSettings] = useState([
+    'Conservative',
+    'Aggressive',
+    'Moderate',
+    'Manual',
+    'High Risk',
+    'Balanced',
+    'Ultra Aggressive',
+    'High Frequency',
+    'Ultra High Risk',
+    'Quantum Trading'
+  ])
+
+  // Price Drop Alert functionality
+  const [showPriceDropAlertModal, setShowPriceDropAlertModal] = useState(false)
+
+  // Subscription Date functionality
+  const [showSubscriptionDateModal, setShowSubscriptionDateModal] = useState(false)
 
   // Search functionality
   const [searchValue, setSearchValue] = useState('')
@@ -178,7 +206,7 @@ const DataTable: React.FC = () => {
   })
 
   // Data
-  const data = useMemo(() => mockUserData, [])
+  const data = useMemo(() => userData, [userData])
 
 
 
@@ -401,21 +429,17 @@ const DataTable: React.FC = () => {
                 onClick={(e) => {
                   e.stopPropagation()
                   e.preventDefault()
-                  // Toggle the value
-                  const newValue = !isEnabled
-                  // Update the data
-                  row.original.botSubscription = newValue
-                  console.log('Bot Subscription toggled to:', newValue)
+                  handleToggleBotSubscription(row.original.id, isEnabled)
                 }}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                   isEnabled 
                     ? 'bg-green-600' 
                     : 'bg-gray-600'
                 }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
-                    isEnabled ? 'translate-x-6' : 'translate-x-1'
+                  className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
+                    isEnabled ? 'translate-x-5' : 'translate-x-1'
                   }`}
                 />
               </button>
@@ -438,21 +462,17 @@ const DataTable: React.FC = () => {
                 onClick={(e) => {
                   e.stopPropagation()
                   e.preventDefault()
-                  // Toggle the value
-                  const newValue = !isEnabled
-                  // Update the data
-                  row.original.botEnabled = newValue
-                  console.log('Bot Enabled toggled to:', newValue)
+                  handleToggleBotEnabled(row.original.id, isEnabled)
                 }}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                   isEnabled 
                     ? 'bg-green-600' 
                     : 'bg-gray-600'
                 }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
-                    isEnabled ? 'translate-x-6' : 'translate-x-1'
+                  className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
+                    isEnabled ? 'translate-x-5' : 'translate-x-1'
                   }`}
                 />
               </button>
@@ -475,21 +495,17 @@ const DataTable: React.FC = () => {
                 onClick={(e) => {
                   e.stopPropagation()
                   e.preventDefault()
-                  // Toggle the value
-                  const newValue = !isEnabled
-                  // Update the data
-                  row.original.showBotSettings = newValue
-                  console.log('Show Bot Settings toggled to:', newValue)
+                  handleToggleShowBotSettings(row.original.id, isEnabled)
                 }}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                   isEnabled 
                     ? 'bg-green-600' 
                     : 'bg-gray-600'
                 }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
-                    isEnabled ? 'translate-x-6' : 'translate-x-1'
+                  className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
+                    isEnabled ? 'translate-x-5' : 'translate-x-1'
                   }`}
                 />
               </button>
@@ -1012,11 +1028,10 @@ const DataTable: React.FC = () => {
 
   const handleSaveEdit = () => {
     if (editingUser && editFormData) {
-      // Update the user data in the mock data
-      const userIndex = mockUserData.findIndex(user => user.id === editingUser.id)
-      if (userIndex !== -1) {
-        mockUserData[userIndex] = { ...mockUserData[userIndex], ...editFormData }
-      }
+      // Update the user data in the state
+      setUserData(prev => prev.map(user => 
+        user.id === editingUser.id ? { ...user, ...editFormData } : user
+      ))
       setShowEditModal(false)
       setEditingUser(null)
       setEditFormData({})
@@ -1029,10 +1044,77 @@ const DataTable: React.FC = () => {
   }
 
   const handleAssignGroup = (userId: string, group: string) => {
-    const userIndex = mockUserData.findIndex(user => user.id === userId)
-    if (userIndex !== -1) {
-      mockUserData[userIndex] = { ...mockUserData[userIndex], group }
-    }
+    setUserData(prev => prev.map(user => 
+      user.id === userId ? { ...user, group } : user
+    ))
+  }
+
+  // Bot assignment handlers
+  const handleOpenBotAssignmentModal = () => {
+    setShowBotAssignmentModal(true)
+  }
+
+  const handleAssignBot = (userId: string, botSetting: string) => {
+    setUserData(prev => prev.map(user => 
+      user.id === userId ? { ...user, botSetting } : user
+    ))
+  }
+
+  const handleUnassignBot = (userId: string) => {
+    setUserData(prev => prev.map(user => 
+      user.id === userId ? { ...user, botSetting: '---' } : user
+    ))
+  }
+
+  // Price Drop Alert handlers
+  const handleOpenPriceDropAlertModal = () => {
+    setShowPriceDropAlertModal(true)
+  }
+
+  const handleSendPriceDropAlert = (data: PriceDropAlertData) => {
+    console.log('Price Drop Alert sent:', data)
+    // Here you would typically send the alert data to your backend
+    // For now, we'll just log it to the console
+  }
+
+  // Subscription Date handlers
+  const handleOpenSubscriptionDateModal = () => {
+    setShowSubscriptionDateModal(true)
+  }
+
+  const handleSaveSubscription = (data: SubscriptionDateData) => {
+    console.log('Subscription option saved:', data.subscriptionOption)
+    // Here you would typically save the subscription option to your backend
+  }
+
+  const handleSaveDate = (data: SubscriptionDateData) => {
+    console.log('Subscription date saved:', data.subscriptionEndDate)
+    // Here you would typically save the subscription date to your backend
+  }
+
+  // Toggle handlers for bot settings
+  const handleToggleBotSubscription = (userId: string, currentValue: boolean) => {
+    setUserData(prev => prev.map(user => 
+      user.id === userId 
+        ? { ...user, botSubscription: !currentValue }
+        : user
+    ))
+  }
+
+  const handleToggleBotEnabled = (userId: string, currentValue: boolean) => {
+    setUserData(prev => prev.map(user => 
+      user.id === userId 
+        ? { ...user, botEnabled: !currentValue }
+        : user
+    ))
+  }
+
+  const handleToggleShowBotSettings = (userId: string, currentValue: boolean) => {
+    setUserData(prev => prev.map(user => 
+      user.id === userId 
+        ? { ...user, showBotSettings: !currentValue }
+        : user
+    ))
   }
 
   return (
@@ -1098,7 +1180,7 @@ const DataTable: React.FC = () => {
                 <button 
                   className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
                   title="Bot Management - Manage bot settings and configurations"
-                  onClick={() => console.log('Bot Management clicked')}
+                  onClick={handleOpenBotAssignmentModal}
                 >
                   <Bot className="w-4 h-4" />
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
@@ -1133,12 +1215,24 @@ const DataTable: React.FC = () => {
 
                 <button 
                   className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
-                  title="Price Alerts - Monitor price drops and market alerts"
-                  onClick={() => console.log('Price Alerts clicked')}
+                  title="Price Drop Alert - Create price drop alerts for users"
+                  onClick={handleOpenPriceDropAlertModal}
                 >
                   <AlertTriangle className="w-4 h-4" />
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
-                    Price Alerts
+                    Price Drop Alert
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
+                  </div>
+                </button>
+
+                <button 
+                  className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
+                  title="Bot Subscription - Set subscription dates for bot services"
+                  onClick={handleOpenSubscriptionDateModal}
+                >
+                  <Bot className="w-4 h-4" />
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                    Bot Subscription
                     <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
                   </div>
                 </button>
@@ -2507,9 +2601,34 @@ const DataTable: React.FC = () => {
       <GroupAssignmentPopup
         isOpen={showGroupAssignmentModal}
         onClose={() => setShowGroupAssignmentModal(false)}
-        selectedUsers={Object.keys(rowSelection).map(id => mockUserData.find(user => user.id === id)).filter(Boolean) as UserData[]}
+        selectedUsers={Object.keys(rowSelection).map(id => userData.find(user => user.id === id)).filter(Boolean) as UserData[]}
         onAssignGroups={handleAssignGroup}
         availableGroups={availableGroups}
+      />
+
+      {/* Bot Assignment Modal */}
+      <BotAssignmentPopup
+        isOpen={showBotAssignmentModal}
+        onClose={() => setShowBotAssignmentModal(false)}
+        selectedUsers={Object.keys(rowSelection).map(id => userData.find(user => user.id === id)).filter(Boolean) as UserData[]}
+        onAssignBot={handleAssignBot}
+        onUnassignBot={handleUnassignBot}
+        availableBotSettings={availableBotSettings}
+      />
+
+      {/* Price Drop Alert Modal */}
+      <PriceDropAlertPopup
+        isOpen={showPriceDropAlertModal}
+        onClose={() => setShowPriceDropAlertModal(false)}
+        onSend={handleSendPriceDropAlert}
+      />
+
+      {/* Subscription Date Modal */}
+      <SubscriptionDatePopup
+        isOpen={showSubscriptionDateModal}
+        onClose={() => setShowSubscriptionDateModal(false)}
+        onSaveSubscription={handleSaveSubscription}
+        onSaveDate={handleSaveDate}
       />
 
       {/* Edit User Modal */}

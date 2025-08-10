@@ -30,6 +30,15 @@ export { MobileColumnVisibility } from './MobileColumnVisibility'
 // Group Management Components
 export { GroupAssignmentPopup } from './GroupAssignmentPopup'
 
+// Bot Management Components
+export { BotAssignmentPopup } from './BotAssignmentPopup'
+
+// Price Drop Alert Components
+export { PriceDropAlertPopup } from './PriceDropAlertPopup'
+
+// Subscription Date Components
+export { SubscriptionDatePopup } from './SubscriptionDatePopup'
+
 // Constants
 export {
   TABLE_CONFIG,

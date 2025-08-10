@@ -33,13 +33,12 @@ function App() {
   // Handle responsive behavior
   useEffect(() => {
     const handleResize = () => {
-      const isMobile = window.innerWidth < 768 // md breakpoint
+      const isMobile = window.innerWidth < 1024 // lg breakpoint
       if (isMobile) {
         // On mobile, ensure mobile menu is closed by default
         setMobileMenuOpen(false)
-      } else {
-        // On desktop, ensure mobile menu is closed
-        setMobileMenuOpen(false)
+        // On mobile, sidebar should not be collapsed
+        setSidebarCollapsed(false)
       }
     }
 

@@ -3,9 +3,46 @@
  */
 export const TABLE_CONFIG = {
   DEFAULT_PAGE_SIZE: 10,
-  COLUMN_RESIZE_MODE: 'onChange' as const,
+  COLUMN_RESIZE_MODE: 'onEnd' as const,
   MIN_COLUMN_WIDTH: 50,
   MAX_COLUMN_WIDTH: 500,
+} as const
+
+/**
+ * Column configuration constants
+ */
+export const COLUMN_CONFIGS = {
+  GROUP_OPTIONS: [
+    'DefaultGroup',
+    'Premium',
+    'VIP',
+    'Whatsapp',
+    'Admin',
+    'Manager',
+    'User'
+  ],
+  DOMAIN_OPTIONS: [
+    'dtrader',
+    'mt4',
+    'mt5',
+    'cTrader'
+  ],
+  CURRENCY_OPTIONS: [
+    'USD',
+    'EUR',
+    'GBP',
+    'JPY',
+    'AUD',
+    'CAD',
+    'CHF'
+  ],
+  ACCOUNT_TYPE_OPTIONS: [
+    'CFD Hedging',
+    'CFD Netting',
+    'Standard',
+    'Premium',
+    'VIP'
+  ]
 } as const
 
 /**

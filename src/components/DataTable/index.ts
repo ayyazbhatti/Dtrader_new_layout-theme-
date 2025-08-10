@@ -24,10 +24,10 @@ export {
   TABLE_CONFIG,
   CSS_CLASSES,
   CONTEXT_MENU_OPTIONS,
+  COLUMN_CONFIGS,
 } from './constants'
 
 // Data
 export {
   mockUserData,
-  COLUMN_CONFIGS,
 } from './data' 

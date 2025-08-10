@@ -13,6 +13,14 @@
       'rlig' 1,
       'calt' 1;
   }
+
+  /* Improve mobile touch targets */
+  @media (max-width: 1023px) {
+    button, a {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
 }
 
 @layer components {
@@ -42,6 +50,58 @@
 
   .input {
     @apply flex h-10 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 dark:placeholder:text-gray-400 text-gray-900 dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  /* Mobile-specific styles */
+  .mobile-menu-open {
+    overflow: hidden;
+  }
+
+  /* Responsive text utilities */
+  .text-responsive-sm {
+    @apply text-xs sm:text-sm;
+  }
+
+  .text-responsive-base {
+    @apply text-sm sm:text-base;
+  }
+
+  .text-responsive-lg {
+    @apply text-base sm:text-lg;
+  }
+
+  .text-responsive-xl {
+    @apply text-lg sm:text-xl;
+  }
+
+  .text-responsive-2xl {
+    @apply text-xl sm:text-2xl;
+  }
+
+  /* Responsive spacing utilities */
+  .space-responsive-sm {
+    @apply space-y-2 sm:space-y-3;
+  }
+
+  .space-responsive-base {
+    @apply space-y-3 sm:space-y-4;
+  }
+
+  .space-responsive-lg {
+    @apply space-y-4 sm:space-y-6;
+  }
+
+  /* Responsive padding utilities */
+  .p-responsive-sm {
+    @apply p-3 sm:p-4;
+  }
+
+  .p-responsive-base {
+    @apply p-4 sm:p-6;
+  }
+
+  .p-responsive-lg {
+    @apply p-6 sm:p-8;
   }
 }
 
@@ -148,4 +208,40 @@
 
 .badge-info {
   @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 1023px) {
+  /* Prevent horizontal scroll on mobile */
+  .overflow-x-hidden {
+    overflow-x: hidden;
+  }
+  
+  /* Improve mobile navigation */
+  .mobile-nav-item {
+    @apply py-3 px-4;
+  }
+  
+  /* Better mobile card spacing */
+  .mobile-card {
+    @apply p-4 mx-2;
+  }
+}
+
+/* Tablet-specific improvements */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tablet-grid {
+    @apply grid-cols-2;
+  }
+}
+
+/* Desktop-specific improvements */
+@media (min-width: 1024px) {
+  .desktop-sidebar {
+    @apply relative;
+  }
+  
+  .desktop-main {
+    @apply ml-0;
+  }
 }

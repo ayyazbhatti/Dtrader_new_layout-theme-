@@ -13,6 +13,7 @@ import {
   VisibilityState,
   RowSelectionState,
   ColumnFiltersState,
+  ColumnSizingState,
 } from '@tanstack/react-table'
 import {
   ChevronUp,
@@ -65,6 +66,7 @@ const DataTable: React.FC = () => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [showFilters, setShowFilters] = useState(false)
+  const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({})
   const [contextMenu, setContextMenu] = useState<ContextMenuState>({
     show: false,
     x: 0,
@@ -81,6 +83,48 @@ const DataTable: React.FC = () => {
     x: 0,
     y: 0
   })
+
+  // Selected user for details popup
+  const [selectedUser, setSelectedUser] = useState<UserData | null>(null)
+  const [showUserDetails, setShowUserDetails] = useState(false)
+
+  // Tag functionality
+  const [showTagModal, setShowTagModal] = useState(false)
+  const [selectedUserForTags, setSelectedUserForTags] = useState<UserData | null>(null)
+  const [userTags, setUserTags] = useState<{ [userId: string]: string[] }>({})
+  const [availableTags] = useState([
+    'Default Dtrader Tag',
+    '17_Feb',
+    'Premium User',
+    'VIP Member',
+    'New User',
+    'Active Trader',
+    'Bot User',
+    'Manual Trader',
+    'High Volume',
+    'Low Risk',
+    'Aggressive',
+    'Conservative'
+  ])
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [tagSearch, setTagSearch] = useState('')
+
+  // Edit user functionality
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [editingUser, setEditingUser] = useState<UserData | null>(null)
+  const [editFormData, setEditFormData] = useState<Partial<UserData>>({})
+
+  // Toggle states for bot controls
+  const [toggleStates, setToggleStates] = useState<{
+    [key: string]: {
+      botSubscription: boolean
+      botEnabled: boolean
+      showBotSettings: boolean
+    }
+  }>({})
+
+  // Force re-render state
+  const [forceUpdate, setForceUpdate] = useState(0)
 
   // Value filter state
   const [valueFilter, setValueFilter] = useState<{
@@ -114,6 +158,21 @@ const DataTable: React.FC = () => {
     selectedCondition: 'None',
     filterValue: '',
     filterValue2: ''
+  })
+
+  // Resize info state for visual feedback
+  const [resizeInfo, setResizeInfo] = useState<{
+    show: boolean
+    columnId: string
+    width: number
+    x: number
+    y: number
+  }>({
+    show: false,
+    columnId: '',
+    width: 0,
+    x: 0,
+    y: 0
   })
 
   // Data
@@ -293,59 +352,189 @@ const DataTable: React.FC = () => {
       // Bot Subscription
       columnHelper.accessor('botSubscription', {
         header: 'Bot Subscription',
-        cell: ({ getValue }) => (
-          <div className={`w-3 h-3 rounded-full ${getValue() ? 'bg-green-500' : 'bg-gray-400'}`} />
-        ),
+        cell: ({ getValue, row }) => {
+          const defaultValue = getValue()
+          const isEnabled = getToggleState(row.id, 'botSubscription', defaultValue)
+          return (
+            <div className="flex items-center gap-2">
+              <button
+                key={`botSubscription-${row.id}-${isEnabled}-${forceUpdate}`}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  handleToggle(row.id, 'botSubscription')
+                }}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                  isEnabled 
+                    ? 'bg-green-600 hover:bg-green-700' 
+                    : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
+                }`}
+                style={{ minWidth: '44px' }}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                    isEnabled ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+              <span className="text-xs text-gray-500">{isEnabled ? 'ON' : 'OFF'}</span>
+            </div>
+          )
+        },
         size: 130,
       }),
 
       // Bot Enabled
       columnHelper.accessor('botEnabled', {
         header: 'Bot Enabled',
-        cell: ({ getValue }) => (
-          <div className={`w-3 h-3 rounded-full ${getValue() ? 'bg-green-500' : 'bg-gray-400'}`} />
-        ),
+        cell: ({ getValue, row }) => {
+          const defaultValue = getValue()
+          const isEnabled = getToggleState(row.id, 'botEnabled', defaultValue)
+          return (
+            <div className="flex items-center gap-2">
+              <button
+                key={`botEnabled-${row.id}-${isEnabled}-${forceUpdate}`}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  handleToggle(row.id, 'botEnabled')
+                }}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                  isEnabled 
+                    ? 'bg-green-600 hover:bg-green-700' 
+                    : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
+                }`}
+                style={{ minWidth: '44px' }}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                    isEnabled ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+              <span className="text-xs text-gray-500">{isEnabled ? 'ON' : 'OFF'}</span>
+            </div>
+          )
+        },
         size: 120,
       }),
 
       // Show Bot Settings
       columnHelper.accessor('showBotSettings', {
         header: 'Show Bot Settings',
-        cell: ({ getValue }) => (
-          <div className={`w-3 h-3 rounded-full ${getValue() ? 'bg-green-500' : 'bg-gray-400'}`} />
-        ),
+        cell: ({ getValue, row }) => {
+          const defaultValue = getValue()
+          const isEnabled = getToggleState(row.id, 'showBotSettings', defaultValue)
+          return (
+            <div className="flex items-center gap-2">
+              <button
+                key={`showBotSettings-${row.id}-${isEnabled}-${forceUpdate}`}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  handleToggle(row.id, 'showBotSettings')
+                }}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                  isEnabled 
+                    ? 'bg-green-600 hover:bg-green-700' 
+                    : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
+                }`}
+                style={{ minWidth: '44px' }}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                    isEnabled ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+              <span className="text-xs text-gray-500">{isEnabled ? 'ON' : 'OFF'}</span>
+            </div>
+          )
+        },
         size: 130,
       }),
 
-      // Actions
+      // Tags Column
+      columnHelper.display({
+        id: 'tags',
+        header: 'Tags',
+        cell: ({ row }) => {
+          const userTagsList = userTags[row.original.id] || []
+          return (
+            <div className="flex flex-wrap gap-1">
+              {userTagsList.length > 0 ? (
+                userTagsList.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400"
+                  >
+                    {tag}
+                  </span>
+                ))
+              ) : (
+                <span className="text-xs text-gray-500 dark:text-gray-400">No tags</span>
+              )}
+            </div>
+          )
+        },
+        size: 150,
+      }),
+
+      // Actions Column
       columnHelper.display({
         id: 'actions',
         header: 'Actions',
         cell: ({ row }) => (
-          <div className="flex items-center space-x-1">
-            <button 
-              className="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-all duration-200"
-              title="Bot Settings"
+          <div className="flex items-center gap-2">
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                handleOpenTagModal(row.original)
+              }}
+              className="p-1 text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              title="Assign Tags"
             >
-              <Bot className="w-4 h-4" />
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              </svg>
             </button>
-            <button 
-              className="p-2 text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-md transition-all duration-200"
-              title="Tag User"
-            >
-              <Tag className="w-4 h-4" />
-            </button>
-            <button 
-              className="p-2 text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-md transition-all duration-200"
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                handleRowClick(row.original)
+              }}
+              className="p-1 text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors"
               title="View Details"
             >
-              <Link className="w-4 h-4" />
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
             </button>
-            <button 
-              className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-all duration-200"
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                handleOpenEditModal(row.original)
+              }}
+              className="p-1 text-gray-500 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors"
+              title="Edit User"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                // TODO: Implement delete functionality
+                console.log('Delete user:', row.original.id)
+              }}
+              className="p-1 text-gray-500 hover:text-red-600 dark:hover:text-red-400 transition-colors"
               title="Delete User"
             >
-              <Trash2 className="w-4 h-4" />
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
             </button>
           </div>
         ),
@@ -365,12 +554,14 @@ const DataTable: React.FC = () => {
       columnVisibility,
       rowSelection,
       columnFilters,
+      columnSizing,
     },
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     onColumnFiltersChange: setColumnFilters,
+    onColumnSizingChange: setColumnSizing,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -381,9 +572,55 @@ const DataTable: React.FC = () => {
     enableGlobalFilter: true,
     enableRowSelection: true,
     enableColumnFilters: true,
+    columnResizeDirection: 'ltr',
   })
 
   // Event handlers
+  const handleMouseUp = () => {
+    // Hide resize info when resizing is complete
+    setResizeInfo(prev => ({ ...prev, show: false }))
+  }
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (resizeInfo.show) {
+      setResizeInfo(prev => ({
+        ...prev,
+        x: e.clientX,
+        y: e.clientY
+      }))
+    }
+  }
+
+  // Add global mouse event listeners for resize feedback
+  React.useEffect(() => {
+    document.addEventListener('mouseup', handleMouseUp)
+    document.addEventListener('mousemove', handleMouseMove)
+    
+    return () => {
+      document.removeEventListener('mouseup', handleMouseUp)
+      document.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [resizeInfo.show])
+
+  // Update resize info when column sizing changes
+  React.useEffect(() => {
+    if (resizeInfo.show && resizeInfo.columnId) {
+      const column = table.getColumn(resizeInfo.columnId)
+      if (column) {
+        const actualWidth = column.getSize()
+        setResizeInfo(prev => ({
+          ...prev,
+          width: actualWidth
+        }))
+      }
+    }
+  }, [columnSizing, table, resizeInfo.show, resizeInfo.columnId])
+
+  // Monitor toggle state changes
+  React.useEffect(() => {
+    console.log('Toggle states changed:', toggleStates)
+  }, [toggleStates])
+
   const handleContextMenu = (e: React.MouseEvent, columnId: string, columnName: string) => {
     e.preventDefault()
     setContextMenu({
@@ -393,6 +630,38 @@ const DataTable: React.FC = () => {
       columnId,
       columnName
     })
+  }
+
+  const handleRowClick = (user: UserData) => {
+    setSelectedUser(user)
+    setShowUserDetails(true)
+  }
+
+  // Toggle handlers
+  const handleToggle = (rowId: string, field: 'botSubscription' | 'botEnabled' | 'showBotSettings') => {
+    console.log(`Toggling ${field} for row ${rowId}`)
+    setToggleStates(prev => {
+      const currentState = prev[rowId]?.[field] ?? false
+      const newState = !currentState
+      console.log(`Current state: ${currentState}, New state: ${newState}`)
+      return {
+        ...prev,
+        [rowId]: {
+          ...prev[rowId],
+          [field]: newState
+        }
+      }
+    })
+    // Force re-render
+    setForceUpdate(prev => prev + 1)
+  }
+
+  const getToggleState = (rowId: string, field: 'botSubscription' | 'botEnabled' | 'showBotSettings', defaultValue: boolean) => {
+    // Force re-render dependency
+    const _ = forceUpdate
+    const state = toggleStates[rowId]?.[field] ?? defaultValue
+    console.log(`Getting state for ${field} row ${rowId}: ${state} (default: ${defaultValue})`)
+    return state
   }
 
   const closeContextMenu = () => {
@@ -545,6 +814,96 @@ const DataTable: React.FC = () => {
   useContextMenu(contextMenu, closeContextMenu, columnVisibilityMenu, closeColumnVisibilityMenu)
   useKeyboardShortcuts(table, showFilters, setShowFilters)
 
+  // Tag handlers
+  const handleOpenTagModal = (user: UserData) => {
+    setSelectedUserForTags(user)
+    setSelectedTags(userTags[user.id] || [])
+    setShowTagModal(true)
+  }
+
+  const handleTagToggle = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    )
+  }
+
+  const handleSelectAllTags = () => {
+    setSelectedTags([...availableTags])
+  }
+
+  const handleSelectNoneTags = () => {
+    setSelectedTags([])
+  }
+
+  const handleSaveTags = () => {
+    if (selectedUserForTags) {
+      setUserTags(prev => ({
+        ...prev,
+        [selectedUserForTags.id]: selectedTags
+      }))
+      setShowTagModal(false)
+      setSelectedUserForTags(null)
+      setSelectedTags([])
+    }
+  }
+
+  const getFilteredTags = () => {
+    return availableTags.filter(tag => 
+      tag.toLowerCase().includes(tagSearch.toLowerCase())
+    )
+  }
+
+  // Edit user handlers
+  const handleOpenEditModal = (user: UserData) => {
+    setEditingUser(user)
+    setEditFormData({
+      id: user.id,
+      online: user.online,
+      botStatus: user.botStatus,
+      accountId: user.accountId,
+      name: user.name,
+      email: user.email,
+      group: user.group,
+      referral: user.referral,
+      leverage: user.leverage,
+      balance: user.balance,
+      equity: user.equity,
+      marginLevel: user.marginLevel,
+      unrealizedPnL: user.unrealizedPnL,
+      realizedPnL: user.realizedPnL,
+      botProfit: user.botProfit,
+      botSetting: user.botSetting,
+      botSubscription: user.botSubscription,
+      botEnabled: user.botEnabled,
+      showBotSettings: user.showBotSettings
+    })
+    setShowEditModal(true)
+  }
+
+  const handleEditFormChange = (field: keyof UserData, value: any) => {
+    setEditFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const handleSaveEdit = () => {
+    if (editingUser && editFormData) {
+      // Update the user data in the mock data
+      const userIndex = mockUserData.findIndex(user => user.id === editingUser.id)
+      if (userIndex !== -1) {
+        mockUserData[userIndex] = { ...mockUserData[userIndex], ...editFormData }
+        // Force re-render
+        setForceUpdate(prev => prev + 1)
+      }
+      setShowEditModal(false)
+      setEditingUser(null)
+      setEditFormData({})
+    }
+  }
+
   return (
     <div className="space-y-6 relative">
       {/* Enhanced Table Controls */}
@@ -554,309 +913,109 @@ const DataTable: React.FC = () => {
           <div className="flex items-center space-x-2">
             <div className="flex items-center space-x-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1 overflow-visible relative z-10">
 
-              <button 
-                className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
-                title="Export Data - Download table data as CSV/Excel"
-                onClick={() => console.log('Export Data clicked')}
-              >
-                <Download className="w-4 h-4" />
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
-                  Export Data
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
-                </div>
-              </button>
-              <button 
-                className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
-                title="Import Data - Upload data from CSV/Excel files"
-                onClick={() => console.log('Import Data clicked')}
-              >
-                <Upload className="w-4 h-4" />
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
-                  Import Data
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
-                </div>
-              </button>
-
-              <button 
-                onClick={handleColumnVisibilityMenu}
-                className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
-                title="Column Visibility - Show/hide table columns"
-              >
-                <Eye className="w-4 h-4" />
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
-                  Column Visibility
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
-                </div>
-              </button>
-            </div>
-            
-            <div className="flex items-center space-x-2 ml-4">
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                {table.getFilteredRowModel().rows.length} of {table.getPrePaginationRowModel().rows.length} rows
-              </span>
-              {Object.keys(rowSelection).length > 0 && (
-                <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">
-                  {Object.keys(rowSelection).length} selected
-                </span>
-              )}
-              {columnFilters.length > 0 && (
-                <span className="text-sm text-orange-600 dark:text-orange-400 font-medium flex items-center">
-                  <Filter className="w-3 h-3 mr-1" />
-                  {columnFilters.length} active filters
-                </span>
-              )}
-              {/* Filtered columns summary */}
-              {columnFilters.length > 0 && (
-                <div className="flex items-center space-x-2">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">Filtered:</span>
-                  <div className="flex flex-wrap gap-1">
-                    {table.getAllColumns()
-                      .filter(column => column.getFilterValue())
-                      .map(column => (
-                        <span
-                          key={column.id}
-                          className="inline-flex items-center px-2 py-1 text-xs font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 rounded-full"
-                        >
-                          {column.columnDef.header as string}
-                          <button
-                            onClick={() => column.setFilterValue(undefined)}
-                            className="ml-1 text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-200"
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
-                        </span>
-                      ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-          
-          {/* Right Controls */}
-          <div className="flex items-center space-x-3">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search all columns..."
-                value={globalFilter ?? ''}
-                onChange={(e) => setGlobalFilter(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 min-w-[300px]"
-              />
-            </div>
-            
             <button
-              onClick={() => table.toggleAllPageRowsSelected()}
-              className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+              className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
+              title="Export Data - Download table data as CSV/Excel"
+              onClick={() => console.log('Export Data clicked')}
             >
-              {table.getIsAllPageRowsSelected() ? 'Deselect All' : 'Select All'}
+              <Download className="w-4 h-4" />
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                Export Data
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
+              </div>
+            </button>
+            <button 
+              className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
+              title="Import Data - Upload data from CSV/Excel files"
+              onClick={() => console.log('Import Data clicked')}
+            >
+              <Upload className="w-4 h-4" />
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                Import Data
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
+              </div>
+            </button>
+
+            <button 
+              onClick={handleColumnVisibilityMenu}
+              className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
+              title="Column Visibility - Show/hide table columns"
+            >
+              <Eye className="w-4 h-4" />
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                Column Visibility
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
+              </div>
             </button>
           </div>
+        </div>
+          
+          <div className="flex items-center space-x-2 ml-4">
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              {table.getFilteredRowModel().rows.length} of {table.getPrePaginationRowModel().rows.length} rows
+            </span>
+            {Object.keys(rowSelection).length > 0 && (
+              <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">
+                {Object.keys(rowSelection).length} selected
+              </span>
+            )}
+            {columnFilters.length > 0 && (
+              <span className="text-sm text-orange-600 dark:text-orange-400 font-medium flex items-center">
+                <Filter className="w-3 h-3 mr-1" />
+                {columnFilters.length} active filters
+              </span>
+            )}
+            {/* Filtered columns summary */}
+            {columnFilters.length > 0 && (
+              <div className="flex items-center space-x-2">
+                <span className="text-xs text-gray-500 dark:text-gray-400">Filtered:</span>
+                <div className="flex flex-wrap gap-1">
+                  {table.getAllColumns()
+                    .filter(column => column.getFilterValue())
+                    .map(column => (
+                      <span
+                        key={column.id}
+                        className="inline-flex items-center px-2 py-1 text-xs font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 rounded-full"
+                      >
+                        {column.columnDef.header as string}
+                        <button
+                          onClick={() => column.setFilterValue(undefined)}
+                          className="ml-1 text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-200"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Controls */}
+        <div className="flex items-center space-x-3">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search all columns..."
+              value={globalFilter ?? ''}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+              className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 min-w-[300px]"
+            />
+          </div>
+          
+          <button
+            onClick={() => table.toggleAllPageRowsSelected()}
+            className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+          >
+            {table.getIsAllPageRowsSelected() ? 'Deselect All' : 'Select All'}
+          </button>
         </div>
       </div>
 
-      {/* Google Sheets Style Filter Panel */}
-      {showFilters && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-              <Filter className="w-5 h-5 mr-2" />
-              Advanced Filters
-            </h3>
-            <button
-              onClick={() => setShowFilters(false)}
-              className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors duration-200"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-
-          <div className="space-y-6">
-            {/* First Row - 4 filters in a grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* First Row - 5 filters */}
-            <div className="space-y-2 min-w-0">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Online Status</label>
-              <select
-                value={columnFilters.find(f => f.id === 'online')?.value?.toString() || ''}
-                onChange={(e) => {
-                  const value = e.target.value
-                  if (value) {
-                    table.getColumn('online')?.setFilterValue(value === 'true')
-                  } else {
-                    table.getColumn('online')?.setFilterValue(undefined)
-                  }
-                }}
-                className={`w-full ${CSS_CLASSES.INPUT_BASE}`}
-              >
-                <option value="">All Status</option>
-                <option value="true">Online Only</option>
-                <option value="false">Offline Only</option>
-              </select>
-            </div>
-
-            <div className="space-y-2 min-w-0">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Bot Status</label>
-              <select
-                value={columnFilters.find(f => f.id === 'botStatus')?.value?.toString() || ''}
-                onChange={(e) => {
-                  const value = e.target.value
-                  if (value) {
-                    table.getColumn('botStatus')?.setFilterValue(value === 'true')
-                  } else {
-                    table.getColumn('botStatus')?.setFilterValue(undefined)
-                  }
-                }}
-                className={`w-full ${CSS_CLASSES.INPUT_BASE}`}
-              >
-                <option value="">All Bot Status</option>
-                <option value="true">Active Bots</option>
-                <option value="false">Inactive Bots</option>
-              </select>
-            </div>
-
-            <div className="space-y-2 min-w-0">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Group</label>
-              <select
-                value={columnFilters.find(f => f.id === 'group')?.value?.toString() || ''}
-                onChange={(e) => {
-                  const value = e.target.value
-                  if (value) {
-                    table.getColumn('group')?.setFilterValue(value)
-                  } else {
-                    table.getColumn('group')?.setFilterValue(undefined)
-                  }
-                }}
-                className={`w-full ${CSS_CLASSES.INPUT_BASE}`}
-              >
-                <option value="">All Groups</option>
-                {COLUMN_CONFIGS.GROUP_OPTIONS.map(group => (
-                  <option key={group} value={group}>{group}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-2 min-w-0">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Bot Subscription</label>
-              <select
-                value={columnFilters.find(f => f.id === 'botSubscription')?.value?.toString() || ''}
-                onChange={(e) => {
-                  const value = e.target.value
-                  if (value) {
-                    table.getColumn('botSubscription')?.setFilterValue(value === 'true')
-                  } else {
-                    table.getColumn('botSubscription')?.setFilterValue(undefined)
-                  }
-                }}
-                className={`w-full ${CSS_CLASSES.INPUT_BASE}`}
-              >
-                <option value="">All Subscriptions</option>
-                <option value="true">Subscribed</option>
-                <option value="false">Not Subscribed</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Second Row - Balance Range and PnL Type with absolute separation */}
-          <div className="flex flex-col lg:flex-row lg:space-x-12 space-y-4 lg:space-y-0">
-            <div className="lg:w-2/3 space-y-2 min-w-0">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Balance Range</label>
-              <div className="flex space-x-4">
-                <select
-                  value={(columnFilters.find(f => f.id === 'balance')?.value as any)?.min || ''}
-                  onChange={(e) => {
-                    const min = e.target.value ? parseFloat(e.target.value) : undefined
-                    const max = (columnFilters.find(f => f.id === 'balance')?.value as any)?.max
-                    table.getColumn('balance')?.setFilterValue({ min, max })
-                  }}
-                  className={`flex-1 min-w-0 max-w-[200px] ${CSS_CLASSES.INPUT_BASE}`}
-                >
-                  <option value="">Min Balance</option>
-                  <option value="0">$0</option>
-                  <option value="100">$100</option>
-                  <option value="500">$500</option>
-                  <option value="1000">$1,000</option>
-                  <option value="5000">$5,000</option>
-                  <option value="10000">$10,000</option>
-                  <option value="50000">$50,000</option>
-                  <option value="100000">$100,000</option>
-                </select>
-                <select
-                  value={(columnFilters.find(f => f.id === 'balance')?.value as any)?.max || ''}
-                  onChange={(e) => {
-                    const max = e.target.value ? parseFloat(e.target.value) : undefined
-                    const min = (columnFilters.find(f => f.id === 'balance')?.value as any)?.min
-                    table.getColumn('balance')?.setFilterValue({ min, max })
-                  }}
-                  className={`flex-1 min-w-0 max-w-[200px] ${CSS_CLASSES.INPUT_BASE}`}
-                >
-                  <option value="">Max Balance</option>
-                  <option value="100">$100</option>
-                  <option value="500">$500</option>
-                  <option value="1000">$1,000</option>
-                  <option value="5000">$5,000</option>
-                  <option value="10000">$10,000</option>
-                  <option value="50000">$50,000</option>
-                  <option value="100000">$100,000</option>
-                  <option value="500000">$500,000</option>
-                  <option value="1000000">$1,000,000</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="lg:w-1/3 space-y-2 min-w-0">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">PnL Type</label>
-              <select
-                value={columnFilters.find(f => f.id === 'unrealizedPnL')?.value?.toString() || ''}
-                onChange={(e) => {
-                  const value = e.target.value
-                  if (value) {
-                    table.getColumn('unrealizedPnL')?.setFilterValue(value)
-                  } else {
-                    table.getColumn('unrealizedPnL')?.setFilterValue(undefined)
-                  }
-                }}
-                className={`w-full max-w-[200px] ${CSS_CLASSES.INPUT_BASE}`}
-              >
-                <option value="">All PnL</option>
-                <option value="positive">Positive PnL</option>
-                <option value="negative">Negative PnL</option>
-                <option value="zero">Zero PnL</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-          {/* Filter Actions */}
-          <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                {table.getFilteredRowModel().rows.length} of {table.getPrePaginationRowModel().rows.length} rows filtered
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => {
-                  table.resetColumnFilters()
-                  setColumnFilters([])
-                }}
-                className={CSS_CLASSES.BUTTON_SECONDARY}
-              >
-                Clear All Filters
-              </button>
-              <button
-                onClick={() => setShowFilters(false)}
-                className={CSS_CLASSES.BUTTON_PRIMARY}
-              >
-                Apply Filters
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Enhanced Table */}
-      <div className={CSS_CLASSES.TABLE_CONTAINER}>
+      {/* Table Container */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className={CSS_CLASSES.TABLE_HEADER}>
@@ -901,16 +1060,47 @@ const DataTable: React.FC = () => {
                       </div>
                       {header.column.getCanResize() && (
                         <div
-                          onMouseDown={header.getResizeHandler()}
+                          onMouseDown={(e) => {
+                            header.getResizeHandler()(e)
+                            // Show resize info with actual column width
+                            const actualWidth = header.column.getSize()
+                            setResizeInfo({
+                              show: true,
+                              columnId: header.column.id,
+                              width: actualWidth,
+                              x: e.clientX,
+                              y: e.clientY
+                            })
+                          }}
+                          onMouseMove={(e) => {
+                            if (resizeInfo.show && resizeInfo.columnId === header.column.id) {
+                              // Get the actual column width from the table state
+                              const actualWidth = header.column.getSize()
+                              // Update resize info with actual width
+                              setResizeInfo(prev => ({
+                                ...prev,
+                                width: actualWidth,
+                                x: e.clientX,
+                                y: e.clientY
+                              }))
+                            }
+                          }}
                           onTouchStart={header.getResizeHandler()}
-                          className={`absolute top-0 right-0 w-1 h-full cursor-col-resize transition-all duration-200 ${
+                          className={`absolute top-0 right-0 w-2 h-full cursor-col-resize transition-all duration-200 ${
                             header.column.getIsResizing()
                               ? 'bg-blue-500 opacity-100'
                               : 'bg-transparent hover:bg-blue-400 hover:opacity-80 group-hover:bg-gray-300 dark:group-hover:bg-gray-500'
                           }`}
                           style={{ zIndex: 10 }}
-                          title="Drag to resize column"
-                        />
+                          title="Drag to resize column width"
+                        >
+                          {/* Visual indicator for resize handle */}
+                          <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-6 rounded-full transition-all duration-200 ${
+                            header.column.getIsResizing()
+                              ? 'bg-white'
+                              : 'bg-gray-400 dark:bg-gray-500 group-hover:bg-gray-600 dark:group-hover:bg-gray-400'
+                          }`} />
+                        </div>
                       )}
                     </th>
                   ))}
@@ -927,6 +1117,7 @@ const DataTable: React.FC = () => {
                       : ''
                   } ${index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/50 dark:bg-gray-800/50'}`}
                   style={{ height: '48px' }}
+                  onClick={() => handleRowClick(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td
@@ -1053,6 +1244,360 @@ const DataTable: React.FC = () => {
         </div>
       </div>
 
+      {/* Google Sheets Style Filter Panel */}
+      {showFilters && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+              <Filter className="w-5 h-5 mr-2" />
+              Advanced Filters
+            </h3>
+            <button
+              onClick={() => setShowFilters(false)}
+              className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors duration-200"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="space-y-6">
+            {/* First Row - 4 filters in a grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="space-y-2 min-w-0">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Online Status</label>
+                <select
+                  value={columnFilters.find(f => f.id === 'online')?.value?.toString() || ''}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    if (value) {
+                      table.getColumn('online')?.setFilterValue(value === 'true')
+                    } else {
+                      table.getColumn('online')?.setFilterValue(undefined)
+                    }
+                  }}
+                  className={`w-full ${CSS_CLASSES.INPUT_BASE}`}
+                >
+                  <option value="">All Status</option>
+                  <option value="true">Online Only</option>
+                  <option value="false">Offline Only</option>
+                </select>
+              </div>
+
+              <div className="space-y-2 min-w-0">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Bot Status</label>
+                <select
+                  value={columnFilters.find(f => f.id === 'botStatus')?.value?.toString() || ''}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    if (value) {
+                      table.getColumn('botStatus')?.setFilterValue(value === 'true')
+                    } else {
+                      table.getColumn('botStatus')?.setFilterValue(undefined)
+                    }
+                  }}
+                  className={`w-full ${CSS_CLASSES.INPUT_BASE}`}
+                >
+                  <option value="">All Bot Status</option>
+                  <option value="true">Active Bots</option>
+                  <option value="false">Inactive Bots</option>
+                </select>
+              </div>
+
+              <div className="space-y-2 min-w-0">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Group</label>
+                <select
+                  value={columnFilters.find(f => f.id === 'group')?.value?.toString() || ''}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    if (value) {
+                      table.getColumn('group')?.setFilterValue(value)
+                    } else {
+                      table.getColumn('group')?.setFilterValue(undefined)
+                    }
+                  }}
+                  className={`w-full ${CSS_CLASSES.INPUT_BASE}`}
+                >
+                  <option value="">All Groups</option>
+                  {COLUMN_CONFIGS.GROUP_OPTIONS.map(group => (
+                    <option key={group} value={group}>{group}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-2 min-w-0">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Bot Subscription</label>
+                <select
+                  value={columnFilters.find(f => f.id === 'botSubscription')?.value?.toString() || ''}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    if (value) {
+                      table.getColumn('botSubscription')?.setFilterValue(value === 'true')
+                    } else {
+                      table.getColumn('botSubscription')?.setFilterValue(undefined)
+                    }
+                  }}
+                  className={`w-full ${CSS_CLASSES.INPUT_BASE}`}
+                >
+                  <option value="">All Subscriptions</option>
+                  <option value="true">Subscribed</option>
+                  <option value="false">Not Subscribed</option>
+                </select>
+              </div>
+            </div>
+
+          {/* Second Row - Balance Range and PnL Type with absolute separation */}
+          <div className="flex flex-col lg:flex-row lg:space-x-12 space-y-4 lg:space-y-0">
+            <div className="lg:w-2/3 space-y-2 min-w-0">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Balance Range</label>
+              <div className="flex space-x-4">
+                <select
+                  value={(columnFilters.find(f => f.id === 'balance')?.value as any)?.min || ''}
+                  onChange={(e) => {
+                    const min = e.target.value ? parseFloat(e.target.value) : undefined
+                    const max = (columnFilters.find(f => f.id === 'balance')?.value as any)?.max
+                    table.getColumn('balance')?.setFilterValue({ min, max })
+                  }}
+                  className={`flex-1 min-w-0 max-w-[200px] ${CSS_CLASSES.INPUT_BASE}`}
+                >
+                  <option value="">Min Balance</option>
+                  <option value="0">$0</option>
+                  <option value="100">$100</option>
+                  <option value="500">$500</option>
+                  <option value="1000">$1,000</option>
+                  <option value="5000">$5,000</option>
+                  <option value="10000">$10,000</option>
+                  <option value="50000">$50,000</option>
+                  <option value="100000">$100,000</option>
+                </select>
+                <select
+                  value={(columnFilters.find(f => f.id === 'balance')?.value as any)?.max || ''}
+                  onChange={(e) => {
+                    const max = e.target.value ? parseFloat(e.target.value) : undefined
+                    const min = (columnFilters.find(f => f.id === 'balance')?.value as any)?.min
+                    table.getColumn('balance')?.setFilterValue({ min, max })
+                  }}
+                  className={`flex-1 min-w-0 max-w-[200px] ${CSS_CLASSES.INPUT_BASE}`}
+                >
+                  <option value="">Max Balance</option>
+                  <option value="100">$100</option>
+                  <option value="500">$500</option>
+                  <option value="1000">$1,000</option>
+                  <option value="5000">$5,000</option>
+                  <option value="10000">$10,000</option>
+                  <option value="50000">$50,000</option>
+                  <option value="100000">$100,000</option>
+                  <option value="500000">$500,000</option>
+                  <option value="1000000">$1,000,000</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="lg:w-1/3 space-y-2 min-w-0">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">PnL Type</label>
+              <select
+                value={columnFilters.find(f => f.id === 'unrealizedPnL')?.value?.toString() || ''}
+                onChange={(e) => {
+                  const value = e.target.value
+                  if (value) {
+                    table.getColumn('unrealizedPnL')?.setFilterValue(value)
+                  } else {
+                    table.getColumn('unrealizedPnL')?.setFilterValue(undefined)
+                  }
+                }}
+                className={`w-full max-w-[200px] ${CSS_CLASSES.INPUT_BASE}`}
+              >
+                <option value="">All PnL</option>
+                <option value="positive">Positive PnL</option>
+                <option value="negative">Negative PnL</option>
+                <option value="zero">Zero PnL</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Filter Actions */}
+        <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              {table.getFilteredRowModel().rows.length} of {table.getPrePaginationRowModel().rows.length} rows filtered
+            </span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => {
+                table.resetColumnFilters()
+                setColumnFilters([])
+              }}
+              className={CSS_CLASSES.BUTTON_SECONDARY}
+            >
+              Clear All Filters
+            </button>
+            <button
+              onClick={() => setShowFilters(false)}
+              className={CSS_CLASSES.BUTTON_PRIMARY}
+            >
+              Apply Filters
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+      {/* Enhanced Table */}
+      <div className={CSS_CLASSES.TABLE_CONTAINER}>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50 dark:bg-gray-700">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className={`px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer select-none relative ${
+                        header.column.getCanSort() ? 'hover:bg-gray-100 dark:hover:bg-gray-600' : ''
+                      }`}
+                      style={{ width: header.getSize() }}
+                      onClick={header.column.getToggleSortingHandler()}
+                      onContextMenu={(e) => handleContextMenu(e, header.id, header.column.columnDef.header as string)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</span>
+                        <div className="flex items-center space-x-1">
+                          {header.column.getCanSort() && getSortIcon(header.column)}
+                          {header.column.getCanResize() && (
+                            <div
+                              onMouseDown={header.getResizeHandler()}
+                              onTouchStart={header.getResizeHandler()}
+                              className={`absolute right-0 top-0 h-full w-1 cursor-col-resize select-none touch-none ${
+                                header.column.getIsResizing() ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'
+                              } hover:bg-blue-400`}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              {table.getRowModel().rows.map((row, index) => (
+                <tr
+                  key={row.id}
+                  className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 cursor-pointer ${
+                    index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/50 dark:bg-gray-800/50'
+                  }`}
+                  style={{ height: '48px' }}
+                  onClick={() => handleRowClick(row.original)}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className="px-4 py-2 text-sm text-gray-900 dark:text-white whitespace-nowrap"
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination */}
+        <div className="bg-white dark:bg-gray-800 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{' '}
+                {Math.min(
+                  (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
+                  table.getFilteredRowModel().rows.length
+                )}{' '}
+                of {table.getFilteredRowModel().rows.length} results
+              </span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+                className="px-3 py-1 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {'<<'}
+              </button>
+              <button
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+                className="px-3 py-1 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {'<'}
+              </button>
+              {table.getPageCount() > 0 && (
+                <div className="flex items-center space-x-1">
+                  {Array.from({ length: Math.min(5, table.getPageCount()) }, (_, i) => {
+                    const pageIndex = table.getState().pagination.pageIndex
+                    const pageCount = table.getPageCount()
+                    let pageNumber
+                    if (pageCount <= 5) {
+                      pageNumber = i
+                    } else if (pageIndex < 3) {
+                      pageNumber = i
+                    } else if (pageIndex >= pageCount - 3) {
+                      pageNumber = pageCount - 5 + i
+                    } else {
+                      pageNumber = pageIndex - 2 + i
+                    }
+                    return (
+                      <button
+                        key={pageNumber}
+                        onClick={() => table.setPageIndex(pageNumber)}
+                        className={`px-3 py-1 text-sm font-medium rounded-md ${
+                          pageNumber === table.getState().pagination.pageIndex
+                            ? 'bg-blue-600 text-white'
+                            : 'text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
+                        }`}
+                      >
+                        {pageNumber + 1}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+              <button
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+                className="px-3 py-1 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {'>'}
+              </button>
+              <button
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+                className="px-3 py-1 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {'>>'}
+              </button>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-700 dark:text-gray-300">Rows per page:</span>
+              <select
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => {
+                  table.setPageSize(Number(e.target.value))
+                }}
+                className="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Google Sheets Style Context Menu */}
       {contextMenu.show && (
         <div
@@ -1067,7 +1612,6 @@ const DataTable: React.FC = () => {
           <div className="px-3 py-2">
             <button
               onClick={() => {
-                // Filter by condition - show condition filter dropdown
                 showConditionFilter(contextMenu.columnId, contextMenu.columnName)
                 closeContextMenu()
               }}
@@ -1078,7 +1622,6 @@ const DataTable: React.FC = () => {
             </button>
             <button
               onClick={() => {
-                // Filter by values - show value-based filter
                 showValueFilter(contextMenu.columnId, contextMenu.columnName)
                 closeContextMenu()
               }}
@@ -1093,7 +1636,6 @@ const DataTable: React.FC = () => {
           <div className="px-3 py-2 border-t border-gray-700 flex space-x-2">
             <button
               onClick={() => {
-                // Reset filter logic
                 table.getColumn(contextMenu.columnId)?.setFilterValue(undefined)
                 closeContextMenu()
               }}
@@ -1103,7 +1645,6 @@ const DataTable: React.FC = () => {
             </button>
             <button
               onClick={() => {
-                // Apply filter logic - this will be handled by the specific filter popups
                 closeContextMenu()
               }}
               className="flex-1 px-4 py-2 text-sm text-white bg-green-700 hover:bg-green-800 rounded-md transition-colors duration-200"
@@ -1114,294 +1655,663 @@ const DataTable: React.FC = () => {
         </div>
       )}
 
-      {/* Value Filter Popup */}
-      {valueFilter.show && (
-        <div
-          className="fixed z-50 bg-gray-800 rounded-lg shadow-lg border border-gray-700 py-3 min-w-[280px] max-w-[400px]"
-          style={{
-            left: valueFilter.position?.left ?? Math.min(contextMenu.x, window.innerWidth - 400),
-            top: valueFilter.position?.top ?? Math.min(contextMenu.y + 50, window.innerHeight - 400),
-          }}
-        >
-          {/* Header */}
-          <div className="px-4 py-2 border-b border-gray-700">
-            <div className="text-sm font-medium text-white">
-              Filter {valueFilter.columnName}
-            </div>
-            <div className="text-xs text-gray-400 mt-1">
-              Select values to filter by
-            </div>
-          </div>
-
-          {/* Value List */}
-          <div className="px-4 py-3 max-h-64 overflow-y-auto">
-            <div className="space-y-2">
-              {valueFilter.values.map((value) => (
-                <label key={value} className="flex items-center space-x-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={valueFilter.selectedValues.includes(value)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setValueFilter(prev => ({
-                          ...prev,
-                          selectedValues: [...prev.selectedValues, value]
-                        }))
-                      } else {
-                        setValueFilter(prev => ({
-                          ...prev,
-                          selectedValues: prev.selectedValues.filter(v => v !== value)
-                        }))
-                      }
-                    }}
-                    className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 bg-gray-700"
-                  />
-                  <span className="text-sm text-white">
-                    {value}
-                  </span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="px-4 py-3 border-t border-gray-700 flex space-x-2">
-            <button
-              onClick={resetValueFilter}
-              className="flex-1 px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors duration-200"
-            >
-              Reset
-            </button>
-            <button
-              onClick={applyValueFilter}
-              className="flex-1 px-4 py-2 text-sm text-white bg-green-700 hover:bg-green-800 rounded-md transition-colors duration-200"
-            >
-              Apply
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Condition Filter Dropdown */}
-      {conditionFilter.show && (
-        <div
-          className="fixed z-50 bg-gray-800 rounded-lg shadow-lg border border-gray-700 py-0 min-w-[280px] max-w-[350px]"
-          style={{
-            left: conditionFilter.position?.left ?? Math.min(contextMenu.x, window.innerWidth - 350),
-            top: conditionFilter.position?.top ?? Math.min(contextMenu.y + 50, window.innerHeight - 400),
-          }}
-        >
-          {/* Header */}
-          <div className="px-4 py-3 bg-blue-600 rounded-t-lg">
-            <div className="text-sm font-medium text-white text-center">
-              {conditionFilter.selectedCondition}
-            </div>
-          </div>
-
-          {/* Filter Conditions List */}
-          <div className="py-2 max-h-64 overflow-y-auto">
-            <div className="space-y-0">
-              {/* Text-based Filters */}
-              <div className="px-4 py-2">
-                <div className="text-xs text-gray-400 mb-2">Text Filters</div>
-                {[
-                  'Is empty',
-                  'Is not empty',
-                  'Text contains',
-                  'Text does not contain',
-                  'Text starts with',
-                  'Text ends with',
-                  'Text is exactly'
-                ].map((condition) => (
-                  <div
-                    key={condition}
-                    onClick={() => setConditionFilter(prev => ({ ...prev, selectedCondition: condition }))}
-                    className={`px-3 py-2 text-sm text-white cursor-pointer hover:bg-gray-700 rounded-md transition-colors duration-200 ${
-                      conditionFilter.selectedCondition === condition ? 'bg-blue-600' : ''
-                    }`}
-                  >
-                    {condition}
-                  </div>
-                ))}
-              </div>
-
-              {/* Date-based Filters */}
-              <div className="px-4 py-2 border-t border-gray-700">
-                <div className="text-xs text-gray-400 mb-2">Date Filters</div>
-                {[
-                  'Date is before',
-                  'Date is after'
-                ].map((condition) => (
-                  <div
-                    key={condition}
-                    onClick={() => setConditionFilter(prev => ({ ...prev, selectedCondition: condition }))}
-                    className={`px-3 py-2 text-sm text-white cursor-pointer hover:bg-gray-700 rounded-md transition-colors duration-200 ${
-                      conditionFilter.selectedCondition === condition ? 'bg-blue-600' : ''
-                    }`}
-                  >
-                    {condition}
-                  </div>
-                ))}
-              </div>
-
-              {/* Numerical/Comparison Filters */}
-              <div className="px-4 py-2 border-t border-gray-700">
-                <div className="text-xs text-gray-400 mb-2">Number Filters</div>
-                {[
-                  'Greater than',
-                  'Less than',
-                  'Greater than or equal to',
-                  'Less than or equal to'
-                ].map((condition) => (
-                  <div
-                    key={condition}
-                    onClick={() => setConditionFilter(prev => ({ ...prev, selectedCondition: condition }))}
-                    className={`px-3 py-2 text-sm text-white cursor-pointer hover:bg-gray-700 rounded-md transition-colors duration-200 ${
-                      conditionFilter.selectedCondition === condition ? 'bg-blue-600' : ''
-                    }`}
-                  >
-                    {condition}
-                  </div>
-                ))}
-              </div>
-
-              {/* Equality/Range Filters */}
-              <div className="px-4 py-2 border-t border-gray-700">
-                <div className="text-xs text-gray-400 mb-2">Comparison Filters</div>
-                {[
-                  'Is equal to',
-                  'Is not equal to',
-                  'Is between',
-                  'Is not between'
-                ].map((condition) => (
-                  <div
-                    key={condition}
-                    onClick={() => setConditionFilter(prev => ({ ...prev, selectedCondition: condition }))}
-                    className={`px-3 py-2 text-sm text-white cursor-pointer hover:bg-gray-700 rounded-md transition-colors duration-200 ${
-                      conditionFilter.selectedCondition === condition ? 'bg-blue-600' : ''
-                    }`}
-                  >
-                    {condition}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Filter Value Input */}
-          {conditionFilter.selectedCondition !== 'None' && !['Is empty', 'Is not empty'].includes(conditionFilter.selectedCondition) && (
-            <div className="px-4 py-3 border-t border-gray-700">
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-xs text-gray-400 mb-1">Value</label>
-                  <input
-                    type="text"
-                    value={conditionFilter.filterValue}
-                    onChange={(e) => setConditionFilter(prev => ({ ...prev, filterValue: e.target.value }))}
-                    placeholder="Enter value..."
-                    className="w-full px-3 py-2 text-sm text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-                
-                {/* Second value for range filters */}
-                {['Is between', 'Is not between'].includes(conditionFilter.selectedCondition) && (
-                  <div>
-                    <label className="block text-xs text-gray-400 mb-1">Second Value</label>
-                    <input
-                      type="text"
-                      value={conditionFilter.filterValue2 || ''}
-                      onChange={(e) => setConditionFilter(prev => ({ ...prev, filterValue2: e.target.value }))}
-                      placeholder="Enter second value..."
-                      className="w-full px-3 py-2 text-sm text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Action Buttons */}
-          <div className="px-4 py-3 border-t border-gray-700 flex space-x-2">
-            <button
-              onClick={resetConditionFilter}
-              className="flex-1 px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors duration-200"
-            >
-              Reset
-            </button>
-            <button
-              onClick={applyConditionFilter}
-              className="flex-1 px-4 py-2 text-sm text-white bg-green-700 hover:bg-green-800 rounded-md transition-colors duration-200"
-            >
-              Apply
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Column Visibility Menu */}
-      {columnVisibilityMenu.show && (
-        <div
-          data-column-menu
-          className="fixed z-50 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 min-w-[250px]"
-          style={{
-            left: columnVisibilityMenu.x,
-            top: columnVisibilityMenu.y,
-          }}
-        >
-          {/* Menu Header */}
-          <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-            <div className="text-sm font-medium text-gray-900 dark:text-white">
-              Column Visibility
-            </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              Show or hide columns in the table
-            </div>
-          </div>
-
-          {/* Column List */}
-          <div className="py-2 max-h-96 overflow-y-auto">
-            {table.getAllLeafColumns()
-              .filter(column => column.id !== 'select' && column.id !== 'actions')
-              .map(column => (
-                <div key={column.id} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <label className="flex items-center space-x-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={column.getIsVisible()}
-                      onChange={column.getToggleVisibilityHandler()}
-                      className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
-                    />
-                    <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">
-                      {column.columnDef.header as string}
-                    </span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      ({column.id})
-                    </span>
-                  </label>
-                </div>
-              ))}
-          </div>
-
-          {/* Menu Actions */}
-          <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between">
+      {/* User Details Popup */}
+      {showUserDetails && selectedUser && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                User Details
+              </h2>
               <button
-                onClick={() => {
-                  table.toggleAllColumnsVisible(true)
-                  closeColumnVisibilityMenu()
-                }}
-                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                onClick={() => setShowUserDetails(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
               >
-                Show All
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-6">
+              {/* Basic Information */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Basic Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      User ID
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-white">{selectedUser.id}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Name
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-white">{selectedUser.name}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Email
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-white">{selectedUser.email}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Online Status
+                    </label>
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                      selectedUser.online 
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                        : 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400'
+                    }`}>
+                      {selectedUser.online ? 'Online' : 'Offline'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Trading Information */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Trading Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Account Balance
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-white font-mono">
+                      {formatCurrency(selectedUser.balance)}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Margin Level
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-white">
+                      {formatMarginLevel(selectedUser.marginLevel).value}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Unrealized P&L
+                    </label>
+                    <p className={`text-sm font-mono ${
+                      selectedUser.unrealizedPnL >= 0 
+                        ? 'text-green-600 dark:text-green-400' 
+                        : 'text-red-600 dark:text-red-400'
+                    }`}>
+                      {formatPnL(selectedUser.unrealizedPnL).value}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Realized P&L
+                    </label>
+                    <p className={`text-sm font-mono ${
+                      selectedUser.realizedPnL >= 0 
+                        ? 'text-green-600 dark:text-green-400' 
+                        : 'text-red-600 dark:text-red-400'
+                    }`}>
+                      {formatPnL(selectedUser.realizedPnL).value}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Account Information */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Account Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Account ID
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-white">{selectedUser.accountId}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Group
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-white">{selectedUser.group}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Leverage
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-white">{selectedUser.leverage}:1</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Equity
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-white font-mono">
+                      {formatCurrency(selectedUser.equity)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bot Information */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Bot Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Bot Subscription
+                    </label>
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                      selectedUser.botSubscription 
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                        : 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400'
+                    }`}>
+                      {selectedUser.botSubscription ? 'Yes' : 'No'}
+                    </span>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Bot Enabled
+                    </label>
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                      selectedUser.botEnabled 
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                        : 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400'
+                    }`}>
+                      {selectedUser.botEnabled ? 'Yes' : 'No'}
+                    </span>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Show Bot Settings
+                    </label>
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                      selectedUser.showBotSettings 
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                        : 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400'
+                    }`}>
+                      {selectedUser.showBotSettings ? 'Yes' : 'No'}
+                    </span>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Bot Profit
+                    </label>
+                    <p className={`text-sm font-mono ${
+                      selectedUser.botProfit >= 0 
+                        ? 'text-green-600 dark:text-green-400' 
+                        : 'text-red-600 dark:text-red-400'
+                    }`}>
+                      {formatCurrency(selectedUser.botProfit)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Additional Information */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Additional Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Referral
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-white">{selectedUser.referral}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Bot Setting
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-white">{selectedUser.botSetting}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
+              <button
+                onClick={() => setShowUserDetails(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+              >
+                Close
               </button>
               <button
                 onClick={() => {
-                  table.toggleAllColumnsVisible(false)
-                  closeColumnVisibilityMenu()
+                  handleOpenEditModal(selectedUser)
+                  setShowUserDetails(false)
                 }}
-                className="text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium"
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 transition-colors"
               >
-                Hide All
+                Edit User
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tag Assignment Modal */}
+      {showTagModal && selectedUserForTags && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Assign Tags to User
+              </h2>
+              <button
+                onClick={() => setShowTagModal(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              {/* User Info */}
+              <div className="mb-4">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Assigning tags to: <span className="font-medium text-gray-900 dark:text-white">{selectedUserForTags.name}</span>
+                </p>
+              </div>
+
+              {/* Tag Selection */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Assign Tags *
+                </label>
+                
+                {/* Selected Tags Display */}
+                <div className="mb-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      {selectedTags.length} Tags selected
+                    </span>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={handleSelectAllTags}
+                        className="px-3 py-1 text-xs font-medium text-white bg-green-600 rounded hover:bg-green-700 transition-colors"
+                      >
+                        All
+                      </button>
+                      <button
+                        onClick={handleSelectNoneTags}
+                        className="px-3 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                      >
+                        None
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Search */}
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    placeholder="Search tags..."
+                    value={tagSearch}
+                    onChange={(e) => setTagSearch(e.target.value)}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                {/* Tag List */}
+                <div className="max-h-48 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-md">
+                  {getFilteredTags().map((tag) => (
+                    <label
+                      key={tag}
+                      className={`flex items-center px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                        selectedTags.includes(tag) ? 'bg-green-50 dark:bg-green-900/20' : ''
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedTags.includes(tag)}
+                        onChange={() => handleTagToggle(tag)}
+                        className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      />
+                      <span className="ml-3 text-sm text-gray-900 dark:text-white">{tag}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
+              <button
+                onClick={() => setShowTagModal(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+              >
+                Close
+              </button>
+              <button
+                onClick={handleSaveTags}
+                className="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 transition-colors"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit User Modal */}
+      {showEditModal && editingUser && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Edit User: {editingUser.name}
+              </h2>
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-6">
+              {/* Basic Information */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Basic Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      User ID
+                    </label>
+                    <input
+                      type="text"
+                      value={editFormData.id || ''}
+                      onChange={(e) => handleEditFormChange('id', e.target.value)}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Account ID
+                    </label>
+                    <input
+                      type="text"
+                      value={editFormData.accountId || ''}
+                      onChange={(e) => handleEditFormChange('accountId', e.target.value)}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      value={editFormData.name || ''}
+                      onChange={(e) => handleEditFormChange('name', e.target.value)}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      value={editFormData.email || ''}
+                      onChange={(e) => handleEditFormChange('email', e.target.value)}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Group
+                    </label>
+                    <select
+                      value={editFormData.group || ''}
+                      onChange={(e) => handleEditFormChange('group', e.target.value)}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="DefaultGro">DefaultGro</option>
+                      <option value="Premium">Premium</option>
+                      <option value="Standard">Standard</option>
+                      <option value="VIP">VIP</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Referral
+                    </label>
+                    <input
+                      type="text"
+                      value={editFormData.referral || ''}
+                      onChange={(e) => handleEditFormChange('referral', e.target.value)}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Trading Information */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Trading Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Leverage
+                    </label>
+                    <select
+                      value={editFormData.leverage || 100}
+                      onChange={(e) => handleEditFormChange('leverage', parseInt(e.target.value))}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value={100}>100:1</option>
+                      <option value={150}>150:1</option>
+                      <option value={200}>200:1</option>
+                      <option value={250}>250:1</option>
+                      <option value={300}>300:1</option>
+                      <option value={350}>350:1</option>
+                      <option value={400}>400:1</option>
+                      <option value={500}>500:1</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Balance
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={editFormData.balance || 0}
+                      onChange={(e) => handleEditFormChange('balance', parseFloat(e.target.value))}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Equity
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={editFormData.equity || 0}
+                      onChange={(e) => handleEditFormChange('equity', parseFloat(e.target.value))}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Margin Level
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={editFormData.marginLevel || 0}
+                      onChange={(e) => handleEditFormChange('marginLevel', parseFloat(e.target.value))}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Unrealized P&L
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={editFormData.unrealizedPnL || 0}
+                      onChange={(e) => handleEditFormChange('unrealizedPnL', parseFloat(e.target.value))}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Realized P&L
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={editFormData.realizedPnL || 0}
+                      onChange={(e) => handleEditFormChange('realizedPnL', parseFloat(e.target.value))}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Bot Information */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Bot Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Bot Setting
+                    </label>
+                    <select
+                      value={editFormData.botSetting || ''}
+                      onChange={(e) => handleEditFormChange('botSetting', e.target.value)}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="---">---</option>
+                      <option value="Conservative">Conservative</option>
+                      <option value="Moderate">Moderate</option>
+                      <option value="Aggressive">Aggressive</option>
+                      <option value="Manual">Manual</option>
+                      <option value="Balanced">Balanced</option>
+                      <option value="High Risk">High Risk</option>
+                      <option value="Ultra Aggressive">Ultra Aggressive</option>
+                      <option value="High Frequency">High Frequency</option>
+                      <option value="Ultra High Risk">Ultra High Risk</option>
+                      <option value="Quantum Trading">Quantum Trading</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Bot Profit
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={editFormData.botProfit || 0}
+                      onChange={(e) => handleEditFormChange('botProfit', parseFloat(e.target.value))}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Status Toggles */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Status Settings
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Online Status
+                    </label>
+                    <input
+                      type="checkbox"
+                      checked={editFormData.online || false}
+                      onChange={(e) => handleEditFormChange('online', e.target.checked)}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Bot Status
+                    </label>
+                    <input
+                      type="checkbox"
+                      checked={editFormData.botStatus || false}
+                      onChange={(e) => handleEditFormChange('botStatus', e.target.checked)}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Bot Subscription
+                    </label>
+                    <input
+                      type="checkbox"
+                      checked={editFormData.botSubscription || false}
+                      onChange={(e) => handleEditFormChange('botSubscription', e.target.checked)}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Bot Enabled
+                    </label>
+                    <input
+                      type="checkbox"
+                      checked={editFormData.botEnabled || false}
+                      onChange={(e) => handleEditFormChange('botEnabled', e.target.checked)}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Show Bot Settings
+                    </label>
+                    <input
+                      type="checkbox"
+                      checked={editFormData.showBotSettings || false}
+                      onChange={(e) => handleEditFormChange('showBotSettings', e.target.checked)}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveEdit}
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 transition-colors"
+              >
+                Save Changes
               </button>
             </div>
           </div>

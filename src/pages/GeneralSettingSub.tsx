@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { 
-  Search, 
-  ChevronUp, 
-  ChevronDown,
   Users,
   Bookmark,
   Bot,
@@ -12,7 +9,6 @@ import {
   RefreshCw,
   Plus,
   User,
-  Filter,
   Bell,
   Download,
   Upload,
@@ -36,13 +32,28 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
-  Info
+  Info,
+  Search,
+  Filter,
+  ChevronUp,
+  ChevronDown,
+  X
 } from 'lucide-react'
 import DataTable from '../components/DataTable/DataTable'
 
 const GeneralSettingSub: React.FC = () => {
   const { subPage } = useParams<{ subPage: string }>()
-  const [filterPanelOpen, setFilterPanelOpen] = useState(true)
+  const [filterPanelOpen, setFilterPanelOpen] = useState(false)
+  const [showAddUserModal, setShowAddUserModal] = useState(false)
+  
+  // Filter states
+  const [searchFilter, setSearchFilter] = useState('')
+  const [activeUsersFilter, setActiveUsersFilter] = useState('')
+  const [domainFilter, setDomainFilter] = useState('')
+  const [groupFilter, setGroupFilter] = useState('')
+  const [botSettingsFilter, setBotSettingsFilter] = useState('')
+  const [pageLimitFilter, setPageLimitFilter] = useState('10')
+  const [userCreatedAtFilter, setUserCreatedAtFilter] = useState('')
 
   // Mock statistics data
   const stats = [
@@ -95,7 +106,10 @@ const GeneralSettingSub: React.FC = () => {
               <button className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200">
                 <Settings className="w-5 h-5" />
               </button>
-              <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2">
+              <button 
+                onClick={() => setShowAddUserModal(true)}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2"
+              >
                 <Plus className="w-4 h-4" />
                 <span>Add User</span>
               </button>
@@ -130,7 +144,7 @@ const GeneralSettingSub: React.FC = () => {
           })}
         </div>
 
-        {/* Enhanced Filter Panel */}
+        {/* Advanced Filters */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div 
             className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200"
@@ -146,7 +160,7 @@ const GeneralSettingSub: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-500 dark:text-gray-400">3 active filters</span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">0 active filters</span>
               {filterPanelOpen ? (
                 <ChevronUp className="w-5 h-5 text-gray-500" />
               ) : (
@@ -168,117 +182,154 @@ const GeneralSettingSub: React.FC = () => {
               </div>
 
               {/* Filter Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
-                    <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                    User Status
-                  </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
-                    <option>All Users</option>
-                    <option>Active Users</option>
-                    <option>Inactive Users</option>
-                    <option>Online Users</option>
-                    <option>Offline Users</option>
-                  </select>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
-                    <Bot className="w-4 h-4 mr-2 text-purple-500" />
-                    Bot Status
-                  </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
-                    <option>All Bot Status</option>
-                    <option>Bot Enabled</option>
-                    <option>Bot Disabled</option>
-                    <option>Bot Active</option>
-                    <option>Bot Inactive</option>
-                  </select>
-                </div>
 
+                {/* Active Users Only */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
-                    <Users className="w-4 h-4 mr-2 text-blue-500" />
-                    User Group
-                  </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
-                    <option>All Groups</option>
-                    <option>Whatsapp.</option>
-                    <option>DefaultGro</option>
-                    <option>Premium</option>
-                    <option>VIP</option>
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
-                    <Calendar className="w-4 h-4 mr-2 text-orange-500" />
-                    Created Date
-                  </label>
-                  <input
-                    type="date"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
-                    <BarChart3 className="w-4 h-4 mr-2 text-emerald-500" />
-                    Balance Range
-                  </label>
-                  <div className="flex space-x-2">
-                    <input
-                      type="number"
-                      placeholder="Min"
-                      className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Max"
-                      className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
-                    />
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Active Users Only</label>
+                  <div className="relative">
+                    <select 
+                      value={activeUsersFilter}
+                      onChange={(e) => setActiveUsersFilter(e.target.value)}
+                      className="w-full px-4 py-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    >
+                      <option value="">All Users</option>
+                      <option value="active">Active Users Only</option>
+                      <option value="inactive">Inactive Users Only</option>
+                    </select>
+                    {activeUsersFilter && (
+                      <button 
+                        onClick={() => setActiveUsersFilter('')}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
                 </div>
 
+                {/* All Domain */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
-                    <TrendingUp className="w-4 h-4 mr-2 text-teal-500" />
-                    PnL Type
-                  </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
-                    <option>All PnL</option>
-                    <option>Positive PnL</option>
-                    <option>Negative PnL</option>
-                    <option>Zero PnL</option>
-                  </select>
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">All Domain</label>
+                  <div className="relative">
+                    <select 
+                      value={domainFilter}
+                      onChange={(e) => setDomainFilter(e.target.value)}
+                      className="w-full px-4 py-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    >
+                      <option value="">All Domain</option>
+                      <option value="dtrader">DTrader</option>
+                      <option value="mt4">MT4</option>
+                      <option value="mt5">MT5</option>
+                    </select>
+                    {domainFilter && (
+                      <button 
+                        onClick={() => setDomainFilter('')}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
+                {/* All Groups */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
-                    <Shield className="w-4 h-4 mr-2 text-indigo-500" />
-                    Subscription
-                  </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
-                    <option>All Subscriptions</option>
-                    <option>Subscribed</option>
-                    <option>Not Subscribed</option>
-                    <option>Premium</option>
-                    <option>VIP</option>
-                  </select>
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">All Groups</label>
+                  <div className="relative">
+                    <select 
+                      value={groupFilter}
+                      onChange={(e) => setGroupFilter(e.target.value)}
+                      className="w-full px-4 py-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    >
+                      <option value="">All Groups</option>
+                      <option value="whatsapp">Whatsapp.</option>
+                      <option value="default">DefaultGro</option>
+                      <option value="premium">Premium</option>
+                      <option value="vip">VIP</option>
+                    </select>
+                    {groupFilter && (
+                      <button 
+                        onClick={() => setGroupFilter('')}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
+                {/* All Bot Settings */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
-                    <Activity className="w-4 h-4 mr-2 text-red-500" />
-                    Page Size
-                  </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
-                    <option>10 per page</option>
-                    <option>25 per page</option>
-                    <option>50 per page</option>
-                    <option>100 per page</option>
-                  </select>
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">All Bot Settings</label>
+                  <div className="relative">
+                    <select 
+                      value={botSettingsFilter}
+                      onChange={(e) => setBotSettingsFilter(e.target.value)}
+                      className="w-full px-4 py-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    >
+                      <option value="">All Bot Settings</option>
+                      <option value="enabled">Bot Enabled</option>
+                      <option value="disabled">Bot Disabled</option>
+                      <option value="active">Bot Active</option>
+                      <option value="inactive">Bot Inactive</option>
+                    </select>
+                    {botSettingsFilter && (
+                      <button 
+                        onClick={() => setBotSettingsFilter('')}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Page Limit */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Page Limit (10)</label>
+                  <div className="relative">
+                    <select 
+                      value={pageLimitFilter}
+                      onChange={(e) => setPageLimitFilter(e.target.value)}
+                      className="w-full px-4 py-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    >
+                      <option value="10">10 per page</option>
+                      <option value="25">25 per page</option>
+                      <option value="50">50 per page</option>
+                      <option value="100">100 per page</option>
+                    </select>
+                    {pageLimitFilter !== '10' && (
+                      <button 
+                        onClick={() => setPageLimitFilter('10')}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* User Created At */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">User Created At</label>
+                  <div className="relative">
+                    <input
+                      type="date"
+                      value={userCreatedAtFilter}
+                      onChange={(e) => setUserCreatedAtFilter(e.target.value)}
+                      className="w-full px-4 py-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                    {userCreatedAtFilter && (
+                      <button 
+                        onClick={() => setUserCreatedAtFilter('')}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -289,7 +340,7 @@ const GeneralSettingSub: React.FC = () => {
                     Showing 1-10 of 1,234 results
                   </span>
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">3 active filters</span>
+                    <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">0 active filters</span>
                     <button className="text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium">
                       Clear all
                     </button>
@@ -308,13 +359,295 @@ const GeneralSettingSub: React.FC = () => {
           )}
         </div>
 
-
-
         {/* Professional Data Table */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
           <DataTable />
         </div>
       </div>
+
+      {/* Add User Modal */}
+      {showAddUserModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+                  <User className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">Add New User</h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Create a new user account with all necessary details</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowAddUserModal(false)}
+                className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 space-y-8">
+              {/* Account Settings Section */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Account Settings</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {/* User Name */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">User Name</label>
+                    <input
+                      type="text"
+                      placeholder="Enter User Name"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* Email */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Email <span className="text-red-500">*</span></label>
+                    <input
+                      type="email"
+                      placeholder="Your valid email.."
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* Password */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Password <span className="text-red-500">*</span></label>
+                    <div className="relative">
+                      <input
+                        type="password"
+                        placeholder="Enter Your Password"
+                        className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                      />
+                      <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                        <Eye className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Minimum Margin Level Call % */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Minimum Margin Level Call %</label>
+                    <input
+                      type="number"
+                      defaultValue="0"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* Group */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Group <span className="text-red-500">*</span></label>
+                    <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+                      <option value="DefaultGroup">DefaultGroup</option>
+                      <option value="Premium">Premium</option>
+                      <option value="VIP">VIP</option>
+                    </select>
+                  </div>
+
+                  {/* Domain */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Domain <span className="text-red-500">*</span></label>
+                    <input
+                      type="text"
+                      defaultValue="dtrader"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* Assign Tags */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Assign Tags <span className="text-red-500">*</span></label>
+                    <input
+                      type="text"
+                      defaultValue="0 Tags selected"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* Platform Access Rights */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Platform Access Rights <span className="text-red-500">*</span></label>
+                    <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+                      <option value="Full Access">Full Access</option>
+                      <option value="Limited Access">Limited Access</option>
+                      <option value="Read Only">Read Only</option>
+                    </select>
+                  </div>
+
+                  {/* User's Panel Access Right */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">User's Panel Access Right <span className="text-red-500">*</span></label>
+                    <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+                      <option value="Default User_panel">Default User_panel</option>
+                      <option value="Admin Panel">Admin Panel</option>
+                      <option value="Custom Panel">Custom Panel</option>
+                    </select>
+                  </div>
+
+                  {/* Leverage */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Leverage</label>
+                    <input
+                      type="text"
+                      defaultValue="1:100"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* Max Leverage */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Max Leverage</label>
+                    <input
+                      type="text"
+                      defaultValue="1:1000"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* Account Type */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Account Type</label>
+                    <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+                      <option value="CFD Hedging">CFD Hedging</option>
+                      <option value="CFD Netting">CFD Netting</option>
+                      <option value="Standard">Standard</option>
+                    </select>
+                  </div>
+
+                  {/* Total margin calculation Type */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Total margin calculation Type</label>
+                    <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+                      <option value="Sum">Sum</option>
+                      <option value="Net">Net</option>
+                      <option value="Gross">Gross</option>
+                    </select>
+                  </div>
+
+                  {/* Currency */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Currency <span className="text-red-500">*</span></label>
+                    <input
+                      type="text"
+                      defaultValue="EUR"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Account Details Section */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Account Details</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {/* First Name */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">First Name <span className="text-red-500">*</span></label>
+                    <input
+                      type="text"
+                      placeholder="Enter first name"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* Last Name */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Last Name <span className="text-red-500">*</span></label>
+                    <input
+                      type="text"
+                      placeholder="Enter last name"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* Phone */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Phone</label>
+                    <input
+                      type="tel"
+                      defaultValue="+92-3001234543"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* City */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">City</label>
+                    <input
+                      type="text"
+                      placeholder="Enter your city name"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* State */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">State</label>
+                    <input
+                      type="text"
+                      placeholder="Enter your state name"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* Address */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
+                    <input
+                      type="text"
+                      placeholder="Enter Your Address"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* Comment */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Comment</label>
+                    <input
+                      type="text"
+                      defaultValue="Description"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    />
+                  </div>
+
+                  {/* Country */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Country <span className="text-red-500">*</span></label>
+                    <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+                      <option value="Afghanistan">Afghanistan</option>
+                      <option value="Pakistan">Pakistan</option>
+                      <option value="United States">United States</option>
+                      <option value="United Kingdom">United Kingdom</option>
+                      <option value="Germany">Germany</option>
+                      <option value="France">France</option>
+                      <option value="Canada">Canada</option>
+                      <option value="Australia">Australia</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex items-center justify-end p-6 border-t border-gray-200 dark:border-gray-700 space-x-3">
+              <button
+                onClick={() => setShowAddUserModal(false)}
+                className="px-6 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+              >
+                Cancel
+              </button>
+              <button className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors duration-200">
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

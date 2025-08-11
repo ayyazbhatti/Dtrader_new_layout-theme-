@@ -1663,12 +1663,12 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold text-purple-400">Balance Info</h3>
             <div className="flex items-center space-x-2">
-              <button className="text-gray-400 hover:text-gray-300">
+              <button className="text-purple-400 hover:text-purple-300 transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                 </svg>
               </button>
-              <button className="text-gray-400 hover:text-gray-300">
+              <button className="text-purple-400 hover:text-purple-300 transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
@@ -1750,12 +1750,12 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold text-purple-400">Bot Info</h3>
             <div className="flex items-center space-x-2">
-              <button className="text-gray-400 hover:text-gray-300">
+              <button className="text-purple-400 hover:text-purple-300 transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                 </svg>
               </button>
-              <button className="text-gray-400 hover:text-gray-300">
+              <button className="text-purple-400 hover:text-purple-300 transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
@@ -1770,7 +1770,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <div className="bg-gray-700 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </div>
@@ -1784,7 +1784,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <div className="bg-gray-700 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
                     </svg>
                   </div>
@@ -1798,7 +1798,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <div className="bg-gray-700 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
                   </div>
@@ -1812,7 +1812,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <div className="bg-gray-700 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
@@ -1826,7 +1826,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <div className="bg-gray-700 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
@@ -1840,7 +1840,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <div className="bg-gray-700 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
@@ -1857,7 +1857,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <div className="bg-gray-700 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
                   </div>
@@ -1871,7 +1871,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <div className="bg-gray-700 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
@@ -1885,7 +1885,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <div className="bg-gray-700 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                   </div>
@@ -1899,7 +1899,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <div className="bg-gray-700 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                     </svg>
                   </div>
@@ -1913,7 +1913,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <div className="bg-gray-700 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                     </svg>
                   </div>
@@ -1927,7 +1927,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <div className="bg-gray-700 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
                   </div>
@@ -2012,7 +2012,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
           {/* Header Section */}
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold text-purple-400">Affiliate Links (1)</h3>
-            <button className="text-gray-400 hover:text-gray-300">
+            <button className="text-purple-400 hover:text-purple-300 transition-colors">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
@@ -2094,7 +2094,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-300">
                       <div className="flex items-center space-x-2">
                         <span>Referral Link</span>
-                        <button className="text-gray-400 hover:text-gray-300">
+                        <button className="text-purple-400 hover:text-purple-300 transition-colors">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                           </svg>
@@ -2104,7 +2104,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-300">
                       <div className="flex items-center space-x-2">
                         <span>Campaign</span>
-                        <button className="text-gray-400 hover:text-gray-300">
+                        <button className="text-purple-400 hover:text-purple-300 transition-colors">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                           </svg>
@@ -2114,7 +2114,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-300">
                       <div className="flex items-center space-x-2">
                         <span>Status</span>
-                        <button className="text-gray-400 hover:text-gray-300">
+                        <button className="text-purple-400 hover:text-purple-300 transition-colors">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                           </svg>
@@ -2124,7 +2124,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-300">
                       <div className="flex items-center space-x-2">
                         <span>Action</span>
-                        <button className="text-gray-400 hover:text-gray-300">
+                        <button className="text-purple-400 hover:text-purple-300 transition-colors">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                           </svg>
@@ -2185,7 +2185,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
           {/* Header Section */}
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold text-purple-400">Transaction Management</h3>
-            <button className="text-gray-400 hover:text-gray-300">
+            <button className="text-purple-400 hover:text-purple-300 transition-colors">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>

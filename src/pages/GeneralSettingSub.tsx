@@ -97,22 +97,7 @@ const GeneralSettingSub: React.FC = () => {
               </div>
             </div>
             
-            <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
-              <button className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200">
-                <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-              <button className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200">
-                <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-              <button 
-                onClick={() => setShowAddUserModal(true)}
-                className="px-3 sm:px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2 text-sm sm:text-base"
-              >
-                <Plus className="w-4 h-4" />
-                <span className="hidden sm:inline">Add User</span>
-                <span className="sm:hidden">Add</span>
-              </button>
-            </div>
+           
           </div>
         </div>
       </div>

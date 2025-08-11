@@ -17,7 +17,7 @@ export const ColumnVisibilityPopup = <T,>({
   if (!columnVisibilityMenu.show) return null
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div className="column-visibility-popup fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
@@ -101,7 +101,7 @@ export const ColumnVisibilityPopup = <T,>({
                         table.setColumnVisibility(newState)
                       }}
                       onClick={(e) => e.stopPropagation()}
-                      className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-3 h-3 md:w-4 md:h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <span className="ml-3 text-sm text-gray-900 dark:text-white">
                       {column.columnDef.header as string}

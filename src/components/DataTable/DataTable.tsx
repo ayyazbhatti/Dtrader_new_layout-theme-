@@ -212,7 +212,7 @@ const DataTable: React.FC = () => {
             type="checkbox"
             checked={table.getIsAllPageRowsSelected()}
             onChange={table.getToggleAllPageRowsSelectedHandler()}
-            className="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
+            className="w-4 h-4 md:w-5 md:h-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
           />
         ),
         cell: ({ row }) => (
@@ -220,13 +220,13 @@ const DataTable: React.FC = () => {
             type="checkbox"
             checked={row.getIsSelected()}
             onChange={row.getToggleSelectedHandler()}
-            className="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
+            className="w-4 h-4 md:w-5 md:h-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
           />
         ),
         enableSorting: false,
         enableResizing: false,
         enableHiding: false, // Selection column should not be hideable
-        size: 50,
+        size: 40,
       }),
 
       // Online status
@@ -240,12 +240,12 @@ const DataTable: React.FC = () => {
             </span>
           </div>
         ),
-        size: 80,
+        size: 70,
         enableResizing: true,
         enableHiding: true,
       }),
 
-      // Bot status
+              // Bot status
       columnHelper.accessor('botStatus', {
         header: 'Bot Status',
         cell: ({ getValue }) => (
@@ -256,7 +256,7 @@ const DataTable: React.FC = () => {
             </span>
           </div>
         ),
-        size: 100,
+        size: 85,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -265,7 +265,7 @@ const DataTable: React.FC = () => {
       columnHelper.accessor('accountId', {
         header: 'Account Id',
         cell: ({ getValue }) => <span className="font-mono">{getValue()}</span>,
-        size: 120,
+        size: 100,
         enableGlobalFilter: true,
         enableResizing: true,
         enableHiding: true,
@@ -275,7 +275,7 @@ const DataTable: React.FC = () => {
       columnHelper.accessor('name', {
         header: 'Name',
         cell: ({ getValue }) => <span className="font-medium">{getValue()}</span>,
-        size: 150,
+        size: 120,
         enableGlobalFilter: true,
         enableResizing: true,
         enableHiding: true,
@@ -285,7 +285,7 @@ const DataTable: React.FC = () => {
       columnHelper.accessor('email', {
         header: 'Email',
         cell: ({ getValue }) => <span className="text-blue-600 dark:text-blue-400">{getValue()}</span>,
-        size: 200,
+        size: 160,
         enableGlobalFilter: true,
         enableResizing: true,
         enableHiding: true,
@@ -295,7 +295,7 @@ const DataTable: React.FC = () => {
       columnHelper.accessor('group', {
         header: 'Group',
         cell: ({ getValue }) => <span>{getValue()}</span>,
-        size: 120,
+        size: 100,
         enableGlobalFilter: true,
         enableResizing: true,
         enableHiding: true,
@@ -305,7 +305,7 @@ const DataTable: React.FC = () => {
       columnHelper.accessor('referral', {
         header: 'Referral',
         cell: ({ getValue }) => <span className="font-mono text-sm">{getValue()}</span>,
-        size: 100,
+        size: 80,
         enableGlobalFilter: true,
         enableResizing: true,
         enableHiding: true,
@@ -315,7 +315,7 @@ const DataTable: React.FC = () => {
       columnHelper.accessor('leverage', {
         header: 'Leverage',
         cell: ({ getValue }) => <span className="text-right">{getValue()}</span>,
-        size: 100,
+        size: 80,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -328,7 +328,7 @@ const DataTable: React.FC = () => {
             {formatCurrency(getValue())}
           </span>
         ),
-        size: 120,
+        size: 100,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -341,7 +341,7 @@ const DataTable: React.FC = () => {
             {formatCurrency(getValue())}
           </span>
         ),
-        size: 120,
+        size: 100,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -359,7 +359,7 @@ const DataTable: React.FC = () => {
             </span>
           )
         },
-        size: 130,
+        size: 110,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -371,7 +371,7 @@ const DataTable: React.FC = () => {
           const { value, colorClass } = formatPnL(getValue())
           return <span className={`text-right font-mono font-medium ${colorClass}`}>{value}</span>
         },
-        size: 140,
+        size: 120,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -383,7 +383,7 @@ const DataTable: React.FC = () => {
           const { value, colorClass } = formatPnL(getValue())
           return <span className={`text-right font-medium ${colorClass}`}>{value}</span>
         },
-        size: 140,
+        size: 120,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -395,7 +395,7 @@ const DataTable: React.FC = () => {
           const { value, colorClass } = formatPnL(getValue())
           return <span className={`text-right font-mono font-medium ${colorClass}`}>{value}</span>
         },
-        size: 120,
+        size: 100,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -404,7 +404,7 @@ const DataTable: React.FC = () => {
       columnHelper.accessor('botSetting', {
         header: 'Bot Setting',
         cell: ({ getValue }) => <span className="text-sm">{getValue()}</span>,
-        size: 140,
+        size: 110,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -412,32 +412,17 @@ const DataTable: React.FC = () => {
       // Bot Subscription
       columnHelper.accessor('botSubscription', {
         header: 'Bot Subscription',
-        cell: ({ getValue, row }) => {
+        cell: ({ getValue }) => {
           const isEnabled = getValue()
           return (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
-                  handleToggleBotSubscription(row.original.id, isEnabled)
-                }}
-                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                  isEnabled 
-                    ? 'bg-green-600' 
-                    : 'bg-gray-600'
-                }`}
-              >
-                <span
-                  className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
-                    isEnabled ? 'translate-x-5' : 'translate-x-1'
-                  }`}
-                />
-              </button>
+            <div className="flex items-center justify-center">
+              <span className={`text-sm font-medium ${isEnabled ? 'text-green-600' : 'text-gray-500'}`}>
+                {isEnabled ? 'Enabled' : 'Disabled'}
+              </span>
             </div>
           )
         },
-        size: 130,
+        size: 110,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -445,32 +430,17 @@ const DataTable: React.FC = () => {
       // Bot Enabled
       columnHelper.accessor('botEnabled', {
         header: 'Bot Enabled',
-        cell: ({ getValue, row }) => {
+        cell: ({ getValue }) => {
           const isEnabled = getValue()
           return (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
-                  handleToggleBotEnabled(row.original.id, isEnabled)
-                }}
-                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                  isEnabled 
-                    ? 'bg-green-600' 
-                    : 'bg-gray-600'
-                }`}
-              >
-                <span
-                  className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
-                    isEnabled ? 'translate-x-5' : 'translate-x-1'
-                  }`}
-                />
-              </button>
+            <div className="flex items-center justify-center">
+              <span className={`text-sm font-medium ${isEnabled ? 'text-green-600' : 'text-gray-500'}`}>
+                {isEnabled ? 'Enabled' : 'Disabled'}
+              </span>
             </div>
           )
         },
-        size: 120,
+        size: 100,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -478,32 +448,17 @@ const DataTable: React.FC = () => {
       // Show Bot Settings
       columnHelper.accessor('showBotSettings', {
         header: 'Show Bot Settings',
-        cell: ({ getValue, row }) => {
+        cell: ({ getValue }) => {
           const isEnabled = getValue()
           return (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
-                  handleToggleShowBotSettings(row.original.id, isEnabled)
-                }}
-                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                  isEnabled 
-                    ? 'bg-green-600' 
-                    : 'bg-gray-600'
-                }`}
-              >
-                <span
-                  className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
-                    isEnabled ? 'translate-x-5' : 'translate-x-1'
-                  }`}
-                />
-              </button>
+            <div className="flex items-center justify-center">
+              <span className={`text-sm font-medium ${isEnabled ? 'text-green-600' : 'text-gray-500'}`}>
+                {isEnabled ? 'Enabled' : 'Disabled'}
+              </span>
             </div>
           )
         },
-        size: 130,
+        size: 110,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -531,7 +486,7 @@ const DataTable: React.FC = () => {
             </div>
           )
         },
-        size: 150,
+        size: 120,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -595,7 +550,7 @@ const DataTable: React.FC = () => {
             </button>
           </div>
         ),
-        size: 140,
+        size: 120,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -686,7 +641,23 @@ const DataTable: React.FC = () => {
     })
   }
 
-  const handleRowClick = (user: UserData) => {
+  const handleRowClick = (user: UserData, event: React.MouseEvent) => {
+    // Check if the click target is an interactive element that shouldn't trigger row click
+    const target = event.target as HTMLElement
+    const isCheckbox = target.closest('input[type="checkbox"]')
+    const isCheckboxLabel = target.closest('label')
+    const isCheckboxContainer = target.closest('.checkbox-container')
+    const isButton = target.closest('button')
+    const isSelect = target.closest('select')
+    const isInput = target.closest('input')
+    const isLink = target.closest('a')
+    const isActionButton = target.closest('[data-action]')
+    
+    // Don't open user details if clicking on interactive elements
+    if (isCheckbox || isCheckboxLabel || isCheckboxContainer || isButton || isSelect || isInput || isLink || isActionButton) {
+      return
+    }
+    
     setSelectedUser(user)
     setShowUserDetails(true)
   }
@@ -1071,56 +1042,40 @@ const DataTable: React.FC = () => {
     setShowAddNewUserModal(false)
   }
 
-  // Toggle handlers for bot settings
-  const handleToggleBotSubscription = (userId: string, currentValue: boolean) => {
-    setUserData(prev => prev.map(user => 
-      user.id === userId 
-        ? { ...user, botSubscription: !currentValue }
-        : user
-    ))
-  }
 
-  const handleToggleBotEnabled = (userId: string, currentValue: boolean) => {
-    setUserData(prev => prev.map(user => 
-      user.id === userId 
-        ? { ...user, botEnabled: !currentValue }
-        : user
-    ))
-  }
-
-  const handleToggleShowBotSettings = (userId: string, currentValue: boolean) => {
-    setUserData(prev => prev.map(user => 
-      user.id === userId 
-        ? { ...user, showBotSettings: !currentValue }
-        : user
-    ))
-  }
 
   return (
     <div className="space-y-6 relative">
       {/* Enhanced Table Controls */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 relative z-20">
-        <div className="flex flex-col space-y-4">
+      <div className="mobile-expanded-view bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 lg:p-6 relative z-20">
+        <div className="flex flex-col space-y-3 sm:space-y-4 lg:space-y-6">
           {/* Mobile Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
             {/* Title and Row Count */}
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-              <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 text-sm text-gray-600 dark:text-gray-400">
-              </div>
-            </div>
+            
 
             {/* Mobile Filter Toggle */}
             <div className="flex items-center justify-between sm:hidden">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="flex items-center space-x-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm"
               >
                 <Filter className="w-4 h-4" />
                 <span>Filters</span>
+                {columnFilters.length > 0 && (
+                  <span className="ml-1 px-2 py-0.5 bg-blue-500 text-white text-xs rounded-full">
+                    {columnFilters.length}
+                  </span>
+                )}
               </button>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                {columnFilters.length > 0 && `${columnFilters.length} active`}
-              </span>
+              <div className="flex flex-col items-end text-xs text-gray-500 dark:text-gray-400">
+                <span>{table.getFilteredRowModel().rows.length} results</span>
+                {columnFilters.length > 0 && (
+                  <span className="text-blue-600 dark:text-blue-400 font-medium">
+                    {columnFilters.length} active filters
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -1266,7 +1221,7 @@ const DataTable: React.FC = () => {
                     placeholder="Search table..."
                     value={globalFilter}
                     onChange={(e) => setGlobalFilter(e.target.value)}
-                    className="pl-10 pr-4 py-2 w-64 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    className="pl-10 pr-4 py-2 w-full sm:w-48 lg:w-64 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                   />
                   {globalFilter && (
                     <button
@@ -1327,12 +1282,12 @@ const DataTable: React.FC = () => {
       />
 
       {/* Table Container */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="mobile-expanded-view bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
 
         
 
         {/* Mobile Table Controls */}
-        <div className="sm:hidden p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="mobile-expanded-view sm:hidden p-4 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between mb-3">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {table.getFilteredRowModel().rows.length} results
@@ -1347,226 +1302,270 @@ const DataTable: React.FC = () => {
           </div>
           
           {/* Mobile Column Visibility */}
-          <div className="flex items-center space-x-2 overflow-x-auto pb-2">
-            {table.getAllColumns()
-              .filter(column => column.getCanHide())
-              .map(column => (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Show/Hide Columns</span>
+              <div className="flex space-x-2">
                 <button
-                  key={column.id}
-                  onClick={() => column.toggleVisibility()}
-                  className={`px-3 py-1.5 text-xs rounded-full whitespace-nowrap transition-colors ${
-                    column.getIsVisible()
-                      ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
-                      : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
-                  }`}
+                  onClick={() => {
+                    table.getAllColumns().forEach(column => {
+                      if (column.getCanHide()) {
+                        column.toggleVisibility(true)
+                      }
+                    })
+                  }}
+                  className="px-2 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors"
                 >
-                  {column.columnDef.header as string}
+                  Show All
                 </button>
-              ))}
+                <button
+                  onClick={() => {
+                    table.getAllColumns().forEach(column => {
+                      if (column.getCanHide()) {
+                        column.toggleVisibility(false)
+                      }
+                    })
+                  }}
+                  className="px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                >
+                  Hide All
+                </button>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto">
+              {table.getAllColumns()
+                .filter(column => column.getCanHide())
+                .map(column => (
+                  <button
+                    key={column.id}
+                    onClick={() => column.toggleVisibility()}
+                    className={`flex items-center justify-between px-3 py-2 text-xs rounded-md transition-colors ${
+                      column.getIsVisible()
+                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-700'
+                        : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400 border border-gray-200 dark:border-gray-600'
+                    }`}
+                  >
+                    <span className="truncate">{column.columnDef.header as string}</span>
+                    <div className={`w-2 h-2 rounded-full ${
+                      column.getIsVisible() ? 'bg-blue-600' : 'bg-gray-400'
+                    }`} />
+                  </button>
+                ))}
+            </div>
           </div>
 
         </div>
 
-        {/* Mobile Table */}
-        <div className="block sm:hidden overflow-x-auto">
-          <table className="w-full">
-            <thead className={`${CSS_CLASSES.TABLE_HEADER} block sm:table-header-group`}>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id} style={{ height: '36px' }}>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      className={`relative border-r border-gray-200 dark:border-gray-600 text-left text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider select-none group ${
-                        header.column.getFilterValue() ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-700' : ''
-                      }`}
-                      style={{ width: header.getSize(), minWidth: '80px' }}
-                    >
-                      <div 
-                        className="px-3 py-2 flex items-center justify-between cursor-pointer"
-                        onContextMenu={(e) => handleContextMenu(e, header.column.id, header.column.columnDef.header as string)}
-                      >
-                        <div className="flex items-center space-x-2">
-                          {header.isPlaceholder ? null : (
-                            <>
-                              <span className="font-medium">{flexRender(header.column.columnDef.header, header.getContext())}</span>
-                              {header.column.getCanSort() && (
-                                <button
-                                  onClick={(e) => header.column.getToggleSortingHandler()?.(e)}
-                                  className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md"
-                                >
-                                  {getSortIcon(header.column)}
-                                </button>
-                              )}
-                              {/* Filter indicator */}
-                              {header.column.getFilterValue() && (
-                                <div className="flex items-center space-x-1">
-                                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-                                  <span className="text-xs text-orange-600 dark:text-orange-400 font-medium">
-                                    Filtered
-                                  </span>
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      </div>
-                      {header.column.getCanResize() && (
-                        <div
-                          onMouseDown={(e) => {
-                            console.log('Resize handler called for column:', header.id)
-                            header.getResizeHandler()(e)
-                          }}
-                          onTouchStart={(e) => {
-                            console.log('Touch resize handler called for column:', header.id)
-                            header.getResizeHandler()(e)
-                          }}
-                          className={`absolute top-0 right-0 w-2 h-full cursor-col-resize transition-all duration-200 ${
-                            header.column.getIsResizing()
-                              ? 'bg-blue-500 opacity-100'
-                              : 'bg-transparent hover:bg-blue-400 hover:opacity-80 group-hover:bg-gray-300 dark:group-hover:bg-gray-500'
-                          } hover:w-3 hover:bg-blue-100 dark:hover:bg-blue-900/30`}
-                          style={{ zIndex: 10 }}
-                          title="Drag to resize column width"
-                        >
-                          {/* Visual indicator for resize handle */}
-                          <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-6 rounded-full transition-all duration-200 ${
-                            header.column.getIsResizing()
-                              ? 'bg-white'
-                              : 'bg-gray-400 dark:bg-gray-500 group-hover:bg-gray-600 dark:group-hover:bg-gray-400'
-                          }`} />
-                        </div>
-                      )}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
+        {/* Mobile Table - Hidden for now to show table format */}
+        <div className="hidden">
+          {table.getRowModel().rows.length === 0 ? (
+            <div className="text-center py-8">
+              <div className="text-gray-400 dark:text-gray-500 mb-3">
+                <svg className="mx-auto h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-base font-medium text-gray-900 dark:text-white mb-1">No results found</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {globalFilter ? 'Try adjusting your search terms.' : 'No data available to display.'}
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
               {table.getRowModel().rows.map((row, index) => (
-                <tr 
-                  key={row.id} 
-                  className={`${CSS_CLASSES.TABLE_ROW} ${
-                    row.getIsSelected() 
-                      ? 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500' 
-                      : ''
-                  } ${index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/50 dark:bg-gray-800/50'}`}
-                  style={{ height: '34px' }}
-                  onClick={() => handleRowClick(row.original)}
-                >
-                  {/* Mobile Row Layout */}
-                  <td className="sm:hidden p-3 border-b border-gray-200 dark:border-gray-700">
-                    <div className="space-y-2">
-                      {/* User Info */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                            {row.original.name?.charAt(0).toUpperCase() || 'U'}
-                          </div>
-                          <div>
-                            <div className="font-medium text-sm text-gray-900 dark:text-white">
-                              {row.original.name || 'Unknown User'}
-                            </div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              {row.original.email || 'No email'}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          {row.original.online ? (
-                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          ) : (
-                            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                          )}
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              handleOpenEditModal(row.original)
-                            }}
-                            className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                            title="Edit user"
-                          >
-                            <Settings className="w-4 h-4" />
-                          </button>
-                        </div>
+              <div
+                key={row.id}
+                className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 ${
+                  row.getIsSelected() 
+                    ? 'ring-2 ring-blue-500 ring-opacity-50' 
+                    : ''
+                } ${index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/50 dark:bg-gray-800/50'}`}
+                onClick={(e) => handleRowClick(row.original, e)}
+              >
+                <div className="space-y-4">
+                  {/* User Info */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-base">
+                        {row.original.name?.charAt(0).toUpperCase() || 'U'}
                       </div>
-
-                      {/* Key Metrics */}
-                      <div className="grid grid-cols-2 gap-2 text-xs">
-                        <div className="bg-gray-50 dark:bg-gray-700/50 p-1.5 rounded-md">
-                          <div className="text-gray-500 dark:text-gray-400 text-xs">Balance</div>
-                          <div className="font-medium text-gray-900 dark:text-white text-xs">
-                            {formatCurrency(row.original.balance || 0)}
-                          </div>
+                      <div>
+                        <div className="font-medium text-base text-gray-900 dark:text-white">
+                          {row.original.name || 'Unknown User'}
                         </div>
-                        <div className="bg-gray-50 dark:bg-gray-700/50 p-1.5 rounded-md">
-                          <div className="text-gray-500 dark:text-gray-400 text-xs">Unrealized PnL</div>
-                          <div className={`font-medium text-xs ${(row.original.unrealizedPnL || 0) >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                            {formatPnL(row.original.unrealizedPnL || 0).value}
-                          </div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          {row.original.email || 'No email'}
                         </div>
-                      </div>
-
-                      {/* Bot Status */}
-                      <div className="flex items-center justify-between">
-                        <div className="text-xs text-gray-500 dark:text-gray-400">Bot Status</div>
-                        <div className="flex items-center space-x-2">
-                          <div className={`px-2 py-1 text-xs rounded-full ${
-                            row.original.botSubscription 
-                              ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-                              : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
-                          }`}>
-                            {row.original.botSubscription ? 'Active' : 'Inactive'}
-                          </div>
-                          <div className={`px-2 py-1 text-xs rounded-full ${
-                            row.original.botEnabled 
-                              ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
-                              : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
-                          }`}>
-                            {row.original.botEnabled ? 'Enabled' : 'Disabled'}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Actions */}
-                      <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleOpenTagModal(row.original)
-                          }}
-                          className="flex items-center space-x-1 px-3 py-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                        >
-                          <Tag className="w-3 h-3" />
-                          <span>Tags</span>
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            // Handle view details
-                          }}
-                          className="flex items-center space-x-1 px-3 py-1.5 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-md transition-colors"
-                        >
-                          <Eye className="w-3 h-3" />
-                          <span>View</span>
-                        </button>
                       </div>
                     </div>
-                  </td>
+                    <div className="flex items-center space-x-2">
+                      {/* Online Status */}
+                      <div className="flex items-center space-x-2">
+                        <div className={`w-3 h-3 rounded-full ${row.original.online ? 'bg-green-500' : 'bg-gray-400'}`}></div>
+                        <span className={`text-xs font-medium ${row.original.online ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                          {row.original.online ? 'Online' : 'Offline'}
+                        </span>
+                      </div>
+                      
+                      {/* Bot Status */}
+                      <div className="flex items-center space-x-2">
+                        <div className={`w-3 h-3 rounded-full ${row.original.botStatus ? 'bg-green-500' : 'bg-gray-400'}`}></div>
+                        <span className={`text-xs font-medium ${row.original.botStatus ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                          {row.original.botStatus ? 'Active' : 'Inactive'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
-                  {/* Desktop Row Layout */}
-                  {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell.id}
-                      className="hidden sm:table-cell border-r border-gray-100 dark:border-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100"
-                      style={{ width: cell.column.getSize() }}
+                  {/* Account Details */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md">
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1">Account ID</div>
+                      <div className="font-mono text-sm text-gray-900 dark:text-white">
+                        {row.original.accountId || 'N/A'}
+                      </div>
+                    </div>
+                    <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md">
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1">Group</div>
+                      <div className="text-sm text-gray-900 dark:text-white">
+                        {row.original.group || 'N/A'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Financial Metrics */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md">
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1">Balance</div>
+                      <div className="font-medium text-sm text-gray-900 dark:text-white">
+                        {formatCurrency(row.original.balance || 0)}
+                      </div>
+                    </div>
+                    <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md">
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1">Equity</div>
+                      <div className="font-medium text-sm text-gray-900 dark:text-white">
+                        {formatCurrency(row.original.equity || 0)}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* PnL Metrics */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md">
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1">Unrealized PnL</div>
+                      <div className={`font-medium text-sm ${(row.original.unrealizedPnL || 0) >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                        {formatPnL(row.original.unrealizedPnL || 0).value}
+                      </div>
+                    </div>
+                    <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md">
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1">Realized PnL</div>
+                      <div className={`font-medium text-sm ${(row.original.realizedPnL || 0) >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                        {formatPnL(row.original.realizedPnL || 0).value}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bot Settings */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md">
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1">Bot Setting</div>
+                      <div className="text-sm text-gray-900 dark:text-white">
+                        {row.original.botSetting || 'N/A'}
+                      </div>
+                    </div>
+                    <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md">
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1">Bot Profit</div>
+                      <div className={`font-medium text-sm ${(row.original.botProfit || 0) >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                        {formatPnL(row.original.botProfit || 0).value}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bot Status Display */}
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md">
+                      <span className="text-xs text-gray-500 dark:text-gray-400">Bot Subscription</span>
+                      <span className={`text-xs font-medium ${row.original.botSubscription ? 'text-green-600' : 'text-gray-500'}`}>
+                        {row.original.botSubscription ? 'Enabled' : 'Disabled'}
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md">
+                      <span className="text-xs text-gray-500 dark:text-gray-400">Bot Enabled</span>
+                      <span className={`text-xs font-medium ${row.original.botEnabled ? 'text-green-600' : 'text-gray-500'}`}>
+                        {row.original.botEnabled ? 'Enabled' : 'Disabled'}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md">
+                      <span className="text-xs text-gray-500 dark:text-gray-400">Show Settings</span>
+                      <span className={`text-xs font-medium ${row.original.showBotSettings ? 'text-green-600' : 'text-gray-500'}`}>
+                        {row.original.showBotSettings ? 'Enabled' : 'Disabled'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Tags */}
+                  <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md">
+                    <div className="text-gray-500 dark:text-gray-400 text-xs mb-2">Tags</div>
+                    <div className="flex flex-wrap gap-1">
+                      {(userTags[row.original.id] || []).length > 0 ? (
+                        (userTags[row.original.id] || []).map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400"
+                          >
+                            {tag}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-xs text-gray-500 dark:text-gray-400">No tags assigned</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleOpenTagModal(row.original)
+                      }}
+                      className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
                     >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      <Tag className="w-4 h-4" />
+                      <span>Tags</span>
+                    </button>
+                    
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleOpenEditModal(row.original)
+                      }}
+                      className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                    >
+                      <Settings className="w-4 h-4" />
+                      <span>Edit</span>
+                    </button>
+                    
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedUser(row.original)
+                        setShowUserDetails(true)
+                      }}
+                      className="flex items-center space-x-2 px-4 py-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-md transition-colors"
+                    >
+                      <Eye className="w-4 h-4" />
+                      <span>View</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -1574,11 +1573,12 @@ const DataTable: React.FC = () => {
 
       {/* Google Sheets Style Filter Panel */}
       {showFilters && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-              <Filter className="w-5 h-5 mr-2" />
-              Advanced Filters
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+              <Filter className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              <span className="hidden sm:inline">Advanced Filters</span>
+              <span className="sm:hidden">Filters</span>
             </h3>
             <button
               onClick={() => setShowFilters(false)}
@@ -1588,379 +1588,429 @@ const DataTable: React.FC = () => {
             </button>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* First Row - 4 filters in a grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="space-y-2 min-w-0">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Online Status</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="space-y-1.5 sm:space-y-2 min-w-0">
+                <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Online Status</label>
                 <select
                   value={columnFilters.find(f => f.id === 'online')?.value?.toString() || ''}
                   onChange={(e) => {
                     const value = e.target.value
                     if (value) {
-                      table.getColumn('online')?.setFilterValue(value === 'true')
+                      const newFilter = { id: 'online', value: value === 'true' }
+                      setColumnFilters(prev => [...prev.filter(f => f.id !== 'online'), newFilter])
                     } else {
-                      table.getColumn('online')?.setFilterValue(undefined)
+                      setColumnFilters(prev => prev.filter(f => f.id !== 'online'))
                     }
                   }}
-                  className={`w-full ${CSS_CLASSES.INPUT_BASE}`}
+                  className="w-full px-2 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 >
                   <option value="">All Status</option>
-                  <option value="true">Online Only</option>
-                  <option value="false">Offline Only</option>
+                  <option value="true">Online</option>
+                  <option value="false">Offline</option>
                 </select>
               </div>
 
-              <div className="space-y-2 min-w-0">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Bot Status</label>
-                <select
-                  value={columnFilters.find(f => f.id === 'botStatus')?.value?.toString() || ''}
-                  onChange={(e) => {
-                    const value = e.target.value
-                    if (value) {
-                      table.getColumn('botStatus')?.setFilterValue(value === 'true')
-                    } else {
-                      table.getColumn('botStatus')?.setFilterValue(undefined)
-                    }
-                  }}
-                  className={`w-full ${CSS_CLASSES.INPUT_BASE}`}
-                >
-                  <option value="">All Bot Status</option>
-                  <option value="true">Active Bots</option>
-                  <option value="false">Inactive Bots</option>
-                </select>
-              </div>
-
-              <div className="space-y-2 min-w-0">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Group</label>
-                <select
-                  value={columnFilters.find(f => f.id === 'group')?.value?.toString() || ''}
-                  onChange={(e) => {
-                    const value = e.target.value
-                    if (value) {
-                      table.getColumn('group')?.setFilterValue(value)
-                    } else {
-                      table.getColumn('group')?.setFilterValue(undefined)
-                    }
-                  }}
-                  className={`w-full ${CSS_CLASSES.INPUT_BASE}`}
-                >
-                  <option value="">All Groups</option>
-                  {COLUMN_CONFIGS.GROUP_OPTIONS.map(group => (
-                    <option key={group} value={group}>{group}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="space-y-2 min-w-0">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Bot Subscription</label>
+              <div className="space-y-1.5 sm:space-y-2 min-w-0">
+                <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Bot Status</label>
                 <select
                   value={columnFilters.find(f => f.id === 'botSubscription')?.value?.toString() || ''}
                   onChange={(e) => {
                     const value = e.target.value
                     if (value) {
-                      table.getColumn('botSubscription')?.setFilterValue(value === 'true')
+                      const newFilter = { id: 'botSubscription', value: value === 'true' }
+                      setColumnFilters(prev => [...prev.filter(f => f.id !== 'botSubscription'), newFilter])
                     } else {
-                      table.getColumn('botSubscription')?.setFilterValue(undefined)
+                      setColumnFilters(prev => prev.filter(f => f.id !== 'botSubscription'))
                     }
                   }}
-                  className={`w-full ${CSS_CLASSES.INPUT_BASE}`}
+                  className="w-full px-2 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 >
-                  <option value="">All Subscriptions</option>
-                  <option value="true">Subscribed</option>
-                  <option value="false">Not Subscribed</option>
+                  <option value="">All Bot Status</option>
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+              </div>
+
+              <div className="space-y-1.5 sm:space-y-2 min-w-0">
+                <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Balance Range</label>
+                <select
+                  value={columnFilters.find(f => f.id === 'balance')?.value?.toString() || ''}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    if (value) {
+                      const newFilter = { id: 'balance', value }
+                      setColumnFilters(prev => [...prev.filter(f => f.id !== 'balance'), newFilter])
+                    } else {
+                      setColumnFilters(prev => prev.filter(f => f.id !== 'balance'))
+                    }
+                  }}
+                  className="w-full px-2 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                >
+                  <option value="">All Balances</option>
+                  <option value="0-1000">$0 - $1,000</option>
+                  <option value="1000-10000">$1,000 - $10,000</option>
+                  <option value="10000-100000">$10,000 - $100,000</option>
+                  <option value="100000+">$100,000+</option>
+                </select>
+              </div>
+
+              <div className="space-y-1.5 sm:space-y-2 min-w-0">
+                <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Group</label>
+                <select
+                  value={columnFilters.find(f => f.id === 'group')?.value?.toString() || ''}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    if (value) {
+                      const newFilter = { id: 'group', value }
+                      setColumnFilters(prev => [...prev.filter(f => f.id !== 'group'), newFilter])
+                    } else {
+                      setColumnFilters(prev => prev.filter(f => f.id !== 'group'))
+                    }
+                  }}
+                  className="w-full px-2 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                >
+                  <option value="">All Groups</option>
+                  <option value="Default">Default</option>
+                  <option value="Premium">Premium</option>
+                  <option value="VIP">VIP</option>
+                  <option value="Standard">Standard</option>
                 </select>
               </div>
             </div>
 
-          {/* Second Row - Balance Range and PnL Type with absolute separation */}
-          <div className="flex flex-col lg:flex-row lg:space-x-12 space-y-4 lg:space-y-0">
-            <div className="lg:w-2/3 space-y-2 min-w-0">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Balance Range</label>
-              <div className="flex space-x-4">
-                <select
-                  value={(columnFilters.find(f => f.id === 'balance')?.value as any)?.min || ''}
+            {/* Second Row - Additional filters */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+              <div className="space-y-1.5 sm:space-y-2 min-w-0">
+                <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Email Domain</label>
+                <input
+                  type="text"
+                  placeholder="e.g., gmail.com"
+                  value={columnFilters.find(f => f.id === 'emailDomain')?.value?.toString() || ''}
                   onChange={(e) => {
-                    const min = e.target.value ? parseFloat(e.target.value) : undefined
-                    const max = (columnFilters.find(f => f.id === 'balance')?.value as any)?.max
-                    table.getColumn('balance')?.setFilterValue({ min, max })
+                    const value = e.target.value
+                    if (value) {
+                      const newFilter = { id: 'emailDomain', value }
+                      setColumnFilters(prev => [...prev.filter(f => f.id !== 'emailDomain'), newFilter])
+                    } else {
+                      setColumnFilters(prev => prev.filter(f => f.id !== 'emailDomain'))
+                    }
                   }}
-                  className={`flex-1 min-w-0 max-w-[200px] ${CSS_CLASSES.INPUT_BASE}`}
-                >
-                  <option value="">Min Balance</option>
-                  <option value="0">$0</option>
-                  <option value="100">$100</option>
-                  <option value="500">$500</option>
-                  <option value="1000">$1,000</option>
-                  <option value="5000">$5,000</option>
-                  <option value="10000">$10,000</option>
-                  <option value="50000">$50,000</option>
-                  <option value="100000">$100,000</option>
-                </select>
-                <select
-                  value={(columnFilters.find(f => f.id === 'balance')?.value as any)?.max || ''}
+                  className="w-full px-2 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                />
+              </div>
+
+              <div className="space-y-1.5 sm:space-y-2 min-w-0">
+                <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Created Date</label>
+                <input
+                  type="date"
+                  value={columnFilters.find(f => f.id === 'createdAt')?.value?.toString() || ''}
                   onChange={(e) => {
-                    const max = e.target.value ? parseFloat(e.target.value) : undefined
-                    const min = (columnFilters.find(f => f.id === 'balance')?.value as any)?.min
-                    table.getColumn('balance')?.setFilterValue({ min, max })
+                    const value = e.target.value
+                    if (value) {
+                      const newFilter = { id: 'createdAt', value }
+                      setColumnFilters(prev => [...prev.filter(f => f.id !== 'createdAt'), newFilter])
+                    } else {
+                      setColumnFilters(prev => prev.filter(f => f.id !== 'createdAt'))
+                    }
                   }}
-                  className={`flex-1 min-w-0 max-w-[200px] ${CSS_CLASSES.INPUT_BASE}`}
+                  className="w-full px-2 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                />
+              </div>
+
+              <div className="space-y-1.5 sm:space-y-2 min-w-0">
+                <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Tags</label>
+                <select
+                  value={columnFilters.find(f => f.id === 'tags')?.value?.toString() || ''}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    if (value) {
+                      const newFilter = { id: 'tags', value }
+                      setColumnFilters(prev => [...prev.filter(f => f.id !== 'tags'), newFilter])
+                    } else {
+                      setColumnFilters(prev => prev.filter(f => f.id !== 'tags'))
+                    }
+                  }}
+                  className="w-full px-2 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 >
-                  <option value="">Max Balance</option>
-                  <option value="100">$100</option>
-                  <option value="500">$500</option>
-                  <option value="1000">$1,000</option>
-                  <option value="5000">$5,000</option>
-                  <option value="10000">$10,000</option>
-                  <option value="50000">$50,000</option>
-                  <option value="100000">$100,000</option>
-                  <option value="500000">$500,000</option>
-                  <option value="1000000">$1,000,000</option>
+                  <option value="">All Tags</option>
+                  <option value="Premium">Premium</option>
+                  <option value="VIP">VIP</option>
+                  <option value="New">New</option>
+                  <option value="Active">Active</option>
                 </select>
               </div>
             </div>
 
-            <div className="lg:w-1/3 space-y-2 min-w-0">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">PnL Type</label>
-              <select
-                value={columnFilters.find(f => f.id === 'unrealizedPnL')?.value?.toString() || ''}
-                onChange={(e) => {
-                  const value = e.target.value
-                  if (value) {
-                    table.getColumn('unrealizedPnL')?.setFilterValue(value)
-                  } else {
-                    table.getColumn('unrealizedPnL')?.setFilterValue(undefined)
-                  }
-                }}
-                className={`w-full max-w-[200px] ${CSS_CLASSES.INPUT_BASE}`}
-              >
-                <option value="">All PnL</option>
-                <option value="positive">Positive PnL</option>
-                <option value="negative">Negative PnL</option>
-                <option value="zero">Zero PnL</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Filter Actions */}
-        <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-600 dark:text-gray-400">
-              {table.getFilteredRowModel().rows.length} of {table.getPrePaginationRowModel().rows.length} rows filtered
-            </span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => {
-                table.resetColumnFilters()
-                setColumnFilters([])
-              }}
-              className={CSS_CLASSES.BUTTON_SECONDARY}
-            >
-              Clear All Filters
-            </button>
-            <button
-              onClick={() => setShowFilters(false)}
-              className={CSS_CLASSES.BUTTON_PRIMARY}
-            >
-              Apply Filters
-            </button>
-          </div>
-        </div>
-      </div>
-    )}
-
-      {/* Desktop Table */}
-      <div className={`${CSS_CLASSES.TABLE_CONTAINER} hidden sm:block`}>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 dark:bg-gray-700">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      className={`px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer select-none relative border-r border-gray-200 dark:border-gray-600 ${
-                        header.column.getCanSort() ? 'hover:bg-gray-100 dark:hover:bg-gray-600' : ''
-                      }`}
-                      style={{ width: header.getSize(), minWidth: '80px' }}
-                      onClick={(e) => header.column.getToggleSortingHandler()?.(e)}
-                      onContextMenu={(e) => handleContextMenu(e, header.id, header.column.columnDef.header as string)}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</span>
-                        <div className="flex items-center space-x-1">
-                          {header.column.getCanSort() && getSortIcon(header.column)}
-                          {header.column.getCanResize() && (
-                            <div
-                              onMouseDown={(e) => {
-                                console.log('Resize handler called for column:', header.id)
-                                header.getResizeHandler()(e)
-                              }}
-                              onTouchStart={(e) => {
-                                console.log('Touch resize handler called for column:', header.id)
-                                header.getResizeHandler()(e)
-                              }}
-                              className={`absolute right-0 top-0 h-full w-2 cursor-col-resize select-none touch-none transition-all duration-200 ${
-                                header.column.getIsResizing() 
-                                  ? 'bg-blue-500 opacity-100' 
-                                  : 'bg-transparent hover:bg-blue-400 hover:opacity-80 group-hover:bg-gray-300 dark:group-hover:bg-gray-500'
-                              } hover:w-3 hover:bg-blue-100 dark:hover:bg-blue-900/30`}
-                              style={{ zIndex: 10 }}
-                              title="Drag to resize column width"
-                            >
-                              {/* Visual indicator for resize handle */}
-                              <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-6 rounded-full transition-all duration-200 ${
-                                header.column.getIsResizing()
-                                  ? 'bg-white'
-                                  : 'bg-gray-400 dark:bg-gray-500 group-hover:bg-gray-600 dark:group-hover:bg-gray-400'
-                              }`} />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              {table.getRowModel().rows.map((row, index) => (
-                <tr
-                  key={row.id}
-                  className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 cursor-pointer ${
-                    index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/50 dark:bg-gray-800/50'
-                  }`}
-                  style={{ height: '34px' }}
-                  onClick={() => handleRowClick(row.original)}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell.id}
-                      className="px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-600"
-                      style={{ width: cell.column.getSize(), minWidth: '80px' }}
-                    >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Professional Pagination */}
-        <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-6 py-4">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-            {/* Results Info */}
-            <div className="flex items-center space-x-6">
-              <span className="text-sm text-gray-700 dark:text-gray-300">
-                Showing <span className="font-semibold text-gray-900 dark:text-white">{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}</span> to{' '}
-                <span className="font-semibold text-gray-900 dark:text-white">
-                  {Math.min(
-                    (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-                    table.getFilteredRowModel().rows.length
-                  )}
-                </span>{' '}
-                of <span className="font-semibold text-gray-900 dark:text-white">{table.getFilteredRowModel().rows.length}</span> results
-              </span>
+            {/* Filter Actions */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center space-x-2">
+                <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                  {columnFilters.length} active filters
+                </span>
+                {columnFilters.length > 0 && (
+                  <button
+                    onClick={() => setColumnFilters([])}
+                    className="text-xs sm:text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 underline"
+                  >
+                    Clear All
+                  </button>
+                )}
+              </div>
               
-              {/* Rows per page selector */}
-              <div className="flex items-center space-x-3">
-                <span className="text-sm text-gray-600 dark:text-gray-400">Show:</span>
-                <select
-                  value={table.getState().pagination.pageSize}
-                  onChange={(e) => {
-                    table.setPageSize(Number(e.target.value))
-                  }}
-                  className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 dark:hover:border-gray-500"
+              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                <button
+                  onClick={() => setShowFilters(false)}
+                  className="w-full sm:w-auto px-3 sm:px-4 py-2 text-xs sm:text-sm text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200"
                 >
-                  {[10, 20, 30, 40, 50].map((pageSize) => (
-                    <option key={pageSize} value={pageSize}>
-                      {pageSize}
-                    </option>
-                  ))}
-                </select>
-                <span className="text-sm text-gray-600 dark:text-gray-400">per page</span>
+                  Cancel
+                </button>
+                <button
+                  onClick={() => setShowFilters(false)}
+                  className="w-full sm:w-auto px-3 sm:px-4 py-2 text-xs sm:text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200"
+                >
+                  Apply Filters
+                </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
 
-            {/* Navigation Controls */}
-            <div className="flex items-center space-x-3">
-              {/* First/Previous buttons */}
-              <div className="flex items-center space-x-1">
+      {/* Mobile Filter Tags */}
+      {columnFilters.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="text-sm sm:text-base font-medium text-gray-900 dark:text-white">Active Filters</h4>
+            <button
+              onClick={() => setColumnFilters([])}
+              className="text-xs sm:text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 underline"
+            >
+              Clear All
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            {columnFilters.map((filter) => (
+              <div
+                key={filter.id}
+                className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg text-xs sm:text-sm text-blue-800 dark:text-blue-200"
+              >
+                <div className="flex flex-col min-w-0">
+                  <span className="font-medium truncate">{filter.id}</span>
+                  <span className="truncate">{filter.value?.toString()}</span>
+                </div>
                 <button
-                  onClick={() => table.setPageIndex(0)}
-                  disabled={!table.getCanPreviousPage()}
-                  className="p-2.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
-                  title="First page"
+                  onClick={() => setColumnFilters(prev => prev.filter(f => f.id !== filter.id))}
+                  className="ml-2 p-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 rounded hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
                 >
-                  <ChevronsLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                  className="p-2.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
-                  title="Previous page"
-                >
-                  <ChevronLeft className="w-4 h-4" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
+            ))}
+          </div>
+        </div>
+      )}
 
-              {/* Page numbers */}
-              {table.getPageCount() > 0 && (
-                <div className="flex items-center space-x-1">
-                  {Array.from({ length: Math.min(5, table.getPageCount()) }, (_, i) => {
-                    const pageIndex = table.getState().pagination.pageIndex
-                    const pageCount = table.getPageCount()
-                    let pageNumber
-                    
-                    if (pageCount <= 5) {
-                      pageNumber = i
-                    } else if (pageIndex < 3) {
-                      pageNumber = i
-                    } else if (pageIndex >= pageCount - 3) {
-                      pageNumber = pageCount - 5 + i
-                    } else {
-                      pageNumber = pageIndex - 2 + i
-                    }
-                    
-                    return (
-                      <button
-                        key={pageNumber}
-                        onClick={() => table.setPageIndex(pageNumber)}
-                        className={`px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
-                          pageNumber === pageIndex
-                            ? 'bg-blue-600 text-white shadow-md'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
+        {/* Desktop Table Container */}
+        <div className="block">
+          {/* Main Table */}
+                  <div className={`${CSS_CLASSES.TABLE_CONTAINER}`}>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50 dark:bg-gray-700">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        className={`data-table-header px-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer select-none relative border-r border-gray-200 dark:border-gray-600 ${
+                          header.column.getCanSort() ? 'hover:bg-gray-100 dark:hover:bg-gray-600' : ''
                         }`}
+                        style={{ 
+                          width: header.getSize(), 
+                          minWidth: '60px'
+                        }}
+                        onClick={(e) => header.column.getToggleSortingHandler()?.(e)}
+                        onContextMenu={(e) => handleContextMenu(e, header.id, header.column.columnDef.header as string)}
                       >
-                        {pageNumber + 1}
-                      </button>
-                    )
-                  })}
-                </div>
-              )}
+                        <div className="flex items-center justify-between">
+                          <span>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</span>
+                          <div className="flex items-center space-x-1">
+                            {header.column.getCanSort() && getSortIcon(header.column)}
+                            {header.column.getCanResize() && (
+                              <div
+                                onMouseDown={(e) => {
+                                  console.log('Resize handler called for column:', header.id)
+                                  header.getResizeHandler()(e)
+                                }}
+                                onTouchStart={(e) => {
+                                  console.log('Touch resize handler called for column:', header.id)
+                                  header.getResizeHandler()(e)
+                                }}
+                                className={`absolute right-0 top-0 h-full w-2 cursor-col-resize select-none touch-none transition-all duration-200 ${
+                                  header.column.getIsResizing() 
+                                    ? 'bg-blue-500 opacity-100' 
+                                    : 'bg-transparent hover:bg-blue-400 hover:opacity-80 group-hover:bg-gray-300 dark:group-hover:bg-gray-500'
+                                } hover:w-3 hover:bg-blue-100 dark:hover:bg-blue-900/30`}
+                                style={{ zIndex: 10 }}
+                                title="Drag to resize column width"
+                              >
+                                {/* Visual indicator for resize handle */}
+                                <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-6 rounded-full transition-all duration-200 ${
+                                  header.column.getIsResizing()
+                                    ? 'bg-white'
+                                    : 'bg-gray-400 dark:bg-gray-500 group-hover:bg-gray-600 dark:group-hover:bg-gray-400'
+                                }`} />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                {table.getRowModel().rows.map((row, index) => (
+                  <tr
+                    key={row.id}
+                    className={`data-table-row hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 cursor-pointer ${
+                      index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/50 dark:bg-gray-800/50'
+                    }`}
 
-              {/* Next/Last buttons */}
-              <div className="flex items-center space-x-1">
-                <button
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}
-                  className="p-2.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
-                  title="Next page"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                  disabled={!table.getCanNextPage()}
-                  className="p-2.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
-                  title="Last page"
-                >
-                  <ChevronsRight className="w-4 h-4" />
-                </button>
+                    onClick={(e) => handleRowClick(row.original, e)}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <td
+                        key={cell.id}
+                        className="data-table-cell px-2 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-600"
+                        style={{ 
+                          width: cell.column.getSize(), 
+                          minWidth: '60px'
+                        }}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Professional Table Footer */}
+          <div className="table-footer">
+            <div className="table-footer-content">
+              {/* Left side - Results info and page size selector */}
+              <div className="table-footer-left">
+                <span className="results-info">
+                  Showing <span className="font-semibold text-gray-900 dark:text-white">{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}</span> to{' '}
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {Math.min(
+                      (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
+                      table.getFilteredRowModel().rows.length
+                    )}
+                  </span>{' '}
+                  of <span className="font-semibold text-gray-900 dark:text-white">{table.getFilteredRowModel().rows.length}</span> results
+                </span>
+                
+                {/* Page size selector */}
+                <div className="page-size-selector">
+                  <span className="page-size-label">Show:</span>
+                  <select
+                    value={table.getState().pagination.pageSize}
+                    onChange={(e) => {
+                      table.setPageSize(Number(e.target.value))
+                    }}
+                    className="page-size-select"
+                  >
+                    {[10, 20, 30, 40, 50].map((pageSize) => (
+                      <option key={pageSize} value={pageSize}>
+                        {pageSize}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="page-size-label">per page</span>
+                </div>
+              </div>
+
+              {/* Right side - Pagination controls */}
+              <div className="table-footer-right">
+                {/* Page numbers */}
+                {table.getPageCount() > 0 && (
+                  <div className="pagination-container">
+                    {Array.from({ length: Math.min(5, table.getPageCount()) }, (_, i) => {
+                      const pageIndex = table.getState().pagination.pageIndex
+                      const pageCount = table.getPageCount()
+                      let pageNumber
+                      
+                      if (pageCount <= 5) {
+                        pageNumber = i
+                      } else if (pageIndex < 3) {
+                        pageNumber = i
+                      } else if (pageIndex >= pageCount - 3) {
+                        pageNumber = pageIndex - 2 + i
+                      } else {
+                        pageNumber = pageIndex - 2 + i
+                      }
+                      
+                      return (
+                        <button
+                          key={pageNumber}
+                          onClick={() => table.setPageIndex(pageNumber)}
+                          className={`pagination-button ${pageNumber === pageIndex ? 'active' : ''}`}
+                        >
+                          {pageNumber + 1}
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
+
+                {/* Navigation buttons */}
+                <div className="flex items-center space-x-2">
+                  {/* First/Previous buttons */}
+                  <div className="flex items-center space-x-1">
+                    <button
+                      onClick={() => table.setPageIndex(0)}
+                      disabled={!table.getCanPreviousPage()}
+                      className="pagination-nav"
+                      title="First page"
+                    >
+                      <ChevronsLeft className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => table.previousPage()}
+                      disabled={!table.getCanPreviousPage()}
+                      className="pagination-nav"
+                      title="Previous page"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  {/* Next/Last buttons */}
+                  <div className="flex items-center space-x-1">
+                    <button
+                      onClick={() => table.nextPage()}
+                      disabled={!table.getCanNextPage()}
+                      className="pagination-nav"
+                      title="Next page"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                      disabled={!table.getCanNextPage()}
+                      className="pagination-nav"
+                      title="Last page"
+                    >
+                      <ChevronsRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -2028,52 +2078,52 @@ const DataTable: React.FC = () => {
 
       {/* Tag Assignment Modal */}
       {showTagModal && selectedUserForTags && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <div className="flex items-center justify-between p-3 sm:p-4 lg:p-6 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
                 Assign Tags to User
               </h2>
               <button
                 onClick={() => setShowTagModal(false)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1"
               >
-                <X className="h-6 w-6" />
+                <X className="h-5 w-5 sm:h-6 sm:w-6" />
               </button>
             </div>
 
             {/* Content */}
-            <div className="p-6">
+            <div className="p-3 sm:p-4 lg:p-6 overflow-y-auto">
               {/* User Info */}
-              <div className="mb-4">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="mb-3 sm:mb-4">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                   Assigning tags to: <span className="font-medium text-gray-900 dark:text-white">{selectedUserForTags.name}</span>
                 </p>
               </div>
 
               {/* Tag Selection */}
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <div className="mb-3 sm:mb-4">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Assign Tags *
                 </label>
                 
                 {/* Selected Tags Display */}
                 <div className="mb-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+                    <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                       {selectedTags.length} Tags selected
                     </span>
                     <div className="flex gap-2">
                       <button
                         onClick={handleSelectAllTags}
-                        className="px-3 py-1 text-xs font-medium text-white bg-green-600 rounded hover:bg-green-700 transition-colors"
+                        className="flex-1 sm:flex-none px-3 py-2 sm:py-1 text-xs font-medium text-white bg-green-600 rounded hover:bg-green-700 transition-colors"
                       >
                         All
                       </button>
                       <button
                         onClick={handleSelectNoneTags}
-                        className="px-3 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                        className="flex-1 sm:flex-none px-3 py-2 sm:py-1 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                       >
                         None
                       </button>
@@ -2088,7 +2138,7 @@ const DataTable: React.FC = () => {
                     placeholder="Search tags..."
                     value={tagSearch}
                     onChange={(e) => setTagSearch(e.target.value)}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
 
@@ -2097,7 +2147,7 @@ const DataTable: React.FC = () => {
                   {getFilteredTags().map((tag) => (
                     <label
                       key={tag}
-                      className={`flex items-center px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                      className={`flex items-start sm:items-center px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
                         selectedTags.includes(tag) ? 'bg-green-50 dark:bg-green-900/20' : ''
                       }`}
                     >
@@ -2105,9 +2155,9 @@ const DataTable: React.FC = () => {
                         type="checkbox"
                         checked={selectedTags.includes(tag)}
                         onChange={() => handleTagToggle(tag)}
-                        className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mt-0.5 sm:mt-0 flex-shrink-0"
                       />
-                      <span className="ml-3 text-sm text-gray-900 dark:text-white">{tag}</span>
+                      <span className="ml-3 text-xs sm:text-sm text-gray-900 dark:text-white leading-relaxed">{tag}</span>
                     </label>
                   ))}
                 </div>
@@ -2115,16 +2165,16 @@ const DataTable: React.FC = () => {
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2 sm:gap-3 p-3 sm:p-4 lg:p-6 border-t border-gray-200 dark:border-gray-700">
               <button
                 onClick={() => setShowTagModal(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                className="w-full sm:w-auto px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
               >
                 Close
               </button>
               <button
                 onClick={handleSaveTags}
-                className="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 transition-colors"
+                className="w-full sm:w-auto px-4 py-2 text-xs sm:text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 transition-colors"
               >
                 Save Changes
               </button>
@@ -2205,7 +2255,7 @@ const DataTable: React.FC = () => {
                         type="checkbox"
                         checked={globalSelectedTags.includes(tag)}
                         onChange={() => handleGlobalTagToggle(tag)}
-                        className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="w-3 h-3 md:w-4 md:h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
                       <span className="ml-3 text-sm text-gray-900 dark:text-white">{tag}</span>
                     </label>

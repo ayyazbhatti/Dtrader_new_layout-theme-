@@ -294,7 +294,7 @@ export const AddNewUserPopup: React.FC<AddNewUserPopupProps> = ({
                             type="checkbox"
                             checked={formData.assignTags.includes(tag)}
                             onChange={() => handleTagToggle(tag)}
-                            className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
+                            className="w-3 h-3 md:w-4 md:h-4 rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
                           />
                           <span className="text-white text-sm">{tag}</span>
                         </label>

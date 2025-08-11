@@ -232,15 +232,15 @@ const GeneralSettingSub: React.FC = () => {
         {/* Advanced Filters */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div 
-            className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 sm:p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200 space-y-3 sm:space-y-0"
+            className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 lg:p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200 space-y-2 sm:space-y-3 lg:space-y-0"
             onClick={() => setFilterPanelOpen(!filterPanelOpen)}
           >
-            <div className="flex items-center space-x-3 min-w-0 flex-1">
-              <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex-shrink-0">
+            <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+              <div className="p-1.5 sm:p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex-shrink-0">
                 <Filter className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="min-w-0 flex-1">
-                <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Advanced Filters</h2>
+                <h2 className="text-sm sm:text-base lg:text-lg font-semibold text-gray-900 dark:text-white">Advanced Filters</h2>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">Refine your search with multiple criteria</p>
               </div>
             </div>
@@ -255,27 +255,27 @@ const GeneralSettingSub: React.FC = () => {
           </div>
 
           {filterPanelOpen && (
-            <div className="p-4 sm:p-6 border-t border-gray-200 dark:border-gray-700 space-y-4 sm:space-y-6">
+            <div className="p-3 sm:p-4 lg:p-6 border-t border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-4 lg:space-y-6">
               {/* Search Bar */}
               <div className="relative">
-                <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
+                <Search className="absolute left-2 sm:left-3 lg:left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Search users by name, email, or account ID..."
-                  className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                  className="w-full pl-8 sm:pl-10 lg:pl-12 pr-3 sm:pr-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                 />
               </div>
 
               {/* Filter Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
                 {/* Active Users Only */}
-                <div className="space-y-2">
+                <div className="space-y-1.5 sm:space-y-2">
                   <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Active Users Only</label>
                   <div className="relative">
                     <select 
                       value={activeUsersFilter}
                       onChange={(e) => setActiveUsersFilter(e.target.value)}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-8 sm:pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 pr-6 sm:pr-8 lg:pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     >
                       <option value="">All Users</option>
                       <option value="active">Active Users Only</option>
@@ -284,7 +284,7 @@ const GeneralSettingSub: React.FC = () => {
                     {activeUsersFilter && (
                       <button 
                         onClick={() => setActiveUsersFilter('')}
-                        className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
+                        className="absolute right-1.5 sm:right-2 lg:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
                       >
                         <X className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
@@ -293,23 +293,23 @@ const GeneralSettingSub: React.FC = () => {
                 </div>
 
                 {/* All Domain */}
-                <div className="space-y-2">
+                <div className="space-y-1.5 sm:space-y-2">
                   <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">All Domain</label>
                   <div className="relative">
                     <select 
                       value={domainFilter}
                       onChange={(e) => setDomainFilter(e.target.value)}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-8 sm:pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 pr-6 sm:pr-8 lg:pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     >
-                          <option value="">All Domains</option>
-                          <option value="domain1.com">domain1.com</option>
-                          <option value="domain2.com">domain2.com</option>
-                          <option value="domain3.com">domain3.com</option>
+                      <option value="">All Domains</option>
+                      <option value="domain1.com">domain1.com</option>
+                      <option value="domain2.com">domain2.com</option>
+                      <option value="domain3.com">domain3.com</option>
                     </select>
                     {domainFilter && (
                       <button 
                         onClick={() => setDomainFilter('')}
-                        className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
+                        className="absolute right-1.5 sm:right-2 lg:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
                       >
                         <X className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
@@ -317,25 +317,25 @@ const GeneralSettingSub: React.FC = () => {
                   </div>
                 </div>
 
-                    {/* Group */}
-                <div className="space-y-2">
-                      <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Group</label>
+                {/* Group */}
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Group</label>
                   <div className="relative">
                     <select 
                       value={groupFilter}
                       onChange={(e) => setGroupFilter(e.target.value)}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-8 sm:pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 pr-6 sm:pr-8 lg:pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     >
                       <option value="">All Groups</option>
-                          <option value="DefaultGro">Default Group</option>
-                          <option value="Premium">Premium</option>
-                          <option value="VIP">VIP</option>
-                          <option value="Standard">Standard</option>
+                      <option value="DefaultGro">Default Group</option>
+                      <option value="Premium">Premium</option>
+                      <option value="VIP">VIP</option>
+                      <option value="Standard">Standard</option>
                     </select>
                     {groupFilter && (
                       <button 
                         onClick={() => setGroupFilter('')}
-                        className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
+                        className="absolute right-1.5 sm:right-2 lg:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
                       >
                         <X className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
@@ -343,24 +343,24 @@ const GeneralSettingSub: React.FC = () => {
                   </div>
                 </div>
 
-                    {/* Bot Settings */}
-                <div className="space-y-2">
-                      <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Bot Settings</label>
+                {/* Bot Settings */}
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Bot Settings</label>
                   <div className="relative">
                     <select 
                       value={botSettingsFilter}
                       onChange={(e) => setBotSettingsFilter(e.target.value)}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-8 sm:pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 pr-6 sm:pr-8 lg:pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     >
                       <option value="">All Bot Settings</option>
-                          <option value="conservative">Conservative</option>
-                          <option value="moderate">Moderate</option>
-                          <option value="aggressive">Aggressive</option>
+                      <option value="conservative">Conservative</option>
+                      <option value="moderate">Moderate</option>
+                      <option value="aggressive">Aggressive</option>
                     </select>
                     {botSettingsFilter && (
                       <button 
                         onClick={() => setBotSettingsFilter('')}
-                        className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
+                        className="absolute right-1.5 sm:right-2 lg:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
                       >
                         <X className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
@@ -369,13 +369,13 @@ const GeneralSettingSub: React.FC = () => {
                 </div>
 
                 {/* Page Limit */}
-                <div className="space-y-2">
-                      <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Page Limit</label>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Page Limit</label>
                   <div className="relative">
                     <select 
                       value={pageLimitFilter}
                       onChange={(e) => setPageLimitFilter(e.target.value)}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-8 sm:pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 pr-6 sm:pr-8 lg:pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     >
                       <option value="10">10 per page</option>
                       <option value="25">25 per page</option>
@@ -386,19 +386,19 @@ const GeneralSettingSub: React.FC = () => {
                 </div>
 
                 {/* User Created At */}
-                <div className="space-y-2">
+                <div className="space-y-1.5 sm:space-y-2">
                   <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">User Created At</label>
                   <div className="relative">
                     <input
                       type="date"
                       value={userCreatedAtFilter}
                       onChange={(e) => setUserCreatedAtFilter(e.target.value)}
-                          className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                     {userCreatedAtFilter && (
                       <button 
                         onClick={() => setUserCreatedAtFilter('')}
-                        className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
+                        className="absolute right-1.5 sm:right-2 lg:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
                       >
                         <X className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
@@ -407,39 +407,18 @@ const GeneralSettingSub: React.FC = () => {
                 </div>
               </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex flex-wrap items-center gap-2">
-                    <button className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download
-                    </button>
-                    <button className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
-                      <Upload className="w-4 h-4 mr-2" />
-                      Upload
-                    </button>
-                    <button 
-                      onClick={() => setShowAddUserModal(true)}
-                      className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200"
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add User
-                    </button>
-                    <button className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-200">
-                      <AlertTriangle className="w-4 h-4 mr-2" />
-                      Alert
-                    </button>
-                    <button className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200">
-                      <Settings className="w-4 h-4 mr-2" />
-                      Settings
-                    </button>
-                    <button className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
-                      <Eye className="w-4 h-4 mr-2" />
-                      View
-                    </button>
-                  </div>
-                </div>
-              )}
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                
+                
+              
+                
+                
+                
+              </div>
             </div>
+          )}
+        </div>
 
             {/* Data Table */}
             <DataTable />
@@ -452,42 +431,42 @@ const GeneralSettingSub: React.FC = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Enhanced Header */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="px-4 sm:px-6 py-4 sm:py-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-            <div className="flex items-center space-x-3 min-w-0 flex-1">
-              <div className={`p-2 rounded-lg flex-shrink-0 ${getColorClasses(pageConfig.color)}`}>
-                <pageConfig.icon className="w-5 h-5 sm:w-6 sm:h-6" />
-                </div>
+        <div className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 lg:py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+            <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+              <div className={`p-1.5 sm:p-2 rounded-lg flex-shrink-0 ${getColorClasses(pageConfig.color)}`}>
+                <pageConfig.icon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
+              </div>
               <div className="min-w-0 flex-1">
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white truncate">
+                <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 dark:text-white truncate">
                   {pageConfig.title}
                 </h1>
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 truncate">
+                <p className="text-xs sm:text-sm lg:text-base text-gray-600 dark:text-gray-400 mt-1 truncate">
                   {pageConfig.description}
                 </p>
               </div>
             </div>
           </div>
         </div>
-        </div>
+      </div>
 
-      <div className="px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
+      <div className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 lg:py-6 space-y-3 sm:space-y-4 lg:space-y-6">
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2 sm:gap-3 lg:gap-4">
           {pageConfig.stats.map((stat, index) => {
             const IconComponent = stat.icon
             return (
-              <div key={index} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 hover:shadow-md transition-shadow duration-200">
+              <div key={index} className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 lg:p-6 hover:shadow-md transition-shadow duration-200">
                 <div className="flex items-center justify-between">
-                  <div className="min-w-0 flex-1 mr-3">
+                  <div className="min-w-0 flex-1 mr-2 sm:mr-3">
                     <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">{stat.title}</p>
-                    <p className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mt-1 truncate">{stat.value}</p>
+                    <p className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold text-gray-900 dark:text-white mt-1 truncate">{stat.value}</p>
                   </div>
-                  <div className={`p-2 sm:p-3 rounded-lg flex-shrink-0 ${getColorClasses(stat.color)}`}>
-                    <IconComponent className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <div className={`p-1.5 sm:p-2 lg:p-3 rounded-lg flex-shrink-0 ${getColorClasses(stat.color)}`}>
+                    <IconComponent className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
                   </div>
                 </div>
-                <div className="flex items-center mt-3 sm:mt-4">
+                <div className="flex items-center mt-2 sm:mt-3 lg:mt-4">
                   <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-green-500 mr-1 flex-shrink-0" />
                   <span className="text-xs sm:text-sm font-medium text-green-600 dark:text-green-400 truncate">{stat.change}</span>
                   <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 ml-1 hidden sm:inline">from last month</span>
@@ -507,79 +486,79 @@ const GeneralSettingSub: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0">
-              <div className="flex items-center space-x-3 min-w-0 flex-1">
-                <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex-shrink-0">
-                  <User className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 lg:p-6 border-b border-gray-200 dark:border-gray-700 space-y-2 sm:space-y-3 lg:space-y-0">
+              <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+                <div className="p-1.5 sm:p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex-shrink-0">
+                  <User className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">Add New User</h2>
+                  <h2 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 dark:text-white">Add New User</h2>
                   <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">Create a new user account with all necessary details</p>
                 </div>
               </div>
               <button
                 onClick={() => setShowAddUserModal(false)}
-                className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 self-end sm:self-auto"
+                className="p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 self-end sm:self-auto"
               >
                 <X className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
 
             {/* Modal Content */}
-            <div className="p-4 sm:p-6 space-y-6 sm:space-y-8">
+            <div className="p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6 lg:space-y-8">
               {/* Account Settings Section */}
               <div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6">Account Settings</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 lg:mb-6">Account Settings</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
                   {/* User Name */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">User Name</label>
                     <input
                       type="text"
                       placeholder="Enter User Name"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* Email */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Email <span className="text-red-500">*</span></label>
                     <input
                       type="email"
                       placeholder="Your valid email.."
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* Password */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Password <span className="text-red-500">*</span></label>
                     <div className="relative">
                       <input
                         type="password"
                         placeholder="Enter Your Password"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 sm:pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                        className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 pr-8 sm:pr-10 lg:pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                       />
-                      <button className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1">
-                        <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <button className="absolute right-1.5 sm:right-2 lg:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1">
+                        <Eye className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
                       </button>
                     </div>
                   </div>
 
                   {/* Minimum Margin Level Call % */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Minimum Margin Level Call %</label>
                     <input
                       type="number"
                       defaultValue="0"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* Group */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Group <span className="text-red-500">*</span></label>
-                    <select className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base">
+                    <select className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base">
                       <option value="DefaultGroup">DefaultGroup</option>
                       <option value="Premium">Premium</option>
                       <option value="VIP">VIP</option>
@@ -587,29 +566,29 @@ const GeneralSettingSub: React.FC = () => {
                   </div>
 
                   {/* Domain */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Domain <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       defaultValue="dtrader"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* Assign Tags */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Assign Tags <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       defaultValue="0 Tags selected"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* Platform Access Rights */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Platform Access Rights <span className="text-red-500">*</span></label>
-                    <select className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base">
+                    <select className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base">
                       <option value="Full Access">Full Access</option>
                       <option value="Limited Access">Limited Access</option>
                       <option value="Read Only">Read Only</option>
@@ -617,9 +596,9 @@ const GeneralSettingSub: React.FC = () => {
                   </div>
 
                   {/* User's Panel Access Right */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">User's Panel Access Right <span className="text-red-500">*</span></label>
-                    <select className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base">
+                    <select className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base">
                       <option value="Default User_panel">Default User_panel</option>
                       <option value="Admin Panel">Admin Panel</option>
                       <option value="Custom Panel">Custom Panel</option>
@@ -627,29 +606,29 @@ const GeneralSettingSub: React.FC = () => {
                   </div>
 
                   {/* Leverage */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Leverage</label>
                     <input
                       type="text"
                       defaultValue="1:100"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* Max Leverage */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Max Leverage</label>
                     <input
                       type="text"
                       defaultValue="1:1000"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* Account Type */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Account Type</label>
-                    <select className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base">
+                    <select className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base">
                       <option value="CFD Hedging">CFD Hedging</option>
                       <option value="CFD Netting">CFD Netting</option>
                       <option value="Standard">Standard</option>
@@ -657,9 +636,9 @@ const GeneralSettingSub: React.FC = () => {
                   </div>
 
                   {/* Total margin calculation Type */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Total margin calculation Type</label>
-                    <select className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base">
+                    <select className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base">
                       <option value="Sum">Sum</option>
                       <option value="Net">Net</option>
                       <option value="Gross">Gross</option>
@@ -667,12 +646,12 @@ const GeneralSettingSub: React.FC = () => {
                   </div>
 
                   {/* Currency */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Currency <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       defaultValue="EUR"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
                 </div>
@@ -680,82 +659,82 @@ const GeneralSettingSub: React.FC = () => {
 
               {/* Account Details Section */}
               <div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6">Account Details</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 lg:mb-6">Account Details</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
                   {/* First Name */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">First Name <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       placeholder="Enter first name"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* Last Name */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Last Name <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       placeholder="Enter last name"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* Phone */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Phone</label>
                     <input
                       type="tel"
                       defaultValue="+92-3001234543"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* City */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">City</label>
                     <input
                       type="text"
                       placeholder="Enter your city name"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* State */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">State</label>
                     <input
                       type="text"
                       placeholder="Enter your state name"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* Address */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
                     <input
                       type="text"
                       placeholder="Enter Your Address"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* Comment */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Comment</label>
                     <input
                       type="text"
                       defaultValue="Description"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                      className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
                     />
                   </div>
 
                   {/* Country */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Country <span className="text-red-500">*</span></label>
-                    <select className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base">
+                    <select className="w-full px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base">
                       <option value="Afghanistan">Afghanistan</option>
                       <option value="Pakistan">Pakistan</option>
                       <option value="United States">United States</option>
@@ -771,14 +750,14 @@ const GeneralSettingSub: React.FC = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end p-4 sm:p-6 border-t border-gray-200 dark:border-gray-700 space-y-2 sm:space-y-0 sm:space-x-3">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end p-3 sm:p-4 lg:p-6 border-t border-gray-200 dark:border-gray-700 space-y-2 sm:space-y-0 sm:space-x-3">
               <button
                 onClick={() => setShowAddUserModal(false)}
-                className="px-4 sm:px-6 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 text-sm sm:text-base"
+                className="px-3 sm:px-4 lg:px-6 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 text-sm sm:text-base"
               >
                 Cancel
               </button>
-              <button className="px-4 sm:px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base">
+              <button className="px-3 sm:px-4 lg:px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base">
                 Create
               </button>
             </div>

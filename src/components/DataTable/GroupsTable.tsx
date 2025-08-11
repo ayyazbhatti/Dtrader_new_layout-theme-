@@ -419,7 +419,7 @@ const GroupsTable: React.FC = () => {
             type="checkbox"
             checked={table.getIsAllPageRowsSelected()}
             onChange={table.getToggleAllPageRowsSelectedHandler()}
-            className="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
+            className="w-4 h-4 md:w-5 md:h-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
           />
         ),
         cell: ({ row }) => (
@@ -427,7 +427,7 @@ const GroupsTable: React.FC = () => {
             type="checkbox"
             checked={row.getIsSelected()}
             onChange={row.getToggleSelectedHandler()}
-            className="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
+            className="w-4 h-4 md:w-5 md:h-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
           />
         ),
         enableSorting: false,
@@ -842,13 +842,18 @@ const GroupsTable: React.FC = () => {
                   className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 cursor-pointer ${
                     index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/50 dark:bg-gray-800/50'
                   }`}
-                  style={{ height: '34px' }}
+                  style={{ height: window.innerWidth < 768 ? '10.2px' : '34px' }}
                 >
                   {row.getVisibleCells().map(cell => (
                     <td
                       key={cell.id}
-                      className="px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-600"
-                      style={{ width: cell.column.getSize(), minWidth: '80px' }}
+                      className="px-3 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-600"
+                      style={{ 
+                        width: cell.column.getSize(), 
+                        minWidth: '80px',
+                        paddingTop: window.innerWidth < 768 ? '0.5px' : '6px',
+                        paddingBottom: window.innerWidth < 768 ? '0.5px' : '6px'
+                      }}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -862,11 +867,12 @@ const GroupsTable: React.FC = () => {
           </table>
         </div>
 
-        {/* Pagination */}
-        <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+        {/* Professional Table Footer */}
+        <div className="table-footer">
+          <div className="table-footer-content">
+            {/* Left side - Results info and page size selector */}
+            <div className="table-footer-left">
+              <span className="results-info">
                 Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{' '}
                 {Math.min(
                   (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
@@ -875,15 +881,15 @@ const GroupsTable: React.FC = () => {
                 of {table.getFilteredRowModel().rows.length} results
               </span>
               
-              {/* Page Size Selector */}
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-700 dark:text-gray-300">Show:</span>
+              {/* Page size selector */}
+              <div className="page-size-selector">
+                <span className="page-size-label">Show:</span>
                 <select
                   value={table.getState().pagination.pageSize}
                   onChange={e => {
                     table.setPageSize(Number(e.target.value))
                   }}
-                  className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="page-size-select"
                 >
                   {[5, 10, 20, 50, 100].map(pageSize => (
                     <option key={pageSize} value={pageSize}>
@@ -891,122 +897,121 @@ const GroupsTable: React.FC = () => {
                     </option>
                   ))}
                 </select>
-                <span className="text-sm text-gray-700 dark:text-gray-300">entries</span>
+                <span className="page-size-label">entries</span>
               </div>
             </div>
-                          <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => table.setPageIndex(0)}
-                  disabled={!table.getCanPreviousPage()}
-                  className="p-2 text-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                  title="First Page"
-                >
-                  <ChevronsLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                  className="p-2 text-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                  title="Previous Page"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                
-                {/* Page Numbers */}
-                <div className="flex items-center space-x-1">
-                  {(() => {
-                    const pageCount = table.getPageCount()
-                    const currentPage = table.getState().pagination.pageIndex
-                    const pages = []
-                    
-                    // Show first page
-                    if (pageCount > 0) {
+            
+            {/* Right side - Pagination controls */}
+            <div className="table-footer-right">
+              {/* Page numbers */}
+              <div className="pagination-container">
+                {(() => {
+                  const pageCount = table.getPageCount()
+                  const currentPage = table.getState().pagination.pageIndex
+                  const pages = []
+                  
+                  // Show first page
+                  if (pageCount > 0) {
+                    pages.push(
+                      <button
+                        key={0}
+                        onClick={() => table.setPageIndex(0)}
+                        className={`pagination-button ${currentPage === 0 ? 'active' : ''}`}
+                      >
+                        1
+                      </button>
+                    )
+                  }
+                  
+                  // Show ellipsis if needed
+                  if (currentPage > 3) {
+                    pages.push(
+                      <span key="ellipsis1" className="px-1 text-gray-500">...</span>
+                    )
+                  }
+                  
+                  // Show pages around current page
+                  for (let i = Math.max(1, currentPage - 1); i <= Math.min(pageCount - 2, currentPage + 1); i++) {
+                    if (i > 0 && i < pageCount - 1) {
                       pages.push(
                         <button
-                          key={0}
-                          onClick={() => table.setPageIndex(0)}
-                          className={`px-2 py-1 text-xs rounded-md ${
-                            currentPage === 0
-                              ? 'bg-blue-600 text-white'
-                              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
-                          }`}
+                          key={i}
+                          onClick={() => table.setPageIndex(i)}
+                          className={`pagination-button ${currentPage === i ? 'active' : ''}`}
                         >
-                          1
+                          {i + 1}
                         </button>
                       )
                     }
-                    
-                    // Show ellipsis if needed
-                    if (currentPage > 3) {
-                      pages.push(
-                        <span key="ellipsis1" className="px-1 text-gray-500">...</span>
-                      )
-                    }
-                    
-                    // Show pages around current page
-                    for (let i = Math.max(1, currentPage - 1); i <= Math.min(pageCount - 2, currentPage + 1); i++) {
-                      if (i > 0 && i < pageCount - 1) {
-                        pages.push(
-                          <button
-                            key={i}
-                            onClick={() => table.setPageIndex(i)}
-                            className={`px-2 py-1 text-xs rounded-md ${
-                              currentPage === i
-                                ? 'bg-blue-600 text-white'
-                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
-                            }`}
-                          >
-                            {i + 1}
-                          </button>
-                        )
-                      }
-                    }
-                    
-                    // Show ellipsis if needed
-                    if (currentPage < pageCount - 4) {
-                      pages.push(
-                        <span key="ellipsis2" className="px-1 text-gray-500">...</span>
-                      )
-                    }
-                    
-                    // Show last page
-                    if (pageCount > 1) {
-                      pages.push(
-                        <button
-                          key={pageCount - 1}
-                          onClick={() => table.setPageIndex(pageCount - 1)}
-                          className={`px-2 py-1 text-xs rounded-md ${
-                            currentPage === pageCount - 1
-                              ? 'bg-blue-600 text-white'
-                              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
-                          }`}
-                        >
-                          {pageCount}
-                        </button>
-                      )
-                    }
-                    
-                    return pages
-                  })()}
-                </div>
-                
-                <button
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}
-                  className="p-2 text-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                  title="Next Page"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                  disabled={!table.getCanNextPage()}
-                  className="p-2 text-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                  title="Last Page"
-                >
-                  <ChevronsRight className="w-4 h-4" />
-                </button>
+                  }
+                  
+                  // Show ellipsis if needed
+                  if (currentPage < pageCount - 4) {
+                    pages.push(
+                      <span key="ellipsis2" className="px-1 text-gray-500">...</span>
+                    )
+                  }
+                  
+                  // Show last page
+                  if (pageCount > 1) {
+                    pages.push(
+                      <button
+                        key={pageCount - 1}
+                        onClick={() => table.setPageIndex(pageCount - 1)}
+                        className={`pagination-button ${currentPage === pageCount - 1 ? 'active' : ''}`}
+                      >
+                        {pageCount}
+                      </button>
+                    )
+                  }
+                  
+                  return pages
+                })()}
               </div>
+              
+              {/* Navigation buttons */}
+              <div className="flex items-center space-x-2">
+                {/* First/Previous buttons */}
+                <div className="flex items-center space-x-1">
+                  <button
+                    onClick={() => table.setPageIndex(0)}
+                    disabled={!table.getCanPreviousPage()}
+                    className="pagination-nav"
+                    title="First Page"
+                  >
+                    <ChevronsLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => table.previousPage()}
+                    disabled={!table.getCanPreviousPage()}
+                    className="pagination-nav"
+                    title="Previous Page"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Next/Last buttons */}
+                <div className="flex items-center space-x-1">
+                  <button
+                    onClick={() => table.nextPage()}
+                    disabled={!table.getCanNextPage()}
+                    className="pagination-nav"
+                    title="Next Page"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                    disabled={!table.getCanNextPage()}
+                    className="pagination-nav"
+                    title="Last Page"
+                  >
+                    <ChevronsRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1256,52 +1261,26 @@ const GroupsTable: React.FC = () => {
                       />
                     </div>
 
-                    {/* Show Swap Details Toggle */}
+                    {/* Show Swap Details Display */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Show Swap Details on Symbol Info
                       </label>
                       <div className="flex items-center">
-                        <button
-                          type="button"
-                          onClick={() => setEditingGroup(prev => prev ? {...prev, showSwapDetails: !prev.showSwapDetails} : null)}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                            editingGroup.showSwapDetails ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'
-                          }`}
-                        >
-                          <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
-                              editingGroup.showSwapDetails ? 'translate-x-6' : 'translate-x-1'
-                            }`}
-                          />
-                        </button>
-                        <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                          {editingGroup.showSwapDetails ? 'On' : 'Off'}
+                        <span className={`text-sm font-medium ${editingGroup.showSwapDetails ? 'text-blue-600' : 'text-gray-500'}`}>
+                          {editingGroup.showSwapDetails ? 'Enabled' : 'Disabled'}
                         </span>
                       </div>
                     </div>
 
-                    {/* Show Stop Out Details Toggle */}
+                    {/* Show Stop Out Details Display */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Show Stop Out Details on Matrics Info
                       </label>
                       <div className="flex items-center">
-                        <button
-                          type="button"
-                          onClick={() => setEditingGroup(prev => prev ? {...prev, showStopOutDetails: !prev.showStopOutDetails} : null)}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                            editingGroup.showStopOutDetails ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'
-                          }`}
-                        >
-                          <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
-                              editingGroup.showStopOutDetails ? 'translate-x-6' : 'translate-x-1'
-                            }`}
-                          />
-                        </button>
-                        <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                          {editingGroup.showStopOutDetails ? 'On' : 'Off'}
+                        <span className={`text-sm font-medium ${editingGroup.showStopOutDetails ? 'text-blue-600' : 'text-gray-500'}`}>
+                          {editingGroup.showStopOutDetails ? 'Enabled' : 'Disabled'}
                         </span>
                       </div>
                     </div>
@@ -1465,7 +1444,7 @@ const GroupsTable: React.FC = () => {
                         type="checkbox"
                         checked={selectedTags.includes(tag)}
                         onChange={() => handleTagToggle(tag)}
-                        className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="w-3 h-3 md:w-4 md:h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
                       <span className="ml-3 text-sm text-gray-900 dark:text-white">{tag}</span>
                     </label>

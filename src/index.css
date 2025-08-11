@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom breakpoint for extra small screens */
+@layer utilities {
+  @media (min-width: 475px) {
+    .xs\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-gray-200;
@@ -57,6 +66,54 @@
     overflow: hidden;
   }
 
+  /* Mobile table row optimization - 70% height reduction */
+  @media (max-width: 767px) {
+    /* DataTable rows */
+    .data-table-row {
+      height: 8.4px !important;
+      min-height: 8.4px !important;
+      max-height: 8.4px !important;
+    }
+    
+    .data-table-cell {
+      padding-top: 1px !important;
+      padding-bottom: 1px !important;
+      line-height: 1 !important;
+      height: 8.4px !important;
+      min-height: 8.4px !important;
+      max-height: 8.4px !important;
+    }
+    
+    .data-table-header {
+      padding-top: 2px !important;
+      padding-bottom: 2px !important;
+      line-height: 1 !important;
+      height: 8.4px !important;
+      min-height: 8.4px !important;
+      max-height: 8.4px !important;
+    }
+  }
+
+  /* Desktop table row heights */
+  @media (min-width: 768px) {
+    .data-table-row {
+      height: 28px !important;
+      min-height: 28px !important;
+      max-height: 28px !important;
+    }
+  }
+
+  /* Hide column visibility popup on mobile */
+  @media (max-width: 767px) {
+    .column-visibility-popup {
+      display: none !important;
+    }
+  }
+
+
+
+
+
   /* Responsive text utilities */
   .text-responsive-sm {
     @apply text-xs sm:text-sm;
@@ -102,6 +159,63 @@
 
   .p-responsive-lg {
     @apply p-6 sm:p-8;
+  }
+
+  /* Responsive margin utilities */
+  .m-responsive-sm {
+    @apply m-2 sm:m-3;
+  }
+
+  .m-responsive-base {
+    @apply m-3 sm:m-4;
+  }
+
+  .m-responsive-lg {
+    @apply m-4 sm:m-6;
+  }
+
+  /* Responsive gap utilities */
+  .gap-responsive-sm {
+    @apply gap-2 sm:gap-3;
+  }
+
+  .gap-responsive-base {
+    @apply gap-3 sm:gap-4;
+  }
+
+  .gap-responsive-lg {
+    @apply gap-4 sm:gap-6;
+  }
+
+  /* Mobile-first responsive utilities */
+  .mobile-first-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  .mobile-first-flex {
+    @apply flex flex-col sm:flex-row;
+  }
+
+  .mobile-first-text {
+    @apply text-sm sm:text-base lg:text-lg;
+  }
+
+  .mobile-first-padding {
+    @apply p-3 sm:p-4 lg:p-6;
+  }
+
+  .mobile-first-margin {
+    @apply m-3 sm:m-4 lg:m-6;
+  }
+
+  /* Scrollbar utilities */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
   }
 }
 
@@ -242,6 +356,995 @@
   }
   
   .desktop-main {
-    @apply ml-0;
+    @apply ml-64;
+  }
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 640px) {
+  /* Ensure touch targets are at least 44px */
+  button, a, input, select, textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Optimize form elements for mobile */
+  input, select, textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Improve mobile scrolling */
+  .mobile-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* Mobile-specific spacing */
+  .mobile-spacing {
+    @apply space-y-4;
+  }
+  
+  .mobile-padding {
+    @apply p-4;
+  }
+  
+  .mobile-margin {
+    @apply m-4;
+  }
+}
+
+/* Tablet-specific optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .tablet-grid {
+    @apply grid-cols-2;
+  }
+  
+  .tablet-flex {
+    @apply flex-row;
+  }
+  
+  .tablet-text {
+    @apply text-base;
+  }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1025px) {
+  .desktop-grid {
+    @apply grid-cols-3 xl:grid-cols-4;
+  }
+  
+  .desktop-text {
+    @apply text-lg;
+  }
+  
+  .desktop-spacing {
+    @apply space-y-6;
+  }
+}
+
+/* Hide mobile expanded row view on mobile */
+@media (max-width: 767px) {
+  .sm\\:hidden {
+    display: none !important;
+  }
+  
+  /* Hide the mobile expanded view container */
+  div.bg-white.dark\\:bg-gray-800.rounded-lg.shadow-sm.border.border-gray-200.dark\\:border-gray-700.overflow-hidden {
+    display: none !important;
+  }
+  
+  /* Hide elements with specific text content using JavaScript approach */
+  .mobile-expanded-view {
+    display: none !important;
+  }
+}
+
+/* Mobile table footer improvements */
+@media (max-width: 640px) {
+  /* Reduce padding on mobile */
+  .bg-white.dark\\:bg-gray-800.border-t.border-gray-200.dark\\:border-gray-700 {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+  
+  /* Stack pagination elements better on very small screens */
+  .flex.flex-col.space-y-4 > div:first-child {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Reduce spacing between elements */
+  .space-y-3 > div {
+    margin-bottom: 0.25rem !important;
+  }
+  
+  /* Improve mobile pagination button spacing */
+  .flex.items-center.space-x-2 > div {
+    margin-right: 0.125rem !important;
+  }
+  
+  /* Make page number buttons more touch-friendly on mobile */
+  .px-3\.sm\:px-4\.py-2\.sm\:py-2\.5 {
+    min-width: 2.25rem !important;
+    min-height: 2.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.375rem 0.5rem !important;
+  }
+  
+  /* Improve mobile search input */
+  .pl-10.pr-4.py-2.w-full.sm\\:w-48.lg\\:w-64 {
+    width: 100% !important;
+    max-width: none !important;
+  }
+  
+  /* Better mobile spacing for results info */
+  .flex.flex-col.sm\\:flex-row.sm\\:items-center.space-y-2.sm\\:space-y-0.sm\\:space-x-6 {
+    gap: 0.5rem !important;
+  }
+  
+  /* Improve mobile navigation button spacing */
+  .flex.items-center.space-x-2.sm\\:space-x-3 > div {
+    margin-right: 0.125rem !important;
+  }
+  
+  /* Better mobile pagination container */
+  .flex.flex-col.items-center.space-y-3 {
+    gap: 0.75rem !important;
+  }
+  
+  /* Mobile-friendly page size selector */
+  .px-2.sm\\:px-3.py-2.text-sm.border.border-gray-300.dark\\:border-gray-600.rounded-lg {
+    min-width: 3.5rem !important;
+  }
+  
+  /* Mobile checkbox sizing */
+  input[type="checkbox"] {
+    width: 1rem !important;
+    height: 1rem !important;
+    min-width: 1rem !important;
+    min-height: 1rem !important;
+  }
+  
+  /* Mobile checkbox sizing for specific classes */
+  .w-4.h-4.md\\:w-5.md\\:h-5 {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+  
+  .w-3.h-3.md\\:w-4.md\\:h-4 {
+    width: 0.875rem !important;
+    height: 0.875rem !important;
+  }
+}
+
+/* Desktop checkbox sizing - reduce from original large sizes */
+@media (min-width: 640px) {
+  /* Desktop checkbox sizing for specific classes */
+  .w-4.h-4.md\:w-5.md\:h-5 {
+    width: 1.125rem !important;
+    height: 1.125rem !important;
+  }
+  
+  .w-3.h-3.md\:w-4.md\:h-4 {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+}
+
+/* Professional Table Footer Styles */
+.table-footer {
+  @apply bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 py-4;
+}
+
+.table-footer-content {
+  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0;
+}
+
+.table-footer-left {
+  @apply flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-6;
+}
+
+.table-footer-right {
+  @apply flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4;
+}
+
+.results-info {
+  @apply text-sm text-gray-700 dark:text-gray-300 font-medium;
+}
+
+.page-size-selector {
+  @apply flex items-center space-x-2;
+}
+
+.page-size-label {
+  @apply text-sm text-gray-700 dark:text-gray-300 font-medium;
+}
+
+.page-size-select {
+  @apply px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors;
+}
+
+.pagination-container {
+  @apply flex items-center justify-center sm:justify-end space-x-1;
+}
+
+.pagination-button {
+  @apply px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.pagination-button.active {
+  @apply bg-primary-600 text-white border-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700;
+}
+
+.pagination-button:hover:not(.active) {
+  @apply bg-gray-50 dark:bg-gray-600 text-gray-700 dark:text-gray-200;
+}
+
+.pagination-nav {
+  @apply px-2.5 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200;
+}
+
+.pagination-nav:hover {
+  @apply bg-gray-50 dark:bg-gray-600 text-gray-700 dark:text-gray-200;
+}
+
+/* Mobile-specific table footer improvements */
+@media (max-width: 640px) {
+  .table-footer {
+    @apply px-3 py-3;
+  }
+  
+  .table-footer-content {
+    @apply space-y-3;
+  }
+  
+  .table-footer-left {
+    @apply space-y-2;
+  }
+  
+  .table-footer-right {
+    @apply space-y-2;
+  }
+  
+  .pagination-container {
+    @apply justify-center;
+  }
+  
+  .pagination-button {
+    @apply px-2.5 py-2 text-xs min-w-[2.5rem] min-h-[2.5rem];
+  }
+  
+  .pagination-nav {
+    @apply px-2 py-2 text-xs min-w-[2.5rem] min-h-[2.5rem];
+  }
+  
+  .page-size-select {
+    @apply px-2 py-2 text-sm min-w-[4rem];
+  }
+  
+  .results-info {
+    @apply text-xs;
+  }
+  
+  .page-size-label {
+    @apply text-xs;
+  }
+}
+
+/* Tablet-specific table footer improvements */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .table-footer {
+    @apply px-4 py-4;
+  }
+  
+  .pagination-button {
+    @apply px-3 py-2 text-sm min-w-[2.75rem] min-h-[2.75rem];
+  }
+  
+  .pagination-nav {
+    @apply px-2.5 py-2 text-sm min-w-[2.75rem] min-h-[2.75rem];
+  }
+}
+
+/* Desktop table footer improvements */
+@media (min-width: 1025px) {
+  .table-footer {
+    @apply px-6 py-5;
+  }
+  
+  .pagination-button {
+    @apply px-4 py-2.5 text-sm min-w-[3rem] min-h-[3rem];
+  }
+  
+  .pagination-nav {
+    @apply px-3 py-2.5 text-sm min-w-[3rem] min-h-[3rem];
+  }
+  
+  .page-size-select {
+    @apply px-4 py-2.5 text-sm;
+  }
+}
+
+/* Mobile Call History Card Styles */
+.mobile-call-card {
+  @apply bg-gray-700 rounded-lg p-3 border border-gray-600 transition-all duration-200;
+}
+
+.mobile-call-card:hover {
+  @apply bg-gray-600 border-gray-500;
+}
+
+/* Mobile Price Drop Alert Styles */
+.mobile-price-alert {
+  @apply max-h-[95vh] sm:max-h-[90vh];
+}
+
+/* Mobile Assign Tags Styles */
+.mobile-assign-tags {
+  @apply max-h-[95vh] sm:max-h-[90vh];
+}
+
+.mobile-assign-tags-header {
+  @apply flex items-center justify-between p-3 sm:p-4 lg:p-6;
+}
+
+.mobile-assign-tags-title {
+  @apply text-lg sm:text-xl font-semibold;
+}
+
+.mobile-assign-tags-close {
+  @apply p-1;
+}
+
+.mobile-assign-tags-close-icon {
+  @apply h-5 w-5 sm:h-6 sm:w-6;
+}
+
+.mobile-assign-tags-content {
+  @apply p-3 sm:p-4 lg:p-6 overflow-y-auto;
+}
+
+.mobile-assign-tags-user-info {
+  @apply mb-3 sm:mb-4;
+}
+
+.mobile-assign-tags-user-text {
+  @apply text-xs sm:text-sm;
+}
+
+.mobile-assign-tags-section {
+  @apply mb-3 sm:mb-4;
+}
+
+.mobile-assign-tags-label {
+  @apply block text-xs sm:text-sm font-medium mb-2;
+}
+
+.mobile-assign-tags-selection-header {
+  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-3;
+}
+
+.mobile-assign-tags-count {
+  @apply text-xs sm:text-sm;
+}
+
+.mobile-assign-tags-buttons {
+  @apply flex gap-2;
+}
+
+.mobile-assign-tags-button {
+  @apply flex-1 sm:flex-none px-3 py-2 sm:py-1 text-xs font-medium rounded transition-colors;
+}
+
+.mobile-assign-tags-button-all {
+  @apply text-white bg-green-600 hover:bg-green-700;
+}
+
+.mobile-assign-tags-button-none {
+  @apply text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600;
+}
+
+.mobile-assign-tags-search {
+  @apply mb-3;
+}
+
+.mobile-assign-tags-search-input {
+  @apply w-full px-3 py-2 text-xs sm:text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.mobile-assign-tags-list {
+  @apply max-h-48 overflow-y-auto border rounded-md;
+}
+
+.mobile-assign-tags-item {
+  @apply flex items-start sm:items-center px-3 py-2 cursor-pointer transition-colors;
+}
+
+.mobile-assign-tags-checkbox {
+  @apply w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mt-0.5 sm:mt-0 flex-shrink-0;
+}
+
+.mobile-assign-tags-text {
+  @apply ml-3 text-xs sm:text-sm leading-relaxed;
+}
+
+.mobile-assign-tags-footer {
+  @apply flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2 sm:gap-3 p-3 sm:p-4 lg:p-6;
+}
+
+.mobile-assign-tags-footer-button {
+  @apply w-full sm:w-auto px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors;
+}
+
+.mobile-assign-tags-footer-button-close {
+  @apply text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600;
+}
+
+.mobile-assign-tags-footer-button-save {
+  @apply text-white bg-green-600 border border-transparent hover:bg-green-700;
+}
+
+/* Mobile-specific assign tags improvements */
+@media (max-width: 640px) {
+  .mobile-assign-tags {
+    @apply max-h-[98vh] mx-2;
+  }
+  
+  .mobile-assign-tags-header {
+    @apply p-3;
+  }
+  
+  .mobile-assign-tags-title {
+    @apply text-base;
+  }
+  
+  .mobile-assign-tags-close-icon {
+    @apply h-5 w-5;
+  }
+  
+  .mobile-assign-tags-content {
+    @apply p-3;
+  }
+  
+  .mobile-assign-tags-user-info {
+    @apply mb-3;
+  }
+  
+  .mobile-assign-tags-user-text {
+    @apply text-xs;
+  }
+  
+  .mobile-assign-tags-section {
+    @apply mb-3;
+  }
+  
+  .mobile-assign-tags-label {
+    @apply text-xs;
+  }
+  
+  .mobile-assign-tags-selection-header {
+    @apply gap-2 mb-3;
+  }
+  
+  .mobile-assign-tags-count {
+    @apply text-xs;
+  }
+  
+  .mobile-assign-tags-button {
+    @apply flex-1 px-3 py-2.5 text-xs;
+  }
+  
+  .mobile-assign-tags-search-input {
+    @apply text-xs py-2;
+  }
+  
+  .mobile-assign-tags-text {
+    @apply text-xs;
+  }
+  
+  .mobile-assign-tags-footer {
+    @apply p-3 gap-2;
+  }
+  
+  .mobile-assign-tags-footer-button {
+    @apply w-full px-4 py-2.5 text-xs;
+  }
+}
+
+/* Tablet-specific assign tags improvements */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mobile-assign-tags {
+    @apply max-h-[92vh];
+  }
+  
+  .mobile-assign-tags-header {
+    @apply p-4;
+  }
+  
+  .mobile-assign-tags-title {
+    @apply text-lg;
+  }
+  
+  .mobile-assign-tags-close-icon {
+    @apply h-6 w-6;
+  }
+  
+  .mobile-assign-tags-content {
+    @apply p-4;
+  }
+  
+  .mobile-assign-tags-user-info {
+    @apply mb-4;
+  }
+  
+  .mobile-assign-tags-user-text {
+    @apply text-sm;
+  }
+  
+  .mobile-assign-tags-section {
+    @apply mb-4;
+  }
+  
+  .mobile-assign-tags-label {
+    @apply text-sm;
+  }
+  
+  .mobile-assign-tags-selection-header {
+    @apply gap-0 mb-3;
+  }
+  
+  .mobile-assign-tags-count {
+    @apply text-sm;
+  }
+  
+  .mobile-assign-tags-button {
+    @apply flex-none px-3 py-1 text-xs;
+  }
+  
+  .mobile-assign-tags-search-input {
+    @apply text-sm py-2;
+  }
+  
+  .mobile-assign-tags-text {
+    @apply text-sm;
+  }
+  
+  .mobile-assign-tags-footer {
+    @apply p-4 gap-3;
+  }
+  
+  .mobile-assign-tags-footer-button {
+    @apply w-auto px-6 py-2 text-sm;
+  }
+}
+
+.mobile-price-alert-header {
+  @apply flex items-center justify-between p-3 sm:p-4 lg:p-6;
+}
+
+.mobile-price-alert-title {
+  @apply text-lg sm:text-xl font-semibold;
+}
+
+.mobile-price-alert-close {
+  @apply p-1;
+}
+
+.mobile-price-alert-close-icon {
+  @apply h-5 w-5 sm:h-6 sm:w-6;
+}
+
+.mobile-price-alert-content {
+  @apply p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-4 overflow-y-auto;
+}
+
+.mobile-price-alert-form-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4;
+}
+
+.mobile-price-alert-label {
+  @apply block text-xs sm:text-sm font-medium mb-2;
+}
+
+.mobile-price-alert-input {
+  @apply w-full px-3 py-2 text-xs sm:text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent;
+}
+
+.mobile-price-alert-checkbox-container {
+  @apply space-y-2 sm:space-y-3;
+}
+
+.mobile-price-alert-checkbox-label {
+  @apply flex items-start sm:items-center cursor-pointer;
+}
+
+.mobile-price-alert-checkbox {
+  @apply w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mt-0.5 sm:mt-0 flex-shrink-0;
+}
+
+.mobile-price-alert-checkbox-text {
+  @apply ml-3 text-xs sm:text-sm leading-relaxed;
+}
+
+.mobile-price-alert-footer {
+  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 p-3 sm:p-4 lg:p-6;
+}
+
+.mobile-price-alert-button {
+  @apply w-full sm:w-auto px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors;
+}
+
+.mobile-price-alert-button-close {
+  @apply text-white bg-red-600 border border-transparent hover:bg-red-700;
+}
+
+.mobile-price-alert-button-send {
+  @apply text-white bg-green-600 border border-transparent hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+/* Mobile-specific price alert improvements */
+@media (max-width: 640px) {
+  .mobile-price-alert {
+    @apply max-h-[98vh] mx-2;
+  }
+  
+  .mobile-price-alert-header {
+    @apply p-3;
+  }
+  
+  .mobile-price-alert-title {
+    @apply text-base;
+  }
+  
+  .mobile-price-alert-close-icon {
+    @apply h-5 w-5;
+  }
+  
+  .mobile-price-alert-content {
+    @apply p-3 space-y-3;
+  }
+  
+  .mobile-price-alert-form-grid {
+    @apply grid-cols-1 gap-3;
+  }
+  
+  .mobile-price-alert-label {
+    @apply text-xs;
+  }
+  
+  .mobile-price-alert-input {
+    @apply text-xs py-2;
+  }
+  
+  .mobile-price-alert-checkbox-container {
+    @apply space-y-2;
+  }
+  
+  .mobile-price-alert-checkbox-text {
+    @apply text-xs;
+  }
+  
+  .mobile-price-alert-footer {
+    @apply p-3 gap-2;
+  }
+  
+  .mobile-price-alert-button {
+    @apply w-full px-4 py-2.5 text-xs;
+  }
+}
+
+/* Tablet-specific price alert improvements */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mobile-price-alert {
+    @apply max-h-[92vh];
+  }
+  
+  .mobile-price-alert-header {
+    @apply p-4;
+  }
+  
+  .mobile-price-alert-title {
+    @apply text-lg;
+  }
+  
+  .mobile-price-alert-close-icon {
+    @apply h-6 w-6;
+  }
+  
+  .mobile-price-alert-content {
+    @apply p-4 space-y-4;
+  }
+  
+  .mobile-price-alert-form-grid {
+    @apply grid-cols-2 gap-4;
+  }
+  
+  .mobile-price-alert-label {
+    @apply text-sm;
+  }
+  
+  .mobile-price-alert-input {
+    @apply text-sm py-2;
+  }
+  
+  .mobile-price-alert-checkbox-container {
+    @apply space-y-3;
+  }
+  
+  .mobile-price-alert-checkbox-text {
+    @apply text-sm;
+  }
+  
+  .mobile-price-alert-footer {
+    @apply p-4 gap-3;
+  }
+  
+  .mobile-price-alert-button {
+    @apply w-auto px-6 py-2 text-sm;
+  }
+}
+
+.mobile-call-subject {
+  @apply font-medium text-white text-sm mb-2;
+}
+
+.mobile-call-details-grid {
+  @apply grid grid-cols-2 gap-2 mb-3;
+}
+
+.mobile-call-detail-item {
+  @apply space-y-1;
+}
+
+.mobile-call-detail-label {
+  @apply text-xs text-gray-400;
+}
+
+.mobile-call-detail-value {
+  @apply text-xs text-white;
+}
+
+.mobile-call-status-row {
+  @apply flex items-center justify-between mb-3;
+}
+
+.mobile-call-actions {
+  @apply flex space-x-2;
+}
+
+.mobile-call-action-btn {
+  @apply flex-1 px-3 py-2 text-xs rounded transition-colors;
+}
+
+.mobile-call-action-btn.edit {
+  @apply bg-blue-600 text-white hover:bg-blue-700;
+}
+
+.mobile-call-action-btn.cancel {
+  @apply bg-red-600 text-white hover:bg-red-700;
+}
+
+.mobile-call-summary {
+  @apply bg-gray-700 rounded-lg p-3 border border-gray-600 text-center;
+}
+
+.mobile-call-summary-title {
+  @apply text-sm text-gray-300 mb-2;
+}
+
+.mobile-call-summary-count {
+  @apply text-2xl font-bold text-white;
+}
+
+.mobile-call-summary-subtitle {
+  @apply text-xs text-gray-400 mt-1;
+}
+
+/* Mobile-specific call history improvements */
+@media (max-width: 640px) {
+  .mobile-call-card {
+    @apply p-3 mx-1;
+  }
+  
+  .mobile-call-details-grid {
+    @apply gap-1.5;
+  }
+  
+  .mobile-call-action-btn {
+    @apply py-2.5 min-h-[2.5rem];
+  }
+  
+  .mobile-call-summary {
+    @apply mx-1;
+  }
+}
+
+/* Tablet-specific call history improvements */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mobile-call-card {
+    @apply p-4;
+  }
+  
+  .mobile-call-details-grid {
+    @apply gap-2;
+  }
+  
+  .mobile-call-action-btn {
+    @apply py-2;
+  }
+}
+
+/* Mobile-Responsive Popup Styles */
+.mobile-popup {
+  @apply max-h-[95vh] sm:max-h-[90vh];
+}
+
+.mobile-popup-header {
+  @apply flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-0;
+}
+
+.mobile-popup-title {
+  @apply text-lg sm:text-xl font-bold;
+}
+
+.mobile-popup-subtitle {
+  @apply text-xs sm:text-sm;
+}
+
+.mobile-popup-actions {
+  @apply flex items-center justify-center sm:justify-end space-x-1 sm:space-x-2;
+}
+
+.mobile-popup-action-btn {
+  @apply p-1.5 sm:p-2;
+}
+
+.mobile-popup-action-icon {
+  @apply w-4 h-4 sm:w-5 sm:h-5;
+}
+
+.mobile-popup-tabs {
+  @apply p-2 sm:p-3;
+}
+
+.mobile-popup-content {
+  @apply p-3 sm:p-4 lg:p-6;
+}
+
+.mobile-form-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4;
+}
+
+.mobile-form-input {
+  @apply w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base;
+}
+
+.mobile-form-select {
+  @apply w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base;
+}
+
+.mobile-form-button {
+  @apply w-full sm:w-auto px-4 sm:px-6 py-2 text-sm sm:text-base;
+}
+
+.mobile-form-button-container {
+  @apply flex justify-center sm:justify-end;
+}
+
+/* Mobile-specific popup improvements */
+@media (max-width: 640px) {
+  .mobile-popup {
+    @apply max-h-[98vh] mx-2;
+  }
+  
+  .mobile-popup-header {
+    @apply p-3;
+  }
+  
+  .mobile-popup-title {
+    @apply text-base;
+  }
+  
+  .mobile-popup-subtitle {
+    @apply text-xs;
+  }
+  
+  .mobile-popup-actions {
+    @apply space-x-1;
+  }
+  
+  .mobile-popup-action-btn {
+    @apply p-1;
+  }
+  
+  .mobile-popup-action-icon {
+    @apply w-4 h-4;
+  }
+  
+  .mobile-popup-tabs {
+    @apply p-2;
+  }
+  
+  .mobile-popup-content {
+    @apply p-3;
+  }
+  
+  .mobile-form-grid {
+    @apply grid-cols-1 gap-3;
+  }
+  
+  .mobile-form-input,
+  .mobile-form-select {
+    @apply text-sm py-2;
+  }
+  
+  .mobile-form-button {
+    @apply w-full px-4 py-2 text-sm;
+  }
+  
+  .mobile-form-button-container {
+    @apply justify-center;
+  }
+}
+
+/* Tablet-specific popup improvements */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mobile-popup {
+    @apply max-h-[92vh];
+  }
+  
+  .mobile-popup-header {
+    @apply p-4;
+  }
+  
+  .mobile-popup-title {
+    @apply text-lg;
+  }
+  
+  .mobile-popup-subtitle {
+    @apply text-sm;
+  }
+  
+  .mobile-popup-actions {
+    @apply space-x-2;
+  }
+  
+  .mobile-popup-action-btn {
+    @apply p-2;
+  }
+  
+  .mobile-popup-action-icon {
+    @apply w-5 h-5;
+  }
+  
+  .mobile-popup-tabs {
+    @apply p-3;
+  }
+  
+  .mobile-popup-content {
+    @apply p-4;
+  }
+  
+  .mobile-form-grid {
+    @apply grid-cols-2 gap-4;
+  }
+  
+  .mobile-form-input,
+  .mobile-form-select {
+    @apply text-base py-2;
+  }
+  
+  .mobile-form-button {
+    @apply w-auto px-6 py-2 text-base;
+  }
+  
+  .mobile-form-button-container {
+    @apply justify-end;
   }
 }

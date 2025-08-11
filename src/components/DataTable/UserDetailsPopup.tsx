@@ -549,53 +549,59 @@ const OrderTable: React.FC<{ data: OrderData[]; searchQuery?: string; startDate?
         </table>
       </div>
 
-      {/* Pagination */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="text-sm text-white">
-            Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{' '}
-            {Math.min(
-              (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-              table.getFilteredRowModel().rows.length
-            )}{' '}
-            of {table.getFilteredRowModel().rows.length} entries
+      {/* Professional Table Footer */}
+      <div className="table-footer">
+        <div className="table-footer-content">
+          {/* Left side - Results info and page size selector */}
+          <div className="table-footer-left">
+            <span className="results-info">
+              Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{' '}
+              {Math.min(
+                (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
+                table.getFilteredRowModel().rows.length
+              )}{' '}
+              of {table.getFilteredRowModel().rows.length} entries
+            </span>
+            
+            {/* Page size selector */}
+            <div className="page-size-selector">
+              <span className="page-size-label">Show:</span>
+              <select
+                value={table.getState().pagination.pageSize}
+                onChange={e => {
+                  table.setPageSize(Number(e.target.value))
+                }}
+                className="page-size-select"
+              >
+                {[10, 20, 30, 50].map(pageSize => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+              <span className="page-size-label">entries</span>
+            </div>
           </div>
           
-          {/* Records per page selector */}
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-300">Show:</span>
-            <select
-              value={table.getState().pagination.pageSize}
-              onChange={e => {
-                table.setPageSize(Number(e.target.value))
-              }}
-              className="px-2 py-1 text-sm bg-gray-700 border border-gray-600 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              {[10, 20, 30, 50].map(pageSize => (
-                <option key={pageSize} value={pageSize}>
-                  {pageSize}
-                </option>
-              ))}
-            </select>
-            <span className="text-sm text-gray-300">entries</span>
+          {/* Right side - Pagination controls */}
+          <div className="table-footer-right">
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+                className="pagination-nav"
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+                className="pagination-nav"
+              >
+                Next
+              </button>
+            </div>
           </div>
-        </div>
-        
-        <div className="flex items-center space-x-1">
-          <button
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            className="px-2 py-0.5 text-sm bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            Previous
-          </button>
-          <button
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-            className="px-2 py-0.5 text-sm bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            Next
-          </button>
         </div>
       </div>
     </div>
@@ -1401,7 +1407,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
       icon: <User className="w-4 h-4" />,
       content: (
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Full Name <span className="text-red-500">*</span>
@@ -1409,7 +1415,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <input
                 type="text"
                 defaultValue={user.name || 'apex'}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
             <div>
@@ -1419,7 +1425,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <input
                 type="text"
                 defaultValue={user.name || 'apex'}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
             <div>
@@ -1429,7 +1435,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <input
                 type="email"
                 defaultValue={user.email || 'apex@gmail.com'}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
             <div>
@@ -1439,14 +1445,14 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <input
                 type="tel"
                 defaultValue="+3343243354544"
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Country <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
                 <option value="american-samoa">American Samoa</option>
                 <option value="pakistan">Pakistan</option>
                 <option value="usa">United States</option>
@@ -1460,15 +1466,15 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <input
                 type="text"
                 defaultValue="lahore"
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
           </div>
           
           {/* Password Change Section */}
-          <div className="border-t border-gray-600 pt-6 mt-6">
-            <h4 className="text-lg font-semibold text-white mb-4">Change Password</h4>
-            <div className="grid grid-cols-3 gap-4">
+          <div className="border-t border-gray-600 pt-4 sm:pt-6 mt-4 sm:mt-6">
+            <h4 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Change Password</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Current Password <span className="text-red-500">*</span>
@@ -1477,19 +1483,19 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                   <input
                     type={showCurrentPassword ? "text" : "password"}
                     placeholder="Enter current password"
-                    className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                   />
                   <button 
                     type="button"
                     onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
+                    className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300 p-1"
                   >
                     {showCurrentPassword ? (
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
                       </svg>
                     ) : (
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
@@ -1505,19 +1511,19 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                   <input
                     type={showNewPassword ? "text" : "password"}
                     placeholder="Enter new password"
-                    className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                   />
                   <button 
                     type="button"
                     onClick={() => setShowNewPassword(!showNewPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
+                    className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300 p-1"
                   >
                     {showNewPassword ? (
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
                       </svg>
                     ) : (
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
                       </svg>
                     )}
@@ -1532,19 +1538,19 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm new password"
-                    className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                   />
                   <button 
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
+                    className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300 p-1"
                   >
                     {showConfirmPassword ? (
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
                       </svg>
                     ) : (
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
                     )}
@@ -1554,8 +1560,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
             </div>
           </div>
           
-          <div className="flex justify-end">
-            <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+          <div className="flex justify-center sm:justify-end">
+            <button className="w-full sm:w-auto px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm sm:text-base">
               Update
             </button>
           </div>
@@ -1568,12 +1574,12 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
       icon: <Settings className="w-4 h-4" />,
       content: (
         <div className="space-y-4">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Account Type
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
                 <option value="cfd-hedging">CFD Hedging</option>
                 <option value="cfd-net">CFD Net</option>
                 <option value="spot">Spot</option>
@@ -1583,7 +1589,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Total Margin Calculation Type
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
                 <option value="sum">Sum</option>
                 <option value="net">Net</option>
                 <option value="gross">Gross</option>
@@ -1593,7 +1599,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Currency
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
                 <option value="eur">EUR</option>
                 <option value="usd">USD</option>
                 <option value="gbp">GBP</option>
@@ -1606,14 +1612,14 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <input
                 type="number"
                 defaultValue="0"
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Group <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
                 <option value="default-group">DefaultGroup</option>
                 <option value="premium">Premium</option>
                 <option value="vip">VIP</option>
@@ -1623,7 +1629,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Assign Tags <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
                 <option value="1-tag">1 Tags selected</option>
                 <option value="2-tags">2 Tags selected</option>
                 <option value="no-tags">No Tags</option>
@@ -1633,7 +1639,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Platform Access Rights
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
                 <option value="full-access">Full Access</option>
                 <option value="limited-access">Limited Access</option>
                 <option value="read-only">Read Only</option>
@@ -1643,7 +1649,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 User's Panel Access Right <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
                 <option value="default-user-panel">Default User_panel</option>
                 <option value="admin-panel">Admin Panel</option>
                 <option value="user-panel">User Panel</option>
@@ -2919,57 +2925,59 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
           ]
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-800 rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] overflow-hidden">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+      <div className="bg-gray-800 rounded-lg shadow-xl w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-              <User className="w-5 h-5 text-white" />
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 lg:p-6 border-b border-gray-700 space-y-3 sm:space-y-0">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <div>
-              <h2 className="text-xl font-bold text-white">
+            <div className="min-w-0 flex-1">
+              <h2 className="text-lg sm:text-xl font-bold text-white truncate">
                 {user.name} | User Detail
               </h2>
-              <p className="text-gray-400 text-sm">Account ID: {user.accountId}</p>
+              <p className="text-gray-400 text-xs sm:text-sm truncate">Account ID: {user.accountId}</p>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
+          
+          {/* Action Buttons - Stack on mobile, horizontal on larger screens */}
+          <div className="flex items-center justify-center sm:justify-end space-x-1 sm:space-x-2">
             <button 
-              className="p-2 text-gray-400 hover:text-white transition-colors relative group"
+              className="p-1.5 sm:p-2 text-gray-400 hover:text-white transition-colors relative group"
               title="Contact User"
             >
-              <Phone className="w-5 h-5" />
+              <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
                 Contact User
               </div>
             </button>
             <button 
               onClick={handleScheduleMeeting}
-              className="p-2 text-gray-400 hover:text-white transition-colors relative group"
+              className="p-1.5 sm:p-2 text-gray-400 hover:text-white transition-colors relative group"
               title="Schedule Meeting"
             >
-              <Calendar className="w-5 h-5" />
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
                 Schedule Meeting
               </div>
             </button>
             <button 
               onClick={handlePriceDropAlert}
-              className="p-2 text-gray-400 hover:text-white transition-colors relative group"
+              className="p-1.5 sm:p-2 text-gray-400 hover:text-white transition-colors relative group"
               title="Price Drop Alert"
             >
-              <AlertTriangle className="w-5 h-5" />
+              <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5" />
               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
                 Price Drop Alert
               </div>
             </button>
             <button
               onClick={onClose}
-              className="p-2 text-gray-400 hover:text-white transition-colors relative group"
+              className="p-1.5 sm:p-2 text-gray-400 hover:text-white transition-colors relative group"
               title="Close Popup"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5" />
               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
                 Close Popup
               </div>
@@ -2979,7 +2987,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
 
         {/* Tabs */}
         <div className="border-b border-gray-700">
-          <div className="flex space-x-1 p-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+          <div className="flex space-x-1 p-2 sm:p-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -3000,7 +3008,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
         </div>
 
         {/* Tab Content */}
-        <div className="p-6 overflow-y-auto max-h-[60vh]">
+        <div className="p-3 sm:p-4 lg:p-6 overflow-y-auto max-h-[70vh] sm:max-h-[60vh]">
           {tabs.find(tab => tab.id === activeTab)?.content}
         </div>
       </div>

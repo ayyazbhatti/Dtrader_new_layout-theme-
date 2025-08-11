@@ -33,6 +33,7 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  UserPlus,
 } from 'lucide-react'
 import { getSortIcon, formatCurrency, formatMarginLevel, formatPnL } from './utils'
 import { TABLE_CONFIG, CSS_CLASSES, COLUMN_CONFIGS } from './constants'
@@ -46,7 +47,9 @@ import { GroupAssignmentPopup } from './GroupAssignmentPopup'
 import { BotAssignmentPopup } from './BotAssignmentPopup'
 import { PriceDropAlertPopup } from './PriceDropAlertPopup'
 import { SubscriptionDatePopup } from './SubscriptionDatePopup'
-import { PriceDropAlertData, SubscriptionDateData } from './types'
+import { PriceDropAlertData, SubscriptionDateData, AddNewUserData } from './types'
+import { AddNewUserPopup } from './AddNewUserPopup'
+import UserDetailsPopup from './UserDetailsPopup'
 
 const columnHelper = createColumnHelper<UserData>()
 
@@ -150,6 +153,9 @@ const DataTable: React.FC = () => {
   // Subscription Date functionality
   const [showSubscriptionDateModal, setShowSubscriptionDateModal] = useState(false)
 
+  // Add New User functionality
+  const [showAddNewUserModal, setShowAddNewUserModal] = useState(false)
+
   // Search functionality
   const [searchValue, setSearchValue] = useState('')
   const [globalFilter, setGlobalFilter] = useState('')
@@ -188,21 +194,6 @@ const DataTable: React.FC = () => {
     selectedCondition: 'None',
     filterValue: '',
     filterValue2: ''
-  })
-
-  // Resize info state for visual feedback
-  const [resizeInfo, setResizeInfo] = useState<{
-    show: boolean
-    columnId: string
-    width: number
-    x: number
-    y: number
-  }>({
-    show: false,
-    columnId: '',
-    width: 0,
-    x: 0,
-    y: 0
   })
 
   // Data
@@ -601,9 +592,22 @@ const DataTable: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
             </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                setSelectedUser(row.original)
+                setShowUserDetails(true)
+              }}
+              className="p-1 text-gray-500 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              title="User Details"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </button>
           </div>
         ),
-        size: 120,
+        size: 140,
         enableResizing: true,
         enableHiding: true,
       }),
@@ -628,7 +632,9 @@ const DataTable: React.FC = () => {
     onRowSelectionChange: setRowSelection,
     onColumnFiltersChange: setColumnFilters,
     onColumnSizingChange: (updater) => {
-      console.log('Column sizing change:', updater)
+      console.log('Column sizing change triggered:', updater)
+      const newSizing = typeof updater === 'function' ? updater(columnSizing) : updater
+      console.log('New column sizing:', newSizing)
       setColumnSizing(updater)
     },
     onGlobalFilterChange: setGlobalFilter,
@@ -636,7 +642,7 @@ const DataTable: React.FC = () => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    columnResizeMode: TABLE_CONFIG.COLUMN_RESIZE_MODE,
+    columnResizeMode: 'onChange',
     enableColumnResizing: true,
     enableSorting: true,
     enableRowSelection: true,
@@ -663,47 +669,21 @@ const DataTable: React.FC = () => {
     }
   }, [table])
 
-    // Event handlers for resize feedback
-  const handleMouseMove = (e: MouseEvent) => {
-    if (resizeInfo.show) {
-      setResizeInfo(prev => ({
-        ...prev,
-        x: e.clientX,
-        y: e.clientY
-      }))
-    }
-  }
-
-  const handleMouseUp = () => {
-    if (resizeInfo.show) {
-      setResizeInfo(prev => ({ ...prev, show: false }))
-    }
-  }
-
-  // Add global mouse event listeners for resize feedback
+  // Initialize column sizing state with default column sizes
   React.useEffect(() => {
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
-    
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove)
-      document.removeEventListener('mouseup', handleMouseUp)
+    if (table) {
+      const initialSizing: ColumnSizingState = {}
+      table.getAllColumns().forEach(column => {
+        if (column.getCanResize()) {
+          initialSizing[column.id] = column.getSize()
+        }
+      })
+      setColumnSizing(initialSizing)
+      console.log('Initialized column sizing:', initialSizing)
     }
-  }, [resizeInfo.show])
-  
-  // Update resize info when column sizing changes
-  React.useEffect(() => {
-    if (resizeInfo.show && resizeInfo.columnId) {
-      const column = table.getColumn(resizeInfo.columnId)
-      if (column) {
-        const actualWidth = column.getSize()
-        setResizeInfo(prev => ({
-          ...prev,
-          width: actualWidth
-        }))
-      }
-    }
-  }, [columnSizing, table, resizeInfo.show, resizeInfo.columnId])
+  }, [table])
+
+
 
 
 
@@ -1082,14 +1062,25 @@ const DataTable: React.FC = () => {
     setShowSubscriptionDateModal(true)
   }
 
+  const handleOpenAddNewUserModal = () => {
+    setShowAddNewUserModal(true)
+  }
+
   const handleSaveSubscription = (data: SubscriptionDateData) => {
     console.log('Subscription option saved:', data.subscriptionOption)
     // Here you would typically save the subscription option to your backend
   }
 
   const handleSaveDate = (data: SubscriptionDateData) => {
-    console.log('Subscription date saved:', data.subscriptionEndDate)
-    // Here you would typically save the subscription date to your backend
+    console.log('Subscription date saved:', data)
+    // Here you would typically save the date to your backend
+  }
+
+  const handleAddNewUser = (data: AddNewUserData) => {
+    console.log('New user data:', data)
+    // Here you would typically save the new user to your backend
+    // For now, we'll just close the modal
+    setShowAddNewUserModal(false)
   }
 
   // Toggle handlers for bot settings
@@ -1171,6 +1162,18 @@ const DataTable: React.FC = () => {
                   <Upload className="w-4 h-4" />
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
                     Import Data
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
+                  </div>
+                </button>
+
+                <button 
+                  className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
+                  title="Add New User - Create a new user account"
+                  onClick={handleOpenAddNewUserModal}
+                >
+                  <UserPlus className="w-4 h-4" />
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                    Add New User
                     <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
                   </div>
                 </button>
@@ -1337,21 +1340,7 @@ const DataTable: React.FC = () => {
 
       {/* Table Container */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-        {/* Resize Indicator */}
-        {resizeInfo.show && (
-          <div
-            className="fixed z-50 px-3 py-2 text-sm font-mono bg-blue-600 text-white rounded-lg shadow-lg pointer-events-none border border-blue-500"
-            style={{
-              left: resizeInfo.x + 10,
-              top: resizeInfo.y - 40,
-            }}
-          >
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-              <span>{resizeInfo.columnId}: {Math.round(resizeInfo.width)}px</span>
-            </div>
-          </div>
-        )}
+
         
 
         {/* Mobile Table Controls */}
@@ -1392,7 +1381,7 @@ const DataTable: React.FC = () => {
 
         {/* Mobile Table */}
         <div className="block sm:hidden overflow-x-auto">
-          <table className="w-full" key={JSON.stringify(columnSizing)}>
+          <table className="w-full">
             <thead className={`${CSS_CLASSES.TABLE_HEADER} block sm:table-header-group`}>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id} style={{ height: '36px' }}>
@@ -1435,69 +1424,14 @@ const DataTable: React.FC = () => {
                       </div>
                       {header.column.getCanResize() && (
                         <div
-                                                      onMouseDown={(e) => {
-                              console.log('Resize started for column:', header.column.id, 'Current width:', header.column.getSize())
-                              
-                              e.preventDefault()
-                              e.stopPropagation()
-                              
-                              const startX = e.clientX
-                              const startWidth = header.column.getSize()
-                              
-                              const handleMouseMove = (moveEvent: MouseEvent) => {
-                                const deltaX = moveEvent.clientX - startX
-                                const newWidth = Math.max(80, startWidth + deltaX)
-                                
-                                // Update the table's column sizing state directly
-                                table.setColumnSizing(prev => ({
-                                  ...prev,
-                                  [header.column.id]: newWidth
-                                }))
-                                
-                                // Update our local state
-                                setColumnSizing(prev => ({
-                                  ...prev,
-                                  [header.column.id]: newWidth
-                                }))
-                                
-                                // Update resize info
-                                setResizeInfo(prev => ({
-                                  ...prev,
-                                  width: newWidth,
-                                  x: moveEvent.clientX,
-                                  y: moveEvent.clientY
-                                }))
-                              }
-                              
-                              const handleMouseUp = () => {
-                                document.removeEventListener('mousemove', handleMouseMove)
-                                document.removeEventListener('mouseup', handleMouseUp)
-                                setResizeInfo(prev => ({ ...prev, show: false }))
-                              }
-                              
-                              document.addEventListener('mousemove', handleMouseMove)
-                              document.addEventListener('mouseup', handleMouseUp)
-                              
-                              // Show resize info
-                              setResizeInfo({
-                                show: true,
-                                columnId: header.column.id,
-                                width: startWidth,
-                                x: e.clientX,
-                                y: e.clientY
-                              })
-                            }}
-                          onMouseMove={(e) => {
-                            if (resizeInfo.show && resizeInfo.columnId === header.column.id) {
-                              // Update resize info with current mouse position
-                              setResizeInfo(prev => ({
-                                ...prev,
-                                x: e.clientX,
-                                y: e.clientY
-                              }))
-                            }
+                          onMouseDown={(e) => {
+                            console.log('Resize handler called for column:', header.id)
+                            header.getResizeHandler()(e)
                           }}
-                          onTouchStart={(e) => header.getResizeHandler()?.(e)}
+                          onTouchStart={(e) => {
+                            console.log('Touch resize handler called for column:', header.id)
+                            header.getResizeHandler()(e)
+                          }}
                           className={`absolute top-0 right-0 w-2 h-full cursor-col-resize transition-all duration-200 ${
                             header.column.getIsResizing()
                               ? 'bg-blue-500 opacity-100'
@@ -1852,7 +1786,7 @@ const DataTable: React.FC = () => {
       {/* Desktop Table */}
       <div className={`${CSS_CLASSES.TABLE_CONTAINER} hidden sm:block`}>
         <div className="overflow-x-auto">
-          <table className="w-full" key={JSON.stringify(columnSizing)}>
+          <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-700">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
@@ -1873,58 +1807,13 @@ const DataTable: React.FC = () => {
                           {header.column.getCanResize() && (
                             <div
                               onMouseDown={(e) => {
-                                console.log('Resize started for column:', header.column.id, 'Current width:', header.column.getSize())
-                                
-                                e.preventDefault()
-                                e.stopPropagation()
-                                
-                                const startX = e.clientX
-                                const startWidth = header.column.getSize()
-                                
-                                const handleMouseMove = (moveEvent: MouseEvent) => {
-                                  const deltaX = moveEvent.clientX - startX
-                                  const newWidth = Math.max(80, startWidth + deltaX)
-                                  
-                                  // Update the table's column sizing state directly
-                                  table.setColumnSizing(prev => ({
-                                    ...prev,
-                                    [header.column.id]: newWidth
-                                  }))
-                                  
-                                  // Update our local state
-                                  setColumnSizing(prev => ({
-                                    ...prev,
-                                    [header.column.id]: newWidth
-                                  }))
-                                  
-                                  // Update resize info
-                                  setResizeInfo(prev => ({
-                                    ...prev,
-                                    width: newWidth,
-                                    x: moveEvent.clientX,
-                                    y: moveEvent.clientY
-                                  }))
-                                }
-                                
-                                const handleMouseUp = () => {
-                                  document.removeEventListener('mousemove', handleMouseMove)
-                                  document.removeEventListener('mouseup', handleMouseUp)
-                                  setResizeInfo(prev => ({ ...prev, show: false }))
-                                }
-                                
-                                document.addEventListener('mousemove', handleMouseMove)
-                                document.addEventListener('mouseup', handleMouseUp)
-                                
-                                // Show resize info
-                                setResizeInfo({
-                                  show: true,
-                                  columnId: header.column.id,
-                                  width: startWidth,
-                                  x: e.clientX,
-                                  y: e.clientY
-                                })
+                                console.log('Resize handler called for column:', header.id)
+                                header.getResizeHandler()(e)
                               }}
-                              onTouchStart={(e) => header.getResizeHandler()?.(e)}
+                              onTouchStart={(e) => {
+                                console.log('Touch resize handler called for column:', header.id)
+                                header.getResizeHandler()(e)
+                              }}
                               className={`absolute right-0 top-0 h-full w-2 cursor-col-resize select-none touch-none transition-all duration-200 ${
                                 header.column.getIsResizing() 
                                   ? 'bg-blue-500 opacity-100' 
@@ -2631,6 +2520,13 @@ const DataTable: React.FC = () => {
         onSaveDate={handleSaveDate}
       />
 
+      {/* Add New User Modal */}
+      <AddNewUserPopup
+        isOpen={showAddNewUserModal}
+        onClose={() => setShowAddNewUserModal(false)}
+        onSubmit={handleAddNewUser}
+      />
+
       {/* Edit User Modal */}
       {showEditModal && editingUser && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -2943,6 +2839,13 @@ const DataTable: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* User Details Popup */}
+      <UserDetailsPopup
+        user={selectedUser}
+        isOpen={showUserDetails}
+        onClose={() => setShowUserDetails(false)}
+      />
     </div>
   )
 }

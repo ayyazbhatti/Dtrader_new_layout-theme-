@@ -3,7 +3,7 @@
  */
 export const TABLE_CONFIG = {
   DEFAULT_PAGE_SIZE: 10,
-  COLUMN_RESIZE_MODE: 'onEnd' as const,
+  COLUMN_RESIZE_MODE: 'onChange' as const,
   MIN_COLUMN_WIDTH: 50,
   MAX_COLUMN_WIDTH: 500,
 } as const

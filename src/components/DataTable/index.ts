@@ -35,9 +35,16 @@ export { BotAssignmentPopup } from './BotAssignmentPopup'
 
 // Price Drop Alert Components
 export { PriceDropAlertPopup } from './PriceDropAlertPopup'
+export { ScheduleMeetingPopup } from './ScheduleMeetingPopup'
 
 // Subscription Date Components
 export { SubscriptionDatePopup } from './SubscriptionDatePopup'
+
+// Add New User Components
+export { AddNewUserPopup } from './AddNewUserPopup'
+
+// User Details Components
+export { default as UserDetailsPopup } from './UserDetailsPopup'
 
 // Constants
 export {

@@ -836,81 +836,81 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-              <Settings className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Group Settings</h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Configure trading parameters and leverage profiles</p>
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">Group Settings</h2>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Configure trading parameters and leverage profiles</p>
             </div>
           </div>
           <button
             onClick={handleClose}
-            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 self-end sm:self-auto"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Unified Group Settings Card */}
-          <div className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-4 sm:p-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {groupData?.name || 'Group Name'}
             </h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
               {/* Group Information */}
               <div className="space-y-3">
-              <div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Group ID:</span>
-                  <span className="ml-2 text-sm font-medium text-gray-900 dark:text-white">{groupData?.id || 'N/A'}</span>
+                <div className="flex flex-col sm:flex-row sm:items-center">
+                  <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1 sm:mb-0 sm:mr-2">Group ID:</span>
+                  <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">{groupData?.id || 'N/A'}</span>
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center">
+                  <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1 sm:mb-0 sm:mr-2">Created:</span>
+                  <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">{groupData?.createdAt || 'N/A'}</span>
+                </div>
               </div>
-              <div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Created:</span>
-                  <span className="ml-2 text-sm font-medium text-gray-900 dark:text-white">{groupData?.createdAt || 'N/A'}</span>
+
+              {/* Leverage Profile Configuration */}
+              <div className="lg:col-span-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Leverage Profile
+                </label>
+                <div className="relative">
+                  <select
+                    value={settings.leverageProfile}
+                    onChange={(e) => setSettings(prev => ({ ...prev, leverageProfile: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 appearance-none"
+                  >
+                    <option value="Default Leverage">Default Leverage (Default Leverage)</option>
+                    <option value="Conservative">Conservative (1:100)</option>
+                    <option value="Moderate">Moderate (1:200)</option>
+                    <option value="Aggressive">Aggressive (1:500)</option>
+                    <option value="Professional">Professional (1:1000)</option>
+                    <option value="Institutional">Institutional (1:2000)</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                    <ChevronDown className="w-4 h-4 text-gray-400" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-              {/* Leverage Profile Configuration */}
-              <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Leverage Profile
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={settings.leverageProfile}
-                      onChange={(e) => setSettings(prev => ({ ...prev, leverageProfile: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 appearance-none"
-                    >
-                      <option value="Default Leverage">Default Leverage (Default Leverage)</option>
-                      <option value="Conservative">Conservative (1:100)</option>
-                      <option value="Moderate">Moderate (1:200)</option>
-                      <option value="Aggressive">Aggressive (1:500)</option>
-                      <option value="Professional">Professional (1:1000)</option>
-                      <option value="Institutional">Institutional (1:2000)</option>
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <ChevronDown className="w-4 h-4 text-gray-400" />
-                    </div>
-                  </div>
-                </div>
-                  </div>
-                  </div>
-
           {/* Settings Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* Symbol List Table */}
-            <div className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="text-lg font-medium text-gray-900 dark:text-white">Symbol List</h4>
-                <div className="flex items-center space-x-2">
+            <div className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 space-y-3 sm:space-y-0">
+                <h4 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white">Symbol List</h4>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
                   {selectedSymbol && (
                     <>
                       <div className="flex items-center space-x-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg">
@@ -918,16 +918,16 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                           Selected: {currentSymbols.find(s => s.symbolId === selectedSymbol)?.symbol || 'Unknown'}
                         </span>
                       </div>
-                    <button
+                      <button
                         onClick={(e) => {
                           e.preventDefault()
                           e.stopPropagation()
                           setIsTransferPopupOpen(true)
                         }}
                         className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-                    >
-                      Transfer Settings
-                    </button>
+                      >
+                        Transfer Settings
+                      </button>
                     </>
                   )}
                 </div>
@@ -935,7 +935,7 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
 
               {/* Search Bar for Symbols */}
               <div className="mb-4">
-                <div className="relative max-w-md">
+                <div className="relative w-full max-w-md">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
                     type="text"
@@ -950,7 +950,7 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                     onKeyDown={(e) => {
                       e.stopPropagation()
                     }}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm"
+                    className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                   />
                   {symbolSearchTerm && (
                     <button
@@ -975,82 +975,86 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
               </div>
               
               <div className="overflow-x-auto">
-                <div className="max-h-96 overflow-y-auto">
-                <table className="w-full border-collapse">
+                <div className="max-h-64 sm:max-h-96 overflow-y-auto">
+                <table className="w-full border-collapse min-w-full">
                     <thead className="bg-gray-50 dark:bg-gray-600 sticky top-0 z-10">
                       <tr>
                         <th 
-                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
+                          className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
                           onClick={() => handleSort('symbolId')}
                         >
                           <div className="flex items-center justify-between">
-                        Symbol ID
+                            <span className="hidden sm:inline">Symbol ID</span>
+                            <span className="sm:hidden">ID</span>
                             {getSortIcon('symbolId')}
                           </div>
-                      </th>
+                        </th>
                         <th 
-                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
+                          className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
                           onClick={() => handleSort('symbol')}
                         >
                           <div className="flex items-center justify-between">
-                        Symbol
+                            Symbol
                             {getSortIcon('symbol')}
                           </div>
-                      </th>
+                        </th>
                         <th 
-                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
+                          className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
                           onClick={() => handleSort('pipPosition')}
                         >
                           <div className="flex items-center justify-between">
-                        Pip Position
+                            <span className="hidden sm:inline">Pip Position</span>
+                            <span className="sm:hidden">Pip</span>
                             {getSortIcon('pipPosition')}
                           </div>
-                      </th>
+                        </th>
                         <th 
-                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
+                          className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
                           onClick={() => handleSort('digit')}
                         >
                           <div className="flex items-center justify-between">
-                        Digit
+                            Digit
                             {getSortIcon('digit')}
                           </div>
-                      </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500">
-                        Bid
-                      </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500">
-                        Ask
-                      </th>
+                        </th>
+                        <th className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500">
+                          Bid
+                        </th>
+                        <th className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500">
+                          Ask
+                        </th>
                         <th 
-                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
+                          className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
                           onClick={() => handleSort('assetClass')}
                         >
                           <div className="flex items-center justify-between">
-                        Asset Class
+                            <span className="hidden sm:inline">Asset Class</span>
+                            <span className="sm:hidden">Class</span>
                             {getSortIcon('assetClass')}
                           </div>
-                      </th>
+                        </th>
                         <th 
-                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
+                          className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
                           onClick={() => handleSort('leverageProfile')}
                         >
                           <div className="flex items-center justify-between">
-                        Leverage Profile
+                            <span className="hidden sm:inline">Leverage Profile</span>
+                            <span className="sm:hidden">Leverage</span>
                             {getSortIcon('leverageProfile')}
                           </div>
-                      </th>
+                        </th>
                         <th 
-                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
+                          className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
                           onClick={() => handleSort('status')}
                         >
                           <div className="flex items-center justify-between">
-                        Status
+                            Status
                             {getSortIcon('status')}
                           </div>
-                      </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Action
-                      </th>
+                        </th>
+                        <th className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                          Action
+                        </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white dark:bg-gray-700 divide-y divide-gray-200 dark:divide-gray-600">
@@ -1070,34 +1074,34 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                               setSelectedSymbol(symbol.symbolId)
                             }}
                           >
-                        <td className="px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
+                        <td className="px-2 sm:px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
                           {symbol.symbolId}
                         </td>
-                        <td className="px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500 font-medium">
+                        <td className="px-2 sm:px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500 font-medium">
                           {symbol.symbol}
                         </td>
-                        <td className="px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
+                        <td className="px-2 sm:px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
                           {symbol.pipPosition}
                         </td>
-                        <td className="px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
+                        <td className="px-2 sm:px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
                           {symbol.digit}
                         </td>
-                        <td className="px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
+                        <td className="px-2 sm:px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
                           {symbol.bid}
                         </td>
-                        <td className="px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
+                        <td className="px-2 sm:px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
                           {symbol.ask}
                         </td>
-                        <td className="px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
+                        <td className="px-2 sm:px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
                           {symbol.assetClass}
                         </td>
-                        <td className="px-3 py-1.5 text-xs text-blue-600 dark:text-blue-400 whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
+                        <td className="px-2 sm:px-3 py-1.5 text-xs text-blue-600 dark:text-blue-400 whitespace-nowrap border-r border-gray-200 dark:border-gray-500">
                           {symbol.leverageProfile}
                         </td>
-                        <td className="px-3 py-1.5 text-xs text-green-600 dark:text-green-400 whitespace-nowrap border-r border-gray-200 dark:border-gray-500 capitalize">
+                        <td className="px-2 sm:px-3 py-1.5 text-xs text-green-600 dark:text-green-400 whitespace-nowrap border-r border-gray-200 dark:border-gray-500 capitalize">
                           {symbol.status}
                         </td>
-                        <td className="px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap">
+                        <td className="px-2 sm:px-3 py-1.5 text-xs text-gray-900 dark:text-white whitespace-nowrap">
                           <div className="flex items-center space-x-1">
                             <button
                                   onClick={(e) => {
@@ -1143,14 +1147,14 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
               </div>
 
               {/* Pagination Controls */}
-              <div className="mt-4 flex items-center justify-between">
+              <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-3 sm:space-y-0">
                 {/* Items per page selector */}
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Show:</span>
+                  <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">Show:</span>
                   <select
                     value={itemsPerPage}
                     onChange={handleItemsPerPageButtonClick}
-                    className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="px-2 py-1 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     {[5, 10, 20, 50, 100].map(pageSize => (
                       <option key={pageSize} value={pageSize}>
@@ -1158,37 +1162,37 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                       </option>
                     ))}
                   </select>
-                  <span className="text-sm text-gray-700 dark:text-gray-300">entries</span>
+                  <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">entries</span>
                 </div>
 
                 {/* Pagination info and controls */}
-                <div className="flex items-center space-x-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                   {/* Page info */}
-                  <div className="text-sm text-gray-700 dark:text-gray-300">
+                  <div className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
                     Page {currentPage} of {totalPages} ({totalItems} total items)
                   </div>
 
                   {/* Pagination buttons */}
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-1 sm:space-x-2">
                     <button
                       onClick={(e) => handlePageButtonClick(e, 1)}
                       disabled={currentPage === 1}
-                      className="p-2 text-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="p-1.5 sm:p-2 text-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
                       title="First Page"
                     >
-                      <ChevronsLeft className="w-4 h-4" />
+                      <ChevronsLeft className="w-3 h-3 sm:w-4 sm:h-4" />
                     </button>
                     <button
                       onClick={(e) => handlePageButtonClick(e, currentPage - 1)}
                       disabled={currentPage === 1}
-                      className="p-2 text-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="p-1.5 sm:p-2 text-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Previous Page"
                     >
-                      <ChevronLeft className="w-4 h-4" />
+                      <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
                     </button>
                     
                     {/* Page Numbers */}
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-0.5 sm:space-x-1">
                       {(() => {
                         const pages = []
                         
@@ -1198,7 +1202,7 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                             <button
                               key={1}
                               onClick={(e) => handlePageButtonClick(e, 1)}
-                              className={`px-2 py-1 text-xs rounded-md ${
+                              className={`px-1.5 sm:px-2 py-1 text-xs rounded-md ${
                                 currentPage === 1
                                   ? 'bg-blue-600 text-white'
                                   : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
@@ -1212,7 +1216,7 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                         // Show ellipsis if needed
                         if (currentPage > 3) {
                           pages.push(
-                            <span key="ellipsis1" className="px-1 text-gray-500">...</span>
+                            <span key="ellipsis1" className="px-0.5 sm:px-1 text-gray-500">...</span>
                           )
                         }
                         
@@ -1223,7 +1227,7 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                               <button
                                 key={i}
                                 onClick={(e) => handlePageButtonClick(e, i)}
-                                className={`px-2 py-1 text-xs rounded-md ${
+                                className={`px-1.5 sm:px-2 py-1 text-xs rounded-md ${
                                   currentPage === i
                                     ? 'bg-blue-600 text-white'
                                     : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
@@ -1238,7 +1242,7 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                         // Show ellipsis if needed
                         if (currentPage < totalPages - 2) {
                           pages.push(
-                            <span key="ellipsis2" className="px-1 text-gray-500">...</span>
+                            <span key="ellipsis2" className="px-0.5 sm:px-1 text-gray-500">...</span>
                           )
                         }
                         
@@ -1248,7 +1252,7 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                             <button
                               key={totalPages}
                               onClick={(e) => handlePageButtonClick(e, totalPages)}
-                              className={`px-2 py-1 text-xs rounded-md ${
+                              className={`px-1.5 sm:px-2 py-1 text-xs rounded-md ${
                                 currentPage === totalPages
                                   ? 'bg-blue-600 text-white'
                                   : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
@@ -1266,18 +1270,18 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                     <button
                       onClick={(e) => handlePageButtonClick(e, currentPage + 1)}
                       disabled={currentPage === totalPages}
-                      className="p-2 text-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="p-1.5 sm:p-2 text-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Next Page"
                     >
-                      <ChevronRight className="w-4 h-4" />
+                      <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
                     </button>
                     <button
                       onClick={(e) => handlePageButtonClick(e, totalPages)}
                       disabled={currentPage === totalPages}
-                      className="p-2 text-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="p-1.5 sm:p-2 text-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Last Page"
                     >
-                      <ChevronsRight className="w-4 h-4" />
+                      <ChevronsRight className="w-3 h-3 sm:w-4 sm:h-4" />
                     </button>
                   </div>
                 </div>
@@ -1285,17 +1289,17 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className="w-full sm:w-auto px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                className="w-full sm:w-auto px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
                 Apply
               </button>
@@ -1306,12 +1310,12 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
 
       {/* Edit Symbol Popup */}
       {isEditSymbolPopupOpen && editingSymbol && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-6xl max-h-[85vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-6xl max-h-[95vh] sm:max-h-[85vh] overflow-y-auto">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Edit Symbol</h2>
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Edit Symbol</h2>
                 <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Modify symbol configuration and settings</p>
               </div>
               <button
@@ -1319,7 +1323,7 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                   setIsEditSymbolPopupOpen(false)
                   setEditingSymbol(null)
                 }}
-                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 self-end sm:self-auto"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1335,9 +1339,9 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                 setEditingSymbol(null)
               }}>
                 {/* Symbol Details Section */}
-                <div className="mb-8">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Symbol Details</h3>
-                  <div className="grid grid-cols-3 gap-x-8 gap-y-6">
+                <div className="mb-6 sm:mb-8">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6">Symbol Details</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-x-8">
                     {/* Symbol Name */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -1562,9 +1566,9 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                 </div>
 
                 {/* Default Profiles Section */}
-                <div className="mb-8">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Default Profiles</h3>
-                  <div className="grid grid-cols-3 gap-x-8">
+                <div className="mb-6 sm:mb-8">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6">Default Profiles</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-x-8">
                     {/* Leverage Profile */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -1588,20 +1592,20 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
                   <button
                     type="button"
                     onClick={() => {
                       setIsEditSymbolPopupOpen(false)
                       setEditingSymbol(null)
                     }}
-                    className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    className="w-full sm:w-auto px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                    className="w-full sm:w-auto px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                   >
                     Submit
                   </button>
@@ -1614,29 +1618,29 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
 
       {/* Transfer Settings Popup */}
       {isTransferPopupOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0">
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
                   Transfer Settings
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Select target symbols and groups to transfer settings
                 </p>
               </div>
               <button
                 onClick={() => setIsTransferPopupOpen(false)}
-                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 self-end sm:self-auto"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Content */}
-            <div className="p-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="p-4 sm:p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {/* Settings Panel */}
                 <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Settings</h3>
@@ -1783,10 +1787,10 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
               </div>
 
               {/* Action Buttons */}
-              <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700 mt-6">
+              <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700 mt-6">
                 <button
                   onClick={() => setIsTransferPopupOpen(false)}
-                  className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                  className="w-full sm:w-auto px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                 >
                   Cancel
                 </button>
@@ -1797,7 +1801,7 @@ const GroupSettingsPopup: React.FC<GroupSettingsPopupProps> = ({
                      // TODO: Implement actual transfer logic
                     setIsTransferPopupOpen(false)
                   }}
-                  className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  className="w-full sm:w-auto px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                 >
                   Transfer
                 </button>

@@ -31,6 +31,7 @@ import {
   Minus,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   ChevronsLeft,
   ChevronsRight,
   UserPlus,
@@ -42,7 +43,9 @@ import { TABLE_CONFIG, CSS_CLASSES, COLUMN_CONFIGS } from './constants'
 import { UserData, ContextMenuState } from './types'
 import { mockUserData } from './data'
 import { useContextMenu, useKeyboardShortcuts } from './hooks'
+import { useColumnVisibility } from './useColumnVisibility'
 import { ColumnVisibilityPopup } from './ColumnVisibilityPopup'
+
 import { GroupAssignmentPopup } from './GroupAssignmentPopup'
 import { BotAssignmentPopup } from './BotAssignmentPopup'
 import { PriceDropAlertPopup } from './PriceDropAlertPopup'
@@ -82,16 +85,7 @@ const DataTable: React.FC = () => {
   // User data state for managing updates
   const [userData, setUserData] = useState<UserData[]>(mockUserData)
 
-  // Column visibility state
-  const [columnVisibilityMenu, setColumnVisibilityMenu] = useState<{
-    show: boolean
-    x: number
-    y: number
-  }>({
-    show: false,
-    x: 0,
-    y: 0
-  })
+
 
   // Selected user for details popup
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null)
@@ -243,6 +237,7 @@ const DataTable: React.FC = () => {
         size: 70,
         enableResizing: true,
         enableHiding: true,
+
       }),
 
               // Bot status
@@ -558,6 +553,51 @@ const DataTable: React.FC = () => {
     []
   )
 
+  // Custom filter functions
+  const customFilterFns = {
+    // Value-based filtering (for checkboxes)
+    valueFilter: (row: any, columnId: string, filterValue: string[]) => {
+      if (!filterValue || filterValue.length === 0) return true
+      const value = String(row.getValue(columnId))
+      return filterValue.includes(value)
+    },
+    
+    // Condition-based filtering
+    conditionFilter: (row: any, columnId: string, filterValue: any) => {
+      if (!filterValue || filterValue.condition === 'None') return true
+      
+      const cellValue = row.getValue(columnId)
+      const { condition, value, value2 } = filterValue
+      
+      switch (condition) {
+        case 'equals':
+          return String(cellValue) === value
+        case 'not_equals':
+          return String(cellValue) !== value
+        case 'contains':
+          return String(cellValue).toLowerCase().includes(value.toLowerCase())
+        case 'not_contains':
+          return !String(cellValue).toLowerCase().includes(value.toLowerCase())
+        case 'starts_with':
+          return String(cellValue).toLowerCase().startsWith(value.toLowerCase())
+        case 'ends_with':
+          return String(cellValue).toLowerCase().endsWith(value.toLowerCase())
+        case 'greater_than':
+          return Number(cellValue) > Number(value)
+        case 'less_than':
+          return Number(cellValue) < Number(value)
+        case 'between':
+          return Number(cellValue) >= Number(value) && Number(cellValue) <= Number(value2)
+        case 'is_empty':
+          return !cellValue || String(cellValue).trim() === ''
+        case 'is_not_empty':
+          return cellValue && String(cellValue).trim() !== ''
+        default:
+          return true
+      }
+    }
+  } as const
+
   // Table instance
   const table = useReactTable({
     data,
@@ -592,6 +632,7 @@ const DataTable: React.FC = () => {
     enableColumnFilters: true,
     enableGlobalFilter: true,
     globalFilterFn: 'includesString',
+    filterFns: customFilterFns,
     columnResizeDirection: 'ltr',
   })
 
@@ -671,55 +712,7 @@ const DataTable: React.FC = () => {
 
 
 
-  // Column visibility functions
-  const handleColumnVisibilityMenu = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    
-    // Get the button element
-    const button = e.currentTarget as HTMLElement
-    const rect = button.getBoundingClientRect()
-    
-    // Calculate popup position relative to the button
-    const popupWidth = 280
-    const popupHeight = 400
-    const margin = 20
-    
-    let left = rect.left + (rect.width / 2)
-    let top = rect.bottom + 10
-    
-    // Adjust horizontal position to keep popup within viewport
-    if (left + (popupWidth / 2) > window.innerWidth - margin) {
-      left = window.innerWidth - (popupWidth / 2) - margin
-    }
-    if (left - (popupWidth / 2) < margin) {
-      left = (popupWidth / 2) + margin
-    }
-    
-    // Adjust vertical position to keep popup within viewport
-    if (top + popupHeight > window.innerHeight - margin) {
-      // Show above the button if there's not enough space below
-      top = rect.top - popupHeight - 10
-    }
-    if (top < margin) {
-      top = margin
-    }
-    
-    // Debug: Log column information
-    console.log('Opening column visibility menu')
-    console.log('All columns:', table.getAllColumns().map(col => ({ id: col.id, header: col.columnDef.header, canHide: col.getCanHide(), isVisible: col.getIsVisible() })))
-    console.log('Current column visibility state:', table.getState().columnVisibility)
-    
-    setColumnVisibilityMenu(prev => ({
-      show: !prev.show,
-      x: left,
-      y: top
-    }))
-  }
 
-  const closeColumnVisibilityMenu = () => {
-    setColumnVisibilityMenu(prev => ({ ...prev, show: false }))
-  }
 
   // Value filter functions
   const showValueFilter = (columnId: string, columnName: string) => {
@@ -780,6 +773,9 @@ const DataTable: React.FC = () => {
     if (valueFilter.selectedValues.length > 0) {
       // Apply the filter to the table
       table.getColumn(valueFilter.columnId)?.setFilterValue(valueFilter.selectedValues)
+    } else {
+      // If no values selected, clear the filter
+      table.getColumn(valueFilter.columnId)?.setFilterValue(undefined)
     }
     closeValueFilter()
   }
@@ -840,6 +836,9 @@ const DataTable: React.FC = () => {
         value2: conditionFilter.filterValue2
       }
       table.getColumn(conditionFilter.columnId)?.setFilterValue(filterConfig)
+    } else {
+      // If no condition selected, clear the filter
+      table.getColumn(conditionFilter.columnId)?.setFilterValue(undefined)
     }
     closeConditionFilter()
   }
@@ -849,8 +848,11 @@ const DataTable: React.FC = () => {
     closeConditionFilter()
   }
 
+  // Column visibility hook
+  const { columnVisibilityMenu, handleColumnVisibilityMenu, closeColumnVisibilityMenu } = useColumnVisibility<UserData>()
+
   // Custom hooks
-  useContextMenu(contextMenu, closeContextMenu, columnVisibilityMenu, closeColumnVisibilityMenu)
+  useContextMenu(contextMenu, closeContextMenu)
   useKeyboardShortcuts(table, showFilters, setShowFilters)
 
   // Tag handlers
@@ -1186,7 +1188,7 @@ const DataTable: React.FC = () => {
                 <button 
                   className="p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-600 rounded-md transition-colors duration-200 relative group overflow-visible" 
                   title="Column Visibility - Show/hide table columns"
-                  onClick={handleColumnVisibilityMenu}
+                  onClick={(e) => handleColumnVisibilityMenu(e, table)}
                 >
                   <Eye className="w-4 h-4" />
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
@@ -1280,6 +1282,389 @@ const DataTable: React.FC = () => {
         columnVisibilityMenu={columnVisibilityMenu}
         onClose={closeColumnVisibilityMenu}
       />
+
+      {/* Enhanced Filter Popup */}
+      {(valueFilter.show || conditionFilter.show) && (
+        <div
+          className="fixed z-50 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-6 min-w-[450px] max-w-[500px]"
+          style={{
+            left: (valueFilter.show ? valueFilter.position?.left : conditionFilter.position?.left) || 0,
+            top: (valueFilter.show ? valueFilter.position?.top : conditionFilter.position?.top) || 0,
+          }}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Filter: {valueFilter.show ? valueFilter.columnName : conditionFilter.columnName}
+            </h3>
+            <button
+              onClick={valueFilter.show ? closeValueFilter : closeConditionFilter}
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Sorting Options */}
+          <div className="mb-6">
+            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Sorting Options</h4>
+            <div className="space-y-2">
+              <button
+                onClick={() => {
+                  const column = table.getColumn(valueFilter.show ? valueFilter.columnId : conditionFilter.columnId)
+                  column?.toggleSorting(false)
+                }}
+                className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors"
+              >
+                Sort A to Z
+              </button>
+              <button
+                onClick={() => {
+                  const column = table.getColumn(valueFilter.show ? valueFilter.columnId : conditionFilter.columnId)
+                  column?.toggleSorting(true)
+                }}
+                className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors"
+              >
+                Sort Z to A
+              </button>
+              <div className="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors cursor-pointer">
+                <span>Sort by color</span>
+                <ChevronRight className="w-4 h-4" />
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-200 dark:border-gray-600 mb-6"></div>
+
+          {/* Filtering Options */}
+          <div className="mb-6">
+            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Filtering Options</h4>
+            
+            {/* Filter by color */}
+            <div className="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors cursor-pointer mb-3">
+              <span>Filter by color</span>
+              <ChevronRight className="w-4 h-4" />
+            </div>
+
+                         {/* Filter by condition */}
+             <div className="mb-4">
+               <button
+                 onClick={() => {
+                   if (valueFilter.show) {
+                     closeValueFilter()
+                   }
+                   showConditionFilter(valueFilter.columnId || conditionFilter.columnId, valueFilter.columnName || conditionFilter.columnName)
+                 }}
+                 className="w-full flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors cursor-pointer"
+               >
+                 <span>Filter by condition</span>
+                 <ChevronRight className="w-4 h-4" />
+               </button>
+             </div>
+
+                         {/* Filter by values */}
+             <div className="mb-4">
+               <button
+                 onClick={() => {
+                   if (conditionFilter.show) {
+                     closeConditionFilter()
+                   }
+                   showValueFilter(valueFilter.columnId || conditionFilter.columnId, valueFilter.columnName || conditionFilter.columnName)
+                 }}
+                 className="w-full flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors cursor-pointer"
+               >
+                 <span>Filter by values</span>
+                 <ChevronRight className="w-4 h-4" />
+               </button>
+             </div>
+          </div>
+
+          <div className="border-t border-gray-200 dark:border-gray-600 mb-6"></div>
+
+          {/* Action Buttons */}
+          <div className="flex space-x-3">
+            <button
+              onClick={valueFilter.show ? closeValueFilter : closeConditionFilter}
+              className="flex-1 px-4 py-2 text-sm font-medium text-green-600 dark:text-green-400 bg-white dark:bg-gray-700 border border-green-600 dark:border-green-400 rounded-md hover:bg-green-50 dark:hover:bg-gray-600 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={valueFilter.show ? applyValueFilter : applyConditionFilter}
+              className="flex-1 px-4 py-2 text-sm font-medium text-white bg-green-600 dark:bg-green-700 border border-transparent rounded-md hover:bg-green-700 dark:hover:bg-green-800 transition-colors"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Condition Filter Popup - Google Sheets Style */}
+      {conditionFilter.show && (
+        <div
+          className="fixed z-50 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-6 min-w-[400px] max-w-[450px]"
+          style={{
+            left: conditionFilter.position?.left || 0,
+            top: conditionFilter.position?.top || 0,
+          }}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Filter by condition: {conditionFilter.columnName}
+            </h3>
+            <button
+              onClick={closeConditionFilter}
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Filter Configuration */}
+          <div className="space-y-6">
+            {/* Condition Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                Filter Condition
+              </label>
+              <select
+                value={conditionFilter.selectedCondition}
+                onChange={(e) => setConditionFilter(prev => ({ ...prev, selectedCondition: e.target.value }))}
+                className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              >
+                <option value="None">Select condition...</option>
+                <option value="equals">Equals</option>
+                <option value="not_equals">Not equals</option>
+                <option value="contains">Contains</option>
+                <option value="not_contains">Not contains</option>
+                <option value="starts_with">Starts with</option>
+                <option value="ends_with">Ends with</option>
+                <option value="greater_than">Greater than</option>
+                <option value="less_than">Less than</option>
+                <option value="between">Between</option>
+                <option value="is_empty">Is empty</option>
+                <option value="is_not_empty">Is not empty</option>
+              </select>
+            </div>
+
+            {/* Value Input */}
+            {conditionFilter.selectedCondition !== 'None' && 
+             conditionFilter.selectedCondition !== 'is_empty' && 
+             conditionFilter.selectedCondition !== 'is_not_empty' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                  Filter Value
+                </label>
+                <input
+                  type="text"
+                  value={conditionFilter.filterValue}
+                  onChange={(e) => setConditionFilter(prev => ({ ...prev, filterValue: e.target.value }))}
+                  placeholder="Enter filter value..."
+                  className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                />
+              </div>
+            )}
+
+            {/* Second Value Input for Between */}
+            {conditionFilter.selectedCondition === 'between' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                  Second Value
+                </label>
+                <input
+                  type="text"
+                  value={conditionFilter.filterValue2 || ''}
+                  onChange={(e) => setConditionFilter(prev => ({ ...prev, filterValue2: e.target.value }))}
+                  placeholder="Enter second value..."
+                  className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                />
+              </div>
+            )}
+
+            {/* Preview */}
+            {conditionFilter.selectedCondition !== 'None' && (
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Filter Preview
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {conditionFilter.selectedCondition === 'equals' && `Show rows where ${conditionFilter.columnName} equals "${conditionFilter.filterValue}"`}
+                  {conditionFilter.selectedCondition === 'not_equals' && `Show rows where ${conditionFilter.columnName} does not equal "${conditionFilter.filterValue}"`}
+                  {conditionFilter.selectedCondition === 'contains' && `Show rows where ${conditionFilter.columnName} contains "${conditionFilter.filterValue}"`}
+                  {conditionFilter.selectedCondition === 'not_contains' && `Show rows where ${conditionFilter.columnName} does not contain "${conditionFilter.filterValue}"`}
+                  {conditionFilter.selectedCondition === 'starts_with' && `Show rows where ${conditionFilter.columnName} starts with "${conditionFilter.filterValue}"`}
+                  {conditionFilter.selectedCondition === 'ends_with' && `Show rows where ${conditionFilter.columnName} ends with "${conditionFilter.filterValue}"`}
+                  {conditionFilter.selectedCondition === 'greater_than' && `Show rows where ${conditionFilter.columnName} is greater than "${conditionFilter.filterValue}"`}
+                  {conditionFilter.selectedCondition === 'less_than' && `Show rows where ${conditionFilter.columnName} is less than "${conditionFilter.filterValue}"`}
+                  {conditionFilter.selectedCondition === 'between' && `Show rows where ${conditionFilter.columnName} is between "${conditionFilter.filterValue}" and "${conditionFilter.filterValue2}"`}
+                  {conditionFilter.selectedCondition === 'is_empty' && `Show rows where ${conditionFilter.columnName} is empty`}
+                  {conditionFilter.selectedCondition === 'is_not_empty' && `Show rows where ${conditionFilter.columnName} is not empty`}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex space-x-3 mt-8 pt-6 border-t border-gray-200 dark:border-gray-600">
+            <button
+              onClick={resetConditionFilter}
+              className="flex-1 px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-white dark:bg-gray-700 border border-red-600 dark:border-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-gray-600 transition-colors"
+            >
+              Reset
+            </button>
+            <button
+              onClick={applyConditionFilter}
+              className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 dark:bg-blue-700 border border-transparent rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
+            >
+              Apply Filter
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Value Filter Popup - Google Sheets Style */}
+      {valueFilter.show && (
+        <div
+          className="fixed z-50 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-6 min-w-[450px] max-w-[500px]"
+          style={{
+            left: valueFilter.position?.left || 0,
+            top: valueFilter.position?.top || 0,
+          }}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Filter by values: {valueFilter.columnName}
+            </h3>
+            <button
+              onClick={closeValueFilter}
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Filter Configuration */}
+          <div className="space-y-6">
+            {/* Select all / Clear */}
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => {
+                  const allValues = valueFilter.values
+                  setValueFilter(prev => ({
+                    ...prev,
+                    selectedValues: prev.selectedValues.length === allValues.length ? [] : allValues
+                  }))
+                }}
+                className="text-blue-600 dark:text-blue-400 text-sm underline hover:text-blue-800 dark:hover:text-blue-300"
+              >
+                {valueFilter.selectedValues.length === valueFilter.values.length 
+                  ? 'Clear' 
+                  : `Select all ${valueFilter.values.length}`}
+              </button>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                Displaying {valueFilter.values.length} values
+              </span>
+            </div>
+
+            {/* Search */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search values..."
+                className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              />
+              <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            </div>
+
+            {/* Values list */}
+            <div className="max-h-64 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-lg">
+              {/* Blanks option */}
+              <label className="flex items-center px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-600">
+                <input
+                  type="checkbox"
+                  checked={valueFilter.selectedValues.includes('(Blanks)')}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setValueFilter(prev => ({
+                        ...prev,
+                        selectedValues: [...prev.selectedValues, '(Blanks)']
+                      }))
+                    } else {
+                      setValueFilter(prev => ({
+                        ...prev,
+                        selectedValues: prev.selectedValues.filter(v => v !== '(Blanks)')
+                      }))
+                    }
+                  }}
+                  className="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
+                />
+                <span className="ml-3 text-sm text-gray-900 dark:text-white font-medium">(Blanks)</span>
+              </label>
+              
+              {/* Other values */}
+              {valueFilter.values.map((value, index) => (
+                <label
+                  key={value}
+                  className={`flex items-center px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                    index !== valueFilter.values.length - 1 ? 'border-b border-gray-100 dark:border-gray-600' : ''
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={valueFilter.selectedValues.includes(value)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setValueFilter(prev => ({
+                          ...prev,
+                          selectedValues: [...prev.selectedValues, value]
+                        }))
+                      } else {
+                        setValueFilter(prev => ({
+                          ...prev,
+                          selectedValues: prev.selectedValues.filter(v => v !== value)
+                        }))
+                      }
+                    }}
+                    className="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
+                  />
+                  <span className="ml-3 text-sm text-gray-900 dark:text-white">{value}</span>
+                </label>
+              ))}
+            </div>
+
+            {/* Selection Summary */}
+            {valueFilter.selectedValues.length > 0 && (
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                <h4 className="text-sm font-medium text-blue-800 dark:text-blue-300 mb-2">
+                  Selection Summary
+                </h4>
+                <p className="text-sm text-blue-700 dark:text-blue-400">
+                  {valueFilter.selectedValues.length} value{valueFilter.selectedValues.length !== 1 ? 's' : ''} selected
+                  {valueFilter.selectedValues.includes('(Blanks)') && ' (including blanks)'}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex space-x-3 mt-8 pt-6 border-t border-gray-200 dark:border-gray-600">
+            <button
+              onClick={resetValueFilter}
+              className="flex-1 px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-white dark:bg-gray-700 border border-red-600 dark:border-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-gray-600 transition-colors"
+            >
+              Reset
+            </button>
+            <button
+              onClick={applyValueFilter}
+              className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 dark:bg-blue-700 border border-transparent rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
+            >
+              Apply Filter
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Table Container */}
       <div className="mobile-expanded-view bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -1834,6 +2219,10 @@ const DataTable: React.FC = () => {
                         }}
                         onClick={(e) => header.column.getToggleSortingHandler()?.(e)}
                         onContextMenu={(e) => handleContextMenu(e, header.id, header.column.columnDef.header as string)}
+                        onDoubleClick={(e) => {
+                          e.preventDefault()
+                          handleContextMenu(e, header.id, header.column.columnDef.header as string)
+                        }}
                       >
                         <div className="flex items-center justify-between">
                           <span>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</span>

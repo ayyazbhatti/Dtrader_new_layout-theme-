@@ -36,6 +36,8 @@ import {
 } from 'lucide-react'
 import AddGroupPopup from './AddGroupPopup'
 import GroupSettingsPopup from './GroupSettingsPopup'
+import { useColumnVisibility } from './useColumnVisibility'
+import { ColumnVisibilityPopup } from './ColumnVisibilityPopup'
 
 // Group data interface
 export interface GroupData {
@@ -321,6 +323,9 @@ const GroupsTable: React.FC = () => {
   const [tagSearch, setTagSearch] = useState('')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
 
+  // Column visibility hook
+  const { columnVisibilityMenu, handleColumnVisibilityMenu, closeColumnVisibilityMenu } = useColumnVisibility<GroupData>()
+
   // Available tags for groups
   const availableTags = [
     'Default Dtrader Tag',
@@ -586,10 +591,13 @@ const GroupsTable: React.FC = () => {
                 setSelectedGroup(row.original)
                 setIsGroupSettingsPopupOpen(true)
               }}
-              className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 bg-gray-600 text-gray-400 rounded-full hover:bg-gray-500 hover:text-gray-300 transition-colors flex items-center justify-center"
-              title="Group Settings"
+              className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 bg-gray-600 text-gray-400 rounded-full hover:bg-gray-500 hover:text-gray-300 transition-colors flex items-center justify-center relative group overflow-visible"
             >
               <Settings className="w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 lg:w-2.5 lg:h-2.5" />
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                Group Settings
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+              </div>
             </button>
             <button
               onClick={(e) => {
@@ -597,10 +605,13 @@ const GroupsTable: React.FC = () => {
                 setEditingGroup(row.original)
                 setIsEditGroupPopupOpen(true)
               }}
-              className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors flex items-center justify-center"
-              title="Edit Group"
+              className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors flex items-center justify-center relative group overflow-visible"
             >
               <Edit className="w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 lg:w-2.5 lg:h-2.5" />
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                Edit Group
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+              </div>
             </button>
             <button
               onClick={(e) => {
@@ -608,10 +619,13 @@ const GroupsTable: React.FC = () => {
                 // TODO: Implement delete group
                 console.log('Delete group:', row.original)
               }}
-              className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors flex items-center justify-center"
-              title="Delete Group"
+              className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors flex items-center justify-center relative group overflow-visible"
             >
               <Trash2 className="w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 lg:w-2.5 lg:h-2.5" />
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                Delete Group
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+              </div>
             </button>
           </div>
         ),
@@ -700,28 +714,7 @@ const GroupsTable: React.FC = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-2">
-              <button className="inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs sm:text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                Download
-              </button>
-              <button className="inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs sm:text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
-                <Upload className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                Upload
-              </button>
-              <button className="inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs sm:text-sm leading-4 font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
-                <UserPlus className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                Add Group
-              </button>
-              <button className="inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs sm:text-sm leading-4 font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200">
-                <Settings className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                Settings
-              </button>
-              <button className="inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs sm:text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
-                <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                View
-              </button>
-            </div>
+           
           </div>
         )}
       </div>
@@ -732,32 +725,53 @@ const GroupsTable: React.FC = () => {
           {/* Left Section - Action Buttons */}
           <div className="flex items-center space-x-3">
             <div className="bg-gray-700 dark:bg-gray-600 rounded-lg p-2 flex items-center space-x-2 border border-gray-500 dark:border-gray-400 shadow-md">
-              <button className="p-2 text-white hover:bg-gray-600 dark:hover:bg-gray-500 rounded-md transition-colors duration-200 border border-transparent hover:border-gray-400" title="Download">
+              <button className="p-2 text-white hover:bg-gray-600 dark:hover:bg-gray-500 rounded-md transition-colors duration-200 border border-transparent hover:border-gray-400 relative group overflow-visible">
                 <Download className="w-4 h-4" />
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                  Download Groups Data
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
               </button>
-              <button className="p-2 text-white hover:bg-gray-600 dark:hover:bg-gray-500 rounded-md transition-colors duration-200 border border-transparent hover:border-gray-400" title="Upload">
+              <button className="p-2 text-white hover:bg-gray-600 dark:hover:bg-gray-500 rounded-md transition-colors duration-200 border border-transparent hover:border-gray-400 relative group overflow-visible">
                 <Upload className="w-4 h-4" />
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                  Upload Groups Data
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
               </button>
               <button 
                 onClick={() => setIsAddGroupPopupOpen(true)}
-                className="p-2 text-white hover:bg-gray-600 dark:hover:bg-gray-500 rounded-md transition-colors duration-200 border border-transparent hover:border-gray-400" 
-                title="Add Group"
+                className="p-2 text-white hover:bg-gray-600 dark:hover:bg-gray-500 rounded-md transition-colors duration-200 border border-transparent hover:border-gray-400 relative group overflow-visible" 
               >
                 <UserPlus className="w-4 h-4" />
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                  Add New Group
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
               </button>
-              <button className="p-2 text-white hover:bg-gray-600 dark:hover:bg-gray-500 rounded-md transition-colors duration-200 border border-transparent hover:border-gray-400" title="Settings">
+              <button className="p-2 text-white hover:bg-gray-600 dark:hover:bg-gray-500 rounded-md transition-colors duration-200 border border-transparent hover:border-gray-400 relative group overflow-visible">
                 <Settings className="w-4 h-4" />
-              </button>
-              <button className="p-2 text-white hover:bg-gray-600 dark:hover:bg-gray-500 rounded-md transition-colors duration-200 border border-transparent hover:border-gray-400" title="View">
-                <Eye className="w-4 h-4" />
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                  Group Settings
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
               </button>
               <button 
-                className={`p-2 text-white rounded-md transition-colors duration-200 border border-transparent ${
+                onClick={(e) => handleColumnVisibilityMenu(e, table)}
+                className="p-2 text-white hover:bg-gray-600 dark:hover:bg-gray-500 rounded-md transition-colors duration-200 border border-transparent hover:border-gray-400 relative group overflow-visible"
+              >
+                <Eye className="w-4 h-4" />
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                  Column Visibility
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
+              </button>
+              <button 
+                className={`p-2 text-white rounded-md transition-colors duration-200 border border-transparent relative group overflow-visible ${
                   Object.keys(rowSelection).length > 0 
                     ? 'bg-blue-600 hover:bg-blue-700 hover:border-blue-400' 
                     : 'bg-gray-600 hover:bg-gray-500 hover:border-gray-400 opacity-50 cursor-not-allowed'
                 }`} 
-                title="Tags"
                 disabled={Object.keys(rowSelection).length === 0}
                 onClick={() => {
                   if (Object.keys(rowSelection).length > 0) {
@@ -766,6 +780,10 @@ const GroupsTable: React.FC = () => {
                 }}
               >
                 <Tag className="w-4 h-4" />
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                  Manage Tags
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
               </button>
             </div>
           </div>
@@ -1478,6 +1496,13 @@ const GroupsTable: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Column Visibility Popup */}
+      <ColumnVisibilityPopup 
+        table={table}
+        columnVisibilityMenu={columnVisibilityMenu}
+        onClose={closeColumnVisibilityMenu}
+      />
     </div>
   )
 }

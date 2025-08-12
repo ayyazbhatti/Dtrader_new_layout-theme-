@@ -2,48 +2,24 @@ import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { 
   Users,
-  Bookmark,
   Bot,
-  Triangle,
   Settings,
   RefreshCw,
-  Plus,
   User,
-  Bell,
-  Download,
-  Upload,
-  Eye,
-  Edit,
-  Trash2,
-  MoreHorizontal,
   TrendingUp,
-  TrendingDown,
   Activity,
-  Shield,
   CreditCard,
   BarChart3,
   Calendar,
   Clock,
-  Mail,
   Phone,
-  Globe,
-  MapPin,
-  Star,
-  CheckCircle,
-  XCircle,
-  AlertCircle,
-  Info,
-  Search,
-  Filter,
-  ChevronUp,
-  ChevronDown,
-  X,
-  UserCheck,
-  UserPlus,
-  UserCog,
   Target,
   PhoneCall,
-  AlertTriangle
+  ChevronUp,
+  ChevronDown,
+  Search,
+  X,
+  Eye
 } from 'lucide-react'
 import DataTable from '../components/DataTable/DataTable'
 import GroupsTable from '../components/DataTable/GroupsTable'
@@ -54,7 +30,6 @@ const GeneralSettingSub: React.FC = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false)
   
   // Filter states
-  const [searchFilter, setSearchFilter] = useState('')
   const [activeUsersFilter, setActiveUsersFilter] = useState('')
   const [domainFilter, setDomainFilter] = useState('')
   const [groupFilter, setGroupFilter] = useState('')
@@ -69,11 +44,11 @@ const GeneralSettingSub: React.FC = () => {
         return {
           title: 'Group Management',
           description: 'Manage and monitor all trading groups and their settings',
-          icon: UserCheck,
+          icon: User,
           color: 'purple',
           stats: [
-            { title: 'Total Groups', value: '5', change: '+1', icon: UserCheck, color: 'purple' },
-            { title: 'Active Groups', value: '4', change: '+0', icon: CheckCircle, color: 'green' },
+            { title: 'Total Groups', value: '5', change: '+1', icon: User, color: 'purple' },
+            { title: 'Active Groups', value: '4', change: '+0', icon: User, color: 'green' },
             { title: 'Total Members', value: '155', change: '+12', icon: Users, color: 'blue' },
             { title: 'Total Balance', value: '$5.37M', change: '+8%', icon: CreditCard, color: 'emerald' },
             { title: 'Avg. Members', value: '31', change: '+2', icon: BarChart3, color: 'orange' },
@@ -84,11 +59,11 @@ const GeneralSettingSub: React.FC = () => {
         return {
           title: 'Manager Management',
           description: 'Manage and monitor all manager accounts and permissions',
-          icon: UserPlus,
+          icon: User,
           color: 'blue',
           stats: [
-            { title: 'Total Managers', value: '12', change: '+2', icon: UserPlus, color: 'blue' },
-            { title: 'Active Managers', value: '10', change: '+1', icon: CheckCircle, color: 'green' },
+            { title: 'Total Managers', value: '12', change: '+2', icon: User, color: 'blue' },
+            { title: 'Active Managers', value: '10', change: '+1', icon: User, color: 'green' },
             { title: 'Managed Users', value: '234', change: '+15', icon: Users, color: 'purple' },
             { title: 'Total Revenue', value: '$12.5K', change: '+18%', icon: CreditCard, color: 'emerald' },
             { title: 'Avg. Performance', value: '94.2%', change: '+3%', icon: BarChart3, color: 'orange' },
@@ -99,11 +74,11 @@ const GeneralSettingSub: React.FC = () => {
         return {
           title: 'Group Profiles',
           description: 'Manage group profiles and configuration settings',
-          icon: UserCog,
+          icon: Settings,
           color: 'indigo',
           stats: [
-            { title: 'Total Profiles', value: '8', change: '+1', icon: UserCog, color: 'indigo' },
-            { title: 'Active Profiles', value: '7', change: '+0', icon: CheckCircle, color: 'green' },
+            { title: 'Total Profiles', value: '8', change: '+1', icon: Settings, color: 'indigo' },
+            { title: 'Active Profiles', value: '7', change: '+0', icon: User, color: 'green' },
             { title: 'Custom Settings', value: '23', change: '+3', icon: Settings, color: 'purple' },
             { title: 'Profile Usage', value: '89%', change: '+5%', icon: BarChart3, color: 'emerald' },
             { title: 'Avg. Configs', value: '12', change: '+2', icon: Activity, color: 'orange' },
@@ -121,7 +96,7 @@ const GeneralSettingSub: React.FC = () => {
             { title: 'Active Calls', value: '8', change: '+2', icon: PhoneCall, color: 'blue' },
             { title: 'Call Duration', value: '2.3h', change: '+0.5h', icon: Clock, color: 'purple' },
             { title: 'Success Rate', value: '87%', change: '+3%', icon: TrendingUp, color: 'emerald' },
-            { title: 'Avg. Rating', value: '4.6', change: '+0.2', icon: Star, color: 'orange' },
+            { title: 'Avg. Rating', value: '4.6', change: '+0.2', icon: User, color: 'orange' },
             { title: 'Response Time', value: '2.1m', change: '-0.3m', icon: Activity, color: 'teal' }
           ]
         }
@@ -129,13 +104,13 @@ const GeneralSettingSub: React.FC = () => {
         return {
           title: 'Agent Management',
           description: 'Manage and monitor all support agents and their performance',
-          icon: UserCog,
+          icon: User,
           color: 'teal',
           stats: [
-            { title: 'Total Agents', value: '18', change: '+3', icon: UserCog, color: 'teal' },
-            { title: 'Active Agents', value: '15', change: '+2', icon: CheckCircle, color: 'green' },
+            { title: 'Total Agents', value: '18', change: '+3', icon: User, color: 'teal' },
+            { title: 'Active Agents', value: '15', change: '+2', icon: User, color: 'green' },
             { title: 'Tickets Handled', value: '89', change: '+12', icon: Activity, color: 'blue' },
-            { title: 'Avg. Rating', value: '4.7', change: '+0.1', icon: Star, color: 'emerald' },
+            { title: 'Avg. Rating', value: '4.7', change: '+0.1', icon: User, color: 'emerald' },
             { title: 'Response Time', value: '1.8m', change: '-0.2m', icon: Clock, color: 'orange' },
             { title: 'Success Rate', value: '93.2%', change: '+2%', icon: TrendingUp, color: 'purple' }
           ]
@@ -148,8 +123,8 @@ const GeneralSettingSub: React.FC = () => {
           color: 'orange',
           stats: [
             { title: 'Total Leads', value: '234', change: '+18', icon: Target, color: 'orange' },
-            { title: 'New Leads', value: '45', change: '+8', icon: UserPlus, color: 'blue' },
-            { title: 'Converted', value: '67', change: '+12', icon: CheckCircle, color: 'green' },
+            { title: 'New Leads', value: '45', change: '+8', icon: User, color: 'blue' },
+            { title: 'Converted', value: '67', change: '+12', icon: User, color: 'green' },
             { title: 'Conversion Rate', value: '28.6%', change: '+2.1%', icon: TrendingUp, color: 'emerald' },
             { title: 'Avg. Value', value: '$2.3K', change: '+$150', icon: CreditCard, color: 'purple' },
             { title: 'Response Time', value: '3.2m', change: '-0.5m', icon: Clock, color: 'teal' }
@@ -167,7 +142,7 @@ const GeneralSettingSub: React.FC = () => {
             { title: 'Avg. Duration', value: '4.2m', change: '+0.3m', icon: Clock, color: 'purple' },
             { title: 'Success Rate', value: '91%', change: '+2%', icon: TrendingUp, color: 'emerald' },
             { title: 'Follow-ups', value: '45', change: '+8', icon: RefreshCw, color: 'orange' },
-            { title: 'Quality Score', value: '8.7', change: '+0.2', icon: Star, color: 'teal' }
+            { title: 'Quality Score', value: '8.7', change: '+0.2', icon: User, color: 'teal' }
           ]
         }
       case 'appointments':
@@ -179,9 +154,9 @@ const GeneralSettingSub: React.FC = () => {
           stats: [
             { title: 'Total Appointments', value: '89', change: '+12', icon: Calendar, color: 'pink' },
             { title: 'Today\'s Meetings', value: '7', change: '+2', icon: Clock, color: 'blue' },
-            { title: 'Confirmed', value: '67', change: '+8', icon: CheckCircle, color: 'green' },
-            { title: 'Pending', value: '12', change: '+3', icon: AlertCircle, color: 'orange' },
-            { title: 'Cancelled', value: '3', change: '-1', icon: XCircle, color: 'red' },
+            { title: 'Confirmed', value: '67', change: '+8', icon: User, color: 'green' },
+            { title: 'Pending', value: '12', change: '+3', icon: User, color: 'orange' },
+            { title: 'Cancelled', value: '3', change: '-1', icon: User, color: 'red' },
             { title: 'Success Rate', value: '94.4%', change: '+1%', icon: TrendingUp, color: 'teal' }
           ]
         }
@@ -193,7 +168,7 @@ const GeneralSettingSub: React.FC = () => {
           color: 'blue',
           stats: [
     { title: 'Total Users', value: '1,234', change: '+12%', icon: Users, color: 'blue' },
-    { title: 'Active Users', value: '892', change: '+8%', icon: CheckCircle, color: 'green' },
+    { title: 'Active Users', value: '892', change: '+8%', icon: User, color: 'green' },
     { title: 'Bot Users', value: '567', change: '+15%', icon: Bot, color: 'purple' },
     { title: 'Revenue', value: '$45,678', change: '+23%', icon: CreditCard, color: 'emerald' },
     { title: 'Avg. Balance', value: '$2,456', change: '+5%', icon: BarChart3, color: 'orange' },
@@ -237,7 +212,7 @@ const GeneralSettingSub: React.FC = () => {
           >
             <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
               <div className="p-1.5 sm:p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex-shrink-0">
-                <Filter className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
+                <User className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="min-w-0 flex-1">
                 <h2 className="text-sm sm:text-base lg:text-lg font-semibold text-gray-900 dark:text-white">Advanced Filters</h2>

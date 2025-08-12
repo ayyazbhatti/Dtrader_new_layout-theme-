@@ -405,7 +405,7 @@ const EditPositionPopup: React.FC<EditPositionPopupProps> = ({ position, isOpen,
 }
 
 // OrderTable component
-const OrderTable: React.FC<{ data: OrderData[]; searchQuery?: string; startDate?: string; endDate?: string }> = ({ data, searchQuery = '', startDate = '', endDate = '' }) => {
+const OrderTable: React.FC<{ data: OrderData[]; searchQuery?: string }> = ({ data, searchQuery = '' }) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [pagination, setPagination] = useState<PaginationState>({
@@ -609,7 +609,7 @@ const OrderTable: React.FC<{ data: OrderData[]; searchQuery?: string; startDate?
 }
 
 // Deal History Table Component
-const DealHistoryTable: React.FC<{ data: DealHistoryData[]; searchQuery?: string; startDate?: string; endDate?: string }> = ({ data, searchQuery = '', startDate = '', endDate = '' }) => {
+const DealHistoryTable: React.FC<{ data: DealHistoryData[]; searchQuery?: string }> = ({ data, searchQuery = '' }) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [pagination, setPagination] = useState<PaginationState>({
@@ -2815,8 +2815,6 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                     <OrderTable 
                       data={mockOrderData} 
                       searchQuery={orderSearchQuery}
-                      startDate=""
-                      endDate=""
                     />
                   </div>
                 </div>
@@ -2943,8 +2941,6 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                     <DealHistoryTable 
                       data={mockDealHistoryData} 
                       searchQuery={dealHistorySearchQuery}
-                      startDate=""
-                      endDate=""
                     />
                   </div>
                 </div>

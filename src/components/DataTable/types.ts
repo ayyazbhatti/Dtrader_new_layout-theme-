@@ -20,6 +20,17 @@ export interface UserData {
   showBotSettings: boolean
 }
 
+export interface ManagerData {
+  id: string
+  name: string
+  email: string
+  role: string
+  domain: string
+  status: 'active' | 'inactive'
+  createdAt: string
+  lastLogin: string
+}
+
 export interface ContextMenuState {
   show: boolean
   x: number

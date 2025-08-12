@@ -23,6 +23,8 @@ import {
 } from 'lucide-react'
 import DataTable from '../components/DataTable/DataTable'
 import GroupsTable from '../components/DataTable/GroupsTable'
+import GroupProfilesTable from '../components/DataTable/GroupProfilesTable'
+import ManagerTable from '../components/DataTable/ManagerTable'
 
 const GeneralSettingSub: React.FC = () => {
   const { subPage } = useParams<{ subPage: string }>()
@@ -200,6 +202,10 @@ const GeneralSettingSub: React.FC = () => {
     switch (subPage) {
       case 'groups':
         return <GroupsTable />
+      case 'group-profiles':
+        return <GroupProfilesTable />
+      case 'manager':
+        return <ManagerTable />
       case 'user':
       default:
   return (

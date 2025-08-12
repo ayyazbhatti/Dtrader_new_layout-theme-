@@ -2,7 +2,7 @@
 export { default as DataTable } from './DataTable'
 
 // Types
-export type { UserData, ContextMenuState, FilterConfig } from './types'
+export type { UserData, ManagerData, ContextMenuState, FilterConfig } from './types'
 
 // Utilities
 export {
@@ -45,6 +45,14 @@ export { AddNewUserPopup } from './AddNewUserPopup'
 
 // User Details Components
 export { default as UserDetailsPopup } from './UserDetailsPopup'
+
+// Manager Details Components
+export { default as ManagerDetailsPopup } from './ManagerDetailsPopup'
+export { default as AddManagerPopup } from './AddManagerPopup'
+
+// Group Components
+export { default as GroupProfilesTable } from './GroupProfilesTable'
+export { default as GroupSettingsDetailsPopup } from './GroupSettingsDetailsPopup'
 
 // Constants
 export {

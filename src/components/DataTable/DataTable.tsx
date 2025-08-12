@@ -2349,7 +2349,11 @@ const DataTable: React.FC = () => {
                         <button
                           key={pageNumber}
                           onClick={() => table.setPageIndex(pageNumber)}
-                          className={`pagination-button ${pageNumber === pageIndex ? 'active' : ''}`}
+                          className={`px-2 py-1.5 text-xs font-medium rounded-md transition-colors duration-200 ${
+                            pageNumber === pageIndex
+                              ? 'bg-blue-600 text-white border border-blue-600'
+                              : 'text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200'
+                          } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed min-w-[2rem] min-h-[2rem]`}
                         >
                           {pageNumber + 1}
                         </button>
@@ -2359,24 +2363,24 @@ const DataTable: React.FC = () => {
                 )}
 
                 {/* Navigation buttons */}
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
                   {/* First/Previous buttons */}
                   <div className="flex items-center space-x-1">
                     <button
                       onClick={() => table.setPageIndex(0)}
                       disabled={!table.getCanPreviousPage()}
-                      className="pagination-nav"
+                      className="px-1.5 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-w-[2rem] min-h-[2rem]"
                       title="First page"
                     >
-                      <ChevronsLeft className="w-4 h-4" />
+                      <ChevronsLeft className="w-3 h-3" />
                     </button>
                     <button
                       onClick={() => table.previousPage()}
                       disabled={!table.getCanPreviousPage()}
-                      className="pagination-nav"
+                      className="px-1.5 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-w-[2rem] min-h-[2rem]"
                       title="Previous page"
                     >
-                      <ChevronLeft className="w-4 h-4" />
+                      <ChevronLeft className="w-3 h-3" />
                     </button>
                   </div>
 
@@ -2385,18 +2389,18 @@ const DataTable: React.FC = () => {
                     <button
                       onClick={() => table.nextPage()}
                       disabled={!table.getCanNextPage()}
-                      className="pagination-nav"
+                      className="px-1.5 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-w-[2rem] min-h-[2rem]"
                       title="Next page"
                     >
-                      <ChevronRight className="w-4 h-4" />
+                      <ChevronRight className="w-3 h-3" />
                     </button>
                     <button
                       onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                       disabled={!table.getCanNextPage()}
-                      className="pagination-nav"
+                      className="px-1.5 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-w-[2rem] min-h-[2rem]"
                       title="Last page"
                     >
-                      <ChevronsRight className="w-4 h-4" />
+                      <ChevronsRight className="w-3 h-3" />
                     </button>
                   </div>
                 </div>

@@ -458,18 +458,7 @@ const GroupsTable: React.FC = () => {
         enableHiding: true,
       }),
 
-      // Stop Out Level column
-      columnHelper.display({
-        id: 'stopOutLevel',
-        header: 'Stop Out %',
-        cell: ({ row }) => <span>{row.original.stopOutLevel || '0.00'}</span>,
-        size: 120,
-        enableGlobalFilter: true,
-        enableResizing: true,
-        enableHiding: true,
-      }),
-
-      // Price Stream column
+      // Price Stream column (hidden by default)
       columnHelper.display({
         id: 'priceStream',
         header: 'Price Feed',
@@ -493,67 +482,7 @@ const GroupsTable: React.FC = () => {
         enableGlobalFilter: true,
         enableResizing: true,
         enableHiding: true,
-      }),
-
-      // Member Count column
-      columnHelper.accessor('memberCount', {
-        header: 'Members',
-        cell: ({ getValue }) => <span className="font-medium">{getValue()}</span>,
-        size: 100,
-        enableGlobalFilter: true,
-        enableResizing: true,
-        enableHiding: true,
-      }),
-
-      // Total Balance column
-      columnHelper.accessor('totalBalance', {
-        header: 'Balance',
-        cell: ({ getValue }) => (
-          <span className="font-mono">${getValue().toLocaleString()}</span>
-        ),
-        size: 120,
-        enableGlobalFilter: true,
-        enableResizing: true,
-        enableHiding: true,
-      }),
-
-      // Total Equity column
-      columnHelper.accessor('totalEquity', {
-        header: 'Equity',
-        cell: ({ getValue }) => (
-          <span className="font-mono">${getValue().toLocaleString()}</span>
-        ),
-        size: 120,
-        enableGlobalFilter: true,
-        enableResizing: true,
-        enableHiding: true,
-      }),
-
-      // Status column
-      columnHelper.accessor('status', {
-        header: 'Status',
-        cell: ({ getValue }) => (
-          <div className="flex items-center space-x-2">
-            <div className={`w-2.5 h-2.5 rounded-full ${getValue() === 'active' ? 'bg-green-500' : 'bg-gray-400'}`} />
-            <span className={`text-xs font-medium ${getValue() === 'active' ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
-              {getValue() === 'active' ? 'Active' : 'Inactive'}
-            </span>
-          </div>
-        ),
-        size: 100,
-        enableGlobalFilter: true,
-        enableResizing: true,
-        enableHiding: true,
-      }),
-
-      // Created At column
-      columnHelper.accessor('createdAt', {
-        header: 'Created',
-        cell: ({ getValue }) => <span>{new Date(getValue()).toLocaleDateString()}</span>,
-        size: 100,
-        enableGlobalFilter: true,
-        enableResizing: true,
-        enableHiding: true,
+        meta: { hidden: true }, // Hidden by default
       }),
 
       // Description column
@@ -573,7 +502,7 @@ const GroupsTable: React.FC = () => {
             </span>
           );
         },
-        size: 200,
+        size: 300,
         enableGlobalFilter: true,
         enableResizing: true,
         enableHiding: true,
@@ -640,6 +569,20 @@ const GroupsTable: React.FC = () => {
   const table = useReactTable({
     data: groupData,
     columns,
+    initialState: {
+      columnVisibility: {
+        stopOutLevel: false,
+        priceStream: false,
+        memberCount: false,
+        totalBalance: false,
+        totalEquity: false,
+        status: false,
+        createdAt: false,
+      },
+      pagination: {
+        pageSize: 10,
+      },
+    },
     state: {
       sorting,
       columnVisibility,
@@ -814,46 +757,39 @@ const GroupsTable: React.FC = () => {
       </div>
 
       {/* Groups Table */}
-      <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
+          <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-700">
               {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map(header => (
                     <th
                       key={header.id}
-                      className={`px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-600 ${
-                        header.column.getCanSort() ? 'cursor-pointer select-none hover:bg-gray-100 dark:hover:bg-gray-600' : ''
+                      className={`data-table-header px-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer select-none relative border-r border-gray-200 dark:border-gray-600 ${
+                        header.column.getCanSort() ? 'hover:bg-gray-100 dark:hover:bg-gray-600' : ''
                       }`}
-                      style={{ width: header.getSize() }}
+                      style={{ 
+                        width: header.getSize(), 
+                        minWidth: '60px'
+                      }}
                       onClick={header.column.getToggleSortingHandler()}
                     >
                       <div className="flex items-center justify-between">
-                        <div className="group relative">
-                          <span>
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                          </span>
-                          {/* Tooltip */}
-                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 dark:bg-gray-700 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
-                            {getColumnTooltip(header.column.id)}
-                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
-                          </div>
+                        <span>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</span>
+                        <div className="flex items-center space-x-1">
+                          {header.column.getCanSort() && (
+                            <div className="ml-2">
+                              {header.column.getIsSorted() === 'asc' ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : header.column.getIsSorted() === 'desc' ? (
+                                <ChevronDown className="w-4 h-4" />
+                              ) : (
+                                <div className="w-4 h-4" />
+                              )}
+                            </div>
+                          )}
                         </div>
-                        {header.column.getCanSort() && (
-                          <div className="ml-2">
-                            {header.column.getIsSorted() === 'asc' ? (
-                              <ChevronUp className="w-3 h-3 sm:w-4 sm:h-4" />
-                            ) : header.column.getIsSorted() === 'desc' ? (
-                              <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4" />
-                            ) : (
-                              <div className="w-3 h-3 sm:w-4 sm:h-4" />
-                            )}
-                          </div>
-                        )}
                       </div>
                     </th>
                   ))}
@@ -864,20 +800,17 @@ const GroupsTable: React.FC = () => {
               {table.getRowModel().rows.map((row, index) => (
                 <tr
                   key={row.id}
-                  className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 cursor-pointer ${
+                  className={`data-table-row hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 cursor-pointer ${
                     index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/50 dark:bg-gray-800/50'
                   }`}
-                  style={{ height: window.innerWidth < 768 ? '10.2px' : '34px' }}
                 >
                   {row.getVisibleCells().map(cell => (
                     <td
                       key={cell.id}
-                      className="px-2 sm:px-3 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-600"
+                      className="data-table-cell px-2 text-xs text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-gray-600"
                       style={{ 
                         width: cell.column.getSize(), 
-                        minWidth: '80px',
-                        paddingTop: window.innerWidth < 768 ? '0.5px' : '6px',
-                        paddingBottom: window.innerWidth < 768 ? '0.5px' : '6px'
+                        minWidth: '60px'
                       }}
                     >
                       {flexRender(
@@ -941,7 +874,11 @@ const GroupsTable: React.FC = () => {
                       <button
                         key={0}
                         onClick={() => table.setPageIndex(0)}
-                        className={`pagination-button text-xs sm:text-sm ${currentPage === 0 ? 'active' : ''}`}
+                        className={`px-2 py-1.5 text-xs font-medium rounded-md transition-colors duration-200 ${
+                          currentPage === 0
+                            ? 'bg-blue-600 text-white border border-blue-600'
+                            : 'text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200'
+                        } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed min-w-[2rem] min-h-[2rem]`}
                       >
                         1
                       </button>
@@ -951,7 +888,7 @@ const GroupsTable: React.FC = () => {
                   // Show ellipsis if needed
                   if (currentPage > 3) {
                     pages.push(
-                      <span key="ellipsis1" className="px-1 text-gray-500 text-xs sm:text-sm">...</span>
+                      <span key="ellipsis1" className="px-1 text-gray-500 text-xs">...</span>
                     )
                   }
                   
@@ -962,7 +899,11 @@ const GroupsTable: React.FC = () => {
                         <button
                           key={i}
                           onClick={() => table.setPageIndex(i)}
-                          className={`pagination-button text-xs sm:text-sm ${currentPage === i ? 'active' : ''}`}
+                          className={`px-2 py-1.5 text-xs font-medium rounded-md transition-colors duration-200 ${
+                            currentPage === i
+                              ? 'bg-blue-600 text-white border border-blue-600'
+                              : 'text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200'
+                          } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed min-w-[2rem] min-h-[2rem]`}
                         >
                           {i + 1}
                         </button>
@@ -973,7 +914,7 @@ const GroupsTable: React.FC = () => {
                   // Show ellipsis if needed
                   if (currentPage < pageCount - 4) {
                     pages.push(
-                      <span key="ellipsis2" className="px-1 text-gray-500 text-xs sm:text-sm">...</span>
+                      <span key="ellipsis2" className="px-1 text-gray-500 text-xs">...</span>
                     )
                   }
                   
@@ -983,7 +924,11 @@ const GroupsTable: React.FC = () => {
                       <button
                         key={pageCount - 1}
                         onClick={() => table.setPageIndex(pageCount - 1)}
-                        className={`pagination-button text-xs sm:text-sm ${currentPage === pageCount - 1 ? 'active' : ''}`}
+                        className={`px-2 py-1.5 text-xs font-medium rounded-md transition-colors duration-200 ${
+                          currentPage === pageCount - 1
+                            ? 'bg-blue-600 text-white border border-blue-600'
+                            : 'text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200'
+                        } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed min-w-[2rem] min-h-[2rem]`}
                       >
                         {pageCount}
                       </button>
@@ -995,24 +940,24 @@ const GroupsTable: React.FC = () => {
               </div>
               
               {/* Navigation buttons */}
-              <div className="flex items-center space-x-1 sm:space-x-2">
+              <div className="flex items-center space-x-1">
                 {/* First/Previous buttons */}
                 <div className="flex items-center space-x-1">
                   <button
                     onClick={() => table.setPageIndex(0)}
                     disabled={!table.getCanPreviousPage()}
-                    className="pagination-nav text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-1.5"
+                    className="px-1.5 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-w-[2rem] min-h-[2rem]"
                     title="First Page"
                   >
-                    <ChevronsLeft className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <ChevronsLeft className="w-3 h-3" />
                   </button>
                   <button
                     onClick={() => table.previousPage()}
                     disabled={!table.getCanPreviousPage()}
-                    className="pagination-nav text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-1.5"
+                    className="px-1.5 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-w-[2rem] min-h-[2rem]"
                     title="Previous Page"
                   >
-                    <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <ChevronLeft className="w-3 h-3" />
                   </button>
                 </div>
 
@@ -1021,18 +966,18 @@ const GroupsTable: React.FC = () => {
                   <button
                     onClick={() => table.nextPage()}
                     disabled={!table.getCanNextPage()}
-                    className="pagination-nav text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-1.5"
+                    className="px-1.5 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-w-[2rem] min-h-[2rem]"
                     title="Next Page"
                   >
-                    <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <ChevronRight className="w-3 h-3" />
                   </button>
                   <button
                     onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                     disabled={!table.getCanNextPage()}
-                    className="pagination-nav text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-1.5"
+                    className="px-1.5 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-w-[2rem] min-h-[2rem]"
                     title="Last Page"
                   >
-                    <ChevronsRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <ChevronsRight className="w-3 h-3" />
                   </button>
                 </div>
               </div>

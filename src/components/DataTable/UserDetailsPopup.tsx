@@ -41,101 +41,101 @@ const PositionDetailsPopup: React.FC<PositionDetailsPopupProps> = ({ position, i
   if (!isOpen || !position) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
       <div className="bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-700">
-          <h3 className="text-lg font-semibold text-white">Position Details</h3>
+        <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-700">
+          <h3 className="text-base sm:text-lg font-semibold text-white">Position Details</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-gray-400 hover:text-white transition-colors p-1"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-4">
-          <div className="grid grid-cols-4 gap-3">
+        <div className="p-3 sm:p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
             {/* Row 1 */}
             <div className="space-y-1">
               <label className="text-xs text-gray-400 flex items-center gap-1">
                 Account ID
                 <ExternalLink className="w-3 h-3" />
               </label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">71836450</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">71836450</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Account Name</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">MuhammadAyyaz</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">MuhammadAyyaz</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Position ID</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.positionId}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.positionId}</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Open Time</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.openTime}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.openTime}</div>
             </div>
 
             {/* Row 2 */}
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Symbol</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.symbol}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.symbol}</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Is Bot Trade</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">Yes</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">Yes</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Entry Price</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">0.91610000</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">0.91610000</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Account Type</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">cfd_hedging</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">cfd_hedging</div>
             </div>
 
             {/* Row 3 */}
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Exit Price</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">0.92190000</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">0.92190000</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Quantity</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">498.07215220</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">498.07215220</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Direction</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm capitalize">{position.type}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm capitalize">{position.type}</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">T/P (Take Profit)</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">0.92190000</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">0.92190000</div>
             </div>
 
             {/* Row 4 */}
             <div className="space-y-1">
               <label className="text-xs text-gray-400">S/L (Stop Loss)</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">0.00000000</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">0.00000000</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Margin</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">4.00000000</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">4.00000000</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Trade Type</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">units</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">units</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Gross Realized PnL</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">Not Provided</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">Not Provided</div>
             </div>
 
             {/* Row 5 */}
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Realized PnL</label>
-              <div className={`px-3 py-2 rounded text-sm font-medium ${
+              <div className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded text-xs sm:text-sm font-medium ${
                 position.realizedPnL >= 0 ? 'bg-green-900 text-green-400' : 'bg-red-900 text-red-400'
               }`}>
                 {position.realizedPnL.toFixed(2)}
@@ -143,15 +143,15 @@ const PositionDetailsPopup: React.FC<PositionDetailsPopupProps> = ({ position, i
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Close Time</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.closeTime}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.closeTime}</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Swap Fee</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.swapFee || '0.00'}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.swapFee || '0.00'}</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Device Info - Open</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.deviceInfoOpen}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.deviceInfoOpen}</div>
             </div>
           </div>
         </div>
@@ -171,95 +171,95 @@ const OpenPositionDetailsPopup: React.FC<OpenPositionDetailsPopupProps> = ({ pos
   if (!isOpen || !position) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
       <div className="bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-700">
-          <h3 className="text-lg font-semibold text-white">Open Position Details</h3>
+        <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-700">
+          <h3 className="text-base sm:text-lg font-semibold text-white">Open Position Details</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-gray-400 hover:text-white transition-colors p-1"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-4">
-          <div className="grid grid-cols-4 gap-3">
+        <div className="p-3 sm:p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
             {/* Row 1 */}
             <div className="space-y-1">
               <label className="text-xs text-gray-400 flex items-center gap-1">
                 Account ID
                 <ExternalLink className="w-3 h-3" />
               </label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">4557622101</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">4557622101</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Account Name</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">aayz</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">aayz</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Position ID</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.positionId}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.positionId}</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Open Time</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.openTime}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.openTime}</div>
             </div>
 
             {/* Row 2 */}
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Symbol</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.symbol}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.symbol}</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Is Bot Trade</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">Yes</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">Yes</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Entry Price</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">184.43000000</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">184.43000000</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Account Type</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">cfd_hedging</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">cfd_hedging</div>
             </div>
 
             {/* Row 3 */}
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Quantity</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.quantity}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.quantity}</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Direction</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm capitalize">{position.direction}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm capitalize">{position.direction}</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">T/P</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.takeProfit || '---'}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.takeProfit || '---'}</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">S/L</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.stopLoss || '---'}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.stopLoss || '---'}</div>
             </div>
 
             {/* Row 4 */}
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Margin</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.marginUsed.toFixed(8)}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.marginUsed.toFixed(8)}</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Trade Type</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">units</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">units</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Type</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm capitalize">{position.type}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm capitalize">{position.type}</div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-gray-400">Device Info</label>
-              <div className="bg-gray-700 px-3 py-2 rounded text-white text-sm">{position.deviceInfo}</div>
+              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.deviceInfo}</div>
             </div>
           </div>
         </div>
@@ -279,52 +279,52 @@ const EditPositionPopup: React.FC<EditPositionPopupProps> = ({ position, isOpen,
   if (!isOpen || !position) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
       <div className="bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-700">
-          <h3 className="text-lg font-semibold text-white">Edit Position</h3>
+        <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-700">
+          <h3 className="text-base sm:text-lg font-semibold text-white">Edit Position</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-gray-400 hover:text-white transition-colors p-1"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-4">
-          <form className="space-y-6">
+        <div className="p-3 sm:p-4">
+          <form className="space-y-4 sm:space-y-6">
             {/* First Row */}
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {/* User */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white">User</label>
+                <label className="block text-xs sm:text-sm font-medium text-white">User</label>
                 <input
                   type="text"
                   value="aayz - 4557622"
                   readOnly
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm cursor-not-allowed"
+                  className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm cursor-not-allowed"
                 />
               </div>
 
               {/* Quantity */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white">Quantity*</label>
+                <label className="block text-xs sm:text-sm font-medium text-white">Quantity*</label>
                 <input
                   type="number"
                   defaultValue={position.quantity}
                   step="0.00000001"
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               {/* Direction */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white">Direction</label>
+                <label className="block text-xs sm:text-sm font-medium text-white">Direction</label>
                 <select
                   defaultValue={position.direction}
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="buy">Buy</option>
                   <option value="sell">Sell</option>
@@ -333,66 +333,66 @@ const EditPositionPopup: React.FC<EditPositionPopupProps> = ({ position, isOpen,
 
               {/* Entry Price */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white">Entry Price*</label>
+                <label className="block text-xs sm:text-sm font-medium text-white">Entry Price*</label>
                 <input
                   type="number"
                   defaultValue="184.43000000"
                   step="0.00000001"
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
 
             {/* Second Row */}
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {/* Stop Loss */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white">Stop Loss</label>
+                <label className="block text-xs sm:text-sm font-medium text-white">Stop Loss</label>
                 <input
                   type="number"
                   placeholder="Enter Stop Loss"
                   step="0.00000001"
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               {/* Take Profit */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white">Take Profit</label>
+                <label className="block text-xs sm:text-sm font-medium text-white">Take Profit</label>
                 <input
                   type="number"
                   defaultValue="184.56"
                   step="0.00000001"
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               {/* Opening Date Time */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white">Opening Date Time*</label>
+                <label className="block text-xs sm:text-sm font-medium text-white">Opening Date Time*</label>
                 <input
                   type="date"
                   defaultValue="2025-08-11"
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               {/* Comment */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white">Comment</label>
+                <label className="block text-xs sm:text-sm font-medium text-white">Comment</label>
                 <input
                   type="text"
                   placeholder="Description"
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
 
             {/* Submit Button */}
-            <div className="flex justify-end pt-4">
+            <div className="flex justify-center sm:justify-end pt-2 sm:pt-4">
               <button
                 type="submit"
-                className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors font-medium"
+                className="w-full sm:w-auto px-4 sm:px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors font-medium text-sm sm:text-base"
               >
                 Submit
               </button>
@@ -419,23 +419,23 @@ const OrderTable: React.FC<{ data: OrderData[]; searchQuery?: string; startDate?
     columnHelper.accessor('accountId', {
       header: 'Account ID',
       cell: ({ getValue }) => (
-        <div className="text-blue-400 underline cursor-pointer hover:text-blue-300">
+        <div className="text-blue-400 underline cursor-pointer hover:text-blue-300 text-xs sm:text-sm">
           {getValue()}
         </div>
       ),
     }),
     columnHelper.accessor('accountName', {
       header: 'Account Name',
-      cell: ({ getValue }) => <div className="text-white">{getValue()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue()}</div>,
     }),
     columnHelper.accessor('orderId', {
       header: 'Order ID',
-      cell: ({ getValue }) => <div className="text-white">{getValue()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue()}</div>,
     }),
     columnHelper.accessor('status', {
       header: 'Status',
       cell: ({ getValue }) => (
-        <div className={`px-2 py-1 rounded text-xs font-medium ${
+        <div className={`px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs font-medium ${
           getValue() === 'filled' ? 'bg-green-600 text-white' :
           getValue() === 'cancelled' ? 'bg-red-600 text-white' :
           getValue() === 'pending' ? 'bg-yellow-600 text-white' :
@@ -447,12 +447,12 @@ const OrderTable: React.FC<{ data: OrderData[]; searchQuery?: string; startDate?
     }),
     columnHelper.accessor('symbol', {
       header: 'Symbol',
-      cell: ({ getValue }) => <div className="text-white">{getValue()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue()}</div>,
     }),
     columnHelper.accessor('direction', {
       header: 'Direction',
       cell: ({ getValue }) => (
-        <div className={`px-2 py-1 rounded text-xs font-medium ${
+        <div className={`px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs font-medium ${
           getValue() === 'buy' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
         }`}>
           {getValue().toUpperCase()}
@@ -461,31 +461,31 @@ const OrderTable: React.FC<{ data: OrderData[]; searchQuery?: string; startDate?
     }),
     columnHelper.accessor('volume', {
       header: 'Volume',
-      cell: ({ getValue }) => <div className="text-white">{getValue().toLocaleString()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue().toLocaleString()}</div>,
     }),
     columnHelper.accessor('executionPrice', {
       header: 'Execution Price',
-      cell: ({ getValue }) => <div className="text-white">{getValue().toLocaleString()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue().toLocaleString()}</div>,
     }),
     columnHelper.accessor('expectedPrice', {
       header: 'Expected Price',
-      cell: ({ getValue }) => <div className="text-white">{getValue().toLocaleString()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue().toLocaleString()}</div>,
     }),
     columnHelper.accessor('submittedTime', {
       header: 'Submitted Time',
-      cell: ({ getValue }) => <div className="text-white">{getValue()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue()}</div>,
     }),
     columnHelper.accessor('resolvedTime', {
       header: 'Resolved Time',
-      cell: ({ getValue }) => <div className="text-white">{getValue() || '---'}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue() || '---'}</div>,
     }),
     columnHelper.accessor('desiredStopLoss', {
       header: 'Desired SL',
-      cell: ({ getValue }) => <div className="text-white">{getValue() ? getValue()?.toLocaleString() : '---'}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue() ? getValue()?.toLocaleString() : '---'}</div>,
     }),
     columnHelper.accessor('desiredTakeProfit', {
       header: 'Desired TP',
-      cell: ({ getValue }) => <div className="text-white">{getValue() ? getValue()?.toLocaleString() : '---'}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue() ? getValue()?.toLocaleString() : '---'}</div>,
     }),
   ]
 
@@ -512,14 +512,14 @@ const OrderTable: React.FC<{ data: OrderData[]; searchQuery?: string; startDate?
     <div className="space-y-1">
       {/* Table */}
       <div className="overflow-auto max-h-[400px] scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 hover:scrollbar-thumb-gray-500 border border-gray-700 rounded-lg">
-        <table className="w-full min-w-[1200px] text-xs">
+        <table className="w-full min-w-[1000px] sm:min-w-[1200px] text-xs">
           <thead className="bg-gray-700 text-white sticky top-0 z-10">
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                   <th
                     key={header.id}
-                    className="px-2 py-1 text-left font-medium cursor-pointer hover:bg-gray-600 transition-colors border-r border-gray-600 first:border-l border-gray-600"
+                    className="px-1 sm:px-2 py-1 text-left font-medium cursor-pointer hover:bg-gray-600 transition-colors border-r border-gray-600 first:border-l border-gray-600"
                     onClick={header.column.getToggleSortingHandler()}
                   >
                     <div className="flex items-center space-x-1">
@@ -539,7 +539,7 @@ const OrderTable: React.FC<{ data: OrderData[]; searchQuery?: string; startDate?
             {table.getRowModel().rows.map(row => (
               <tr key={row.id} className="hover:bg-gray-700 transition-colors">
                 {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="px-2 py-1 border-r border-gray-600 first:border-l border-gray-600">
+                  <td key={cell.id} className="px-1 sm:px-2 py-1 border-r border-gray-600 first:border-l border-gray-600">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
@@ -554,7 +554,7 @@ const OrderTable: React.FC<{ data: OrderData[]; searchQuery?: string; startDate?
         <div className="table-footer-content">
           {/* Left side - Results info and page size selector */}
           <div className="table-footer-left">
-            <span className="results-info">
+            <span className="results-info text-xs sm:text-sm">
               Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{' '}
               {Math.min(
                 (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
@@ -565,13 +565,13 @@ const OrderTable: React.FC<{ data: OrderData[]; searchQuery?: string; startDate?
             
             {/* Page size selector */}
             <div className="page-size-selector">
-              <span className="page-size-label">Show:</span>
+              <span className="page-size-label text-xs sm:text-sm">Show:</span>
               <select
                 value={table.getState().pagination.pageSize}
                 onChange={e => {
                   table.setPageSize(Number(e.target.value))
                 }}
-                className="page-size-select"
+                className="page-size-select text-xs sm:text-sm"
               >
                 {[10, 20, 30, 50].map(pageSize => (
                   <option key={pageSize} value={pageSize}>
@@ -579,24 +579,24 @@ const OrderTable: React.FC<{ data: OrderData[]; searchQuery?: string; startDate?
                   </option>
                 ))}
               </select>
-              <span className="page-size-label">entries</span>
+              <span className="page-size-label text-xs sm:text-sm">entries</span>
             </div>
           </div>
           
           {/* Right side - Pagination controls */}
           <div className="table-footer-right">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1 sm:space-x-2">
               <button
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
-                className="pagination-nav"
+                className="pagination-nav text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-1.5"
               >
                 Previous
               </button>
               <button
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
-                className="pagination-nav"
+                className="pagination-nav text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-1.5"
               >
                 Next
               </button>
@@ -622,28 +622,28 @@ const DealHistoryTable: React.FC<{ data: DealHistoryData[]; searchQuery?: string
   const columns = [
     columnHelper.accessor('dealId', {
       header: 'Deal ID',
-      cell: ({ getValue }) => <div className="text-white">{getValue()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue()}</div>,
     }),
     columnHelper.accessor('resultingPosition', {
       header: 'Resulting Posi...',
-      cell: ({ getValue }) => <div className="text-white">{getValue()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue()}</div>,
     }),
     columnHelper.accessor('accountId', {
       header: 'Account ID',
       cell: ({ getValue }) => (
-        <div className="text-blue-400 underline cursor-pointer hover:text-blue-300">
+        <div className="text-blue-400 underline cursor-pointer hover:text-blue-300 text-xs sm:text-sm">
           {getValue()}
         </div>
       ),
     }),
     columnHelper.accessor('accountName', {
       header: 'Account Name',
-      cell: ({ getValue }) => <div className="text-white">{getValue()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue()}</div>,
     }),
     columnHelper.accessor('status', {
       header: 'Status',
       cell: ({ getValue }) => (
-        <div className={`px-2 py-1 rounded text-xs font-medium ${
+        <div className={`px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs font-medium ${
           getValue() === 'filled' ? 'bg-green-600 text-white' :
           getValue() === 'cancelled' ? 'bg-red-600 text-white' :
           getValue() === 'pending' ? 'bg-yellow-600 text-white' :
@@ -656,7 +656,7 @@ const DealHistoryTable: React.FC<{ data: DealHistoryData[]; searchQuery?: string
     columnHelper.accessor('positionImpact', {
       header: 'Position Impa...',
       cell: ({ getValue }) => (
-        <div className={`px-2 py-1 rounded text-xs font-medium ${
+        <div className={`px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs font-medium ${
           getValue() === 'opening' ? 'bg-blue-600 text-white' : 'bg-orange-600 text-white'
         }`}>
           {getValue()}
@@ -665,12 +665,12 @@ const DealHistoryTable: React.FC<{ data: DealHistoryData[]; searchQuery?: string
     }),
     columnHelper.accessor('symbol', {
       header: 'Symbol',
-      cell: ({ getValue }) => <div className="text-white">{getValue()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue()}</div>,
     }),
     columnHelper.accessor('direction', {
       header: 'Direction',
       cell: ({ getValue }) => (
-        <div className={`px-2 py-1 rounded text-xs font-medium ${
+        <div className={`px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs font-medium ${
           getValue() === 'buy' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
         }`}>
           {getValue().toUpperCase()}
@@ -679,18 +679,18 @@ const DealHistoryTable: React.FC<{ data: DealHistoryData[]; searchQuery?: string
     }),
     columnHelper.accessor('filledVolume', {
       header: 'Filled Volume',
-      cell: ({ getValue }) => <div className="text-white">{getValue().toLocaleString()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue().toLocaleString()}</div>,
     }),
     columnHelper.accessor('executionPrice', {
       header: 'Execution Price',
-      cell: ({ getValue }) => <div className="text-white">{getValue().toLocaleString()}</div>,
+      cell: ({ getValue }) => <div className="text-white text-xs sm:text-sm">{getValue().toLocaleString()}</div>,
     }),
     columnHelper.accessor('netRealizedPnL', {
       header: 'Net Realized P...',
       cell: ({ getValue }) => {
         const value = getValue()
         return (
-          <div className={`${value ? (value > 0 ? 'text-green-500' : 'text-red-500') : 'text-gray-400'}`}>
+          <div className={`${value ? (value > 0 ? 'text-green-500' : 'text-red-500') : 'text-gray-400'} text-xs sm:text-sm`}>
             {value ? value.toLocaleString() : '---'}
           </div>
         )
@@ -721,14 +721,14 @@ const DealHistoryTable: React.FC<{ data: DealHistoryData[]; searchQuery?: string
     <div className="space-y-1">
       {/* Table */}
       <div className="overflow-auto max-h-[400px] scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 hover:scrollbar-thumb-gray-500 border border-gray-700 rounded-lg">
-        <table className="w-full min-w-[1200px] text-xs">
+        <table className="w-full min-w-[1000px] sm:min-w-[1200px] text-xs">
           <thead className="bg-gray-700 text-white sticky top-0 z-10">
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                   <th
                     key={header.id}
-                    className="px-2 py-1 text-left font-medium cursor-pointer hover:bg-gray-600 transition-colors border-r border-gray-600 first:border-l border-gray-600"
+                    className="px-1 sm:px-2 py-1 text-left font-medium cursor-pointer hover:bg-gray-600 transition-colors border-r border-gray-600 first:border-l border-gray-600"
                     onClick={header.column.getToggleSortingHandler()}
                   >
                     <div className="flex items-center space-x-1">
@@ -748,7 +748,7 @@ const DealHistoryTable: React.FC<{ data: DealHistoryData[]; searchQuery?: string
             {table.getRowModel().rows.map(row => (
               <tr key={row.id} className="hover:bg-gray-700 transition-colors">
                 {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="px-2 py-1 border-r border-gray-600 first:border-l border-gray-600">
+                  <td key={cell.id} className="px-1 sm:px-2 py-1 border-r border-gray-600 first:border-l border-gray-600">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
@@ -759,9 +759,9 @@ const DealHistoryTable: React.FC<{ data: DealHistoryData[]; searchQuery?: string
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="text-sm text-white">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+        <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+          <div className="text-xs sm:text-sm text-white text-center sm:text-left">
             Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{' '}
             {Math.min(
               (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
@@ -771,14 +771,14 @@ const DealHistoryTable: React.FC<{ data: DealHistoryData[]; searchQuery?: string
           </div>
           
           {/* Records per page selector */}
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-300">Show:</span>
+          <div className="flex items-center justify-center sm:justify-start space-x-2">
+            <span className="text-xs sm:text-sm text-gray-300">Show:</span>
             <select
               value={table.getState().pagination.pageSize}
               onChange={e => {
                 table.setPageSize(Number(e.target.value))
               }}
-              className="px-2 py-1 text-sm bg-gray-700 border border-gray-600 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-2 py-1 text-xs sm:text-sm bg-gray-700 border border-gray-600 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               {[10, 20, 30, 50].map(pageSize => (
                 <option key={pageSize} value={pageSize}>
@@ -786,22 +786,22 @@ const DealHistoryTable: React.FC<{ data: DealHistoryData[]; searchQuery?: string
                 </option>
               ))}
             </select>
-            <span className="text-sm text-gray-300">entries</span>
+            <span className="text-xs sm:text-sm text-gray-300">entries</span>
           </div>
         </div>
         
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center justify-center sm:justify-end space-x-1 sm:space-x-2">
           <button
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="px-2 py-0.5 text-sm bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-2 py-1 text-xs sm:text-sm bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             Previous
           </button>
           <button
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="px-2 py-0.5 text-sm bg-gray-700 text-white rounded hover:bg-gray-600 disabled:cursor-not-allowed transition-colors"
+            className="px-2 py-1 text-xs sm:text-sm bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             Next
           </button>
@@ -840,7 +840,7 @@ const OpenPositionsTable: React.FC<{ data: OpenPositionData[]; searchQuery?: str
       header: 'Type',
       cell: () => (
         <div className="flex items-center justify-center">
-          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
         </div>
@@ -856,40 +856,40 @@ const OpenPositionsTable: React.FC<{ data: OpenPositionData[]; searchQuery?: str
     }),
     columnHelper.accessor('deviceInfo', {
       header: 'Device Info',
-      cell: ({ getValue }) => <span className="text-white">{getValue()}</span>,
+      cell: ({ getValue }) => <span className="text-white text-xs sm:text-sm">{getValue()}</span>,
     }),
     columnHelper.accessor('symbol', {
       header: 'Symbol',
-      cell: ({ getValue }) => <span className="font-medium text-white">{getValue()}</span>,
+      cell: ({ getValue }) => <span className="font-medium text-white text-xs sm:text-sm">{getValue()}</span>,
     }),
     columnHelper.accessor('quantity', {
       header: 'Quantity',
-      cell: ({ getValue }) => <span className="text-white">{getValue()}</span>,
+      cell: ({ getValue }) => <span className="text-white text-xs sm:text-sm">{getValue()}</span>,
     }),
     columnHelper.accessor('direction', {
       header: 'Direction',
       cell: ({ getValue }) => (
-        <span className={`font-medium capitalize ${getValue() === 'buy' ? 'text-green-500' : 'text-red-500'}`}>
+        <span className={`font-medium capitalize text-xs sm:text-sm ${getValue() === 'buy' ? 'text-green-500' : 'text-red-500'}`}>
           {getValue()}
         </span>
       ),
     }),
     columnHelper.accessor('takeProfit', {
       header: 'T/P',
-      cell: ({ getValue }) => <span className="text-white">{getValue() || '---'}</span>,
+      cell: ({ getValue }) => <span className="text-white text-xs sm:text-sm">{getValue() || '---'}</span>,
     }),
     columnHelper.accessor('stopLoss', {
       header: 'S/L',
-      cell: ({ getValue }) => <span className="text-white">{getValue() || '---'}</span>,
+      cell: ({ getValue }) => <span className="text-white text-xs sm:text-sm">{getValue() || '---'}</span>,
     }),
     columnHelper.accessor('marginUsed', {
       header: 'Margin Used',
-      cell: ({ getValue }) => <span className="text-white">{getValue().toFixed(8)}</span>,
+      cell: ({ getValue }) => <span className="text-white text-xs sm:text-sm">{getValue().toFixed(8)}</span>,
     }),
     columnHelper.accessor('unrealizedPnL', {
       header: 'Unr. P&L',
       cell: ({ getValue }) => (
-        <span className={`font-medium ${getValue() >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+        <span className={`font-medium text-xs sm:text-sm ${getValue() >= 0 ? 'text-green-500' : 'text-red-500'}`}>
           {getValue().toFixed(2)}
         </span>
       ),
@@ -898,31 +898,31 @@ const OpenPositionsTable: React.FC<{ data: OpenPositionData[]; searchQuery?: str
       id: 'actions',
       header: 'Action',
       cell: ({ row }) => (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-0.5 sm:space-x-1">
           <button 
             onClick={() => handleViewPosition(row.original)}
-            className="w-6 h-6 bg-green-600 rounded flex items-center justify-center hover:bg-green-700 transition-colors"
+            className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 bg-green-600 rounded flex items-center justify-center hover:bg-green-700 transition-colors"
             title="View Details"
           >
-            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5 lg:w-3 lg:h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.639 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.639 0-8.573-3.007-9.963-7.178z" />
             </svg>
           </button>
           <button 
             onClick={() => handleEditPosition(row.original)}
-            className="w-6 h-6 bg-green-600 rounded flex items-center justify-center hover:bg-green-700 transition-colors"
+            className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 bg-green-600 rounded flex items-center justify-center hover:bg-green-700 transition-colors"
             title="Edit Position"
           >
-            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            <svg className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5 lg:w-3 lg:h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.586z" />
             </svg>
           </button>
           <button 
-            className="w-6 h-6 bg-red-600 rounded flex items-center justify-center hover:bg-red-700 transition-colors"
+            className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 bg-red-600 rounded flex items-center justify-center hover:bg-red-700 transition-colors"
             title="Close Position"
           >
-            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5 lg:w-3 lg:h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
           </button>
@@ -977,14 +977,14 @@ const OpenPositionsTable: React.FC<{ data: OpenPositionData[]; searchQuery?: str
     <div className="space-y-1">
       {/* Table */}
       <div className="overflow-auto max-h-[400px] scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 hover:scrollbar-thumb-gray-500 border border-gray-700 rounded-lg">
-        <table className="w-full min-w-[1400px] text-xs">
+        <table className="w-full min-w-[1200px] sm:min-w-[1400px] text-xs">
           <thead className="bg-gray-700 text-white sticky top-0 z-10">
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                   <th
                     key={header.id}
-                    className="px-2 py-1 text-left font-medium cursor-pointer hover:bg-gray-600 transition-colors border-r border-gray-600 first:border-l border-gray-600"
+                    className="px-1 sm:px-2 py-1 text-left font-medium cursor-pointer hover:bg-gray-600 transition-colors border-r border-gray-600 first:border-l border-gray-600"
                     onClick={header.column.getCanSort() ? header.column.getToggleSortingHandler() : undefined}
                   >
                     <div className="flex items-center space-x-1">
@@ -1004,7 +1004,7 @@ const OpenPositionsTable: React.FC<{ data: OpenPositionData[]; searchQuery?: str
             {table.getRowModel().rows.map(row => (
               <tr key={row.id} className="hover:bg-gray-700 transition-colors">
                 {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="px-2 py-1 border-r border-gray-600 first:border-l border-gray-600">
+                  <td key={cell.id} className="px-1 sm:px-2 py-1 border-r border-gray-600 first:border-l border-gray-600">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
@@ -1015,9 +1015,9 @@ const OpenPositionsTable: React.FC<{ data: OpenPositionData[]; searchQuery?: str
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between text-xs">
-        <div className="flex items-center space-x-4">
-          <span className="text-white">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs space-y-3 sm:space-y-0">
+        <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+          <span className="text-white text-center sm:text-left">
             Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{' '}
             {Math.min(
               (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
@@ -1025,51 +1025,66 @@ const OpenPositionsTable: React.FC<{ data: OpenPositionData[]; searchQuery?: str
             )}{' '}
             of {table.getFilteredRowModel().rows.length} entries
           </span>
-          <select
-            value={table.getState().pagination.pageSize}
-            onChange={e => {
-              table.setPageSize(Number(e.target.value))
-            }}
-            className="px-2 py-0.5 bg-gray-700 text-white rounded border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            {[10, 20, 30, 50].map(pageSize => (
-              <option key={pageSize} value={pageSize}>
-                {pageSize}
-              </option>
-            ))}
-          </select>
-          <span className="text-gray-300">entries</span>
+          <div className="flex items-center justify-center sm:justify-start space-x-2">
+            <select
+              value={table.getState().pagination.pageSize}
+              onChange={e => {
+                table.setPageSize(Number(e.target.value))
+              }}
+              className="px-2 py-1 bg-gray-700 text-white rounded border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs"
+            >
+              {[10, 20, 30, 50].map(pageSize => (
+                <option key={pageSize} value={pageSize}>
+                  {pageSize}
+                </option>
+              ))}
+            </select>
+            <span className="text-gray-300 text-xs">entries</span>
+          </div>
         </div>
         
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center justify-center space-x-1">
           <button
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="px-2 py-0.5 text-sm bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-2 py-1 text-xs bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             Previous
           </button>
           {table.getPageCount() > 1 && (
             <div className="flex items-center space-x-1">
-              {Array.from({ length: table.getPageCount() }, (_, i) => (
-                <button
-                  key={i}
-                  onClick={() => table.setPageIndex(i)}
-                  className={`px-2 py-0.5 text-sm rounded transition-colors ${
-                    table.getState().pagination.pageIndex === i
-                      ? 'bg-green-600 text-white'
-                      : 'bg-gray-700 text-white hover:bg-gray-600'
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
+              {Array.from({ length: Math.min(table.getPageCount(), 5) }, (_, i) => {
+                const pageIndex = table.getState().pagination.pageIndex;
+                const pageCount = table.getPageCount();
+                
+                // Show first 2 pages, current page, and last 2 pages
+                if (i === 0 || i === 1 || i === pageCount - 2 || i === pageCount - 1 || Math.abs(i - pageIndex) <= 1) {
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => table.setPageIndex(i)}
+                      className={`px-2 py-1 text-xs rounded transition-colors ${
+                        table.getState().pagination.pageIndex === i
+                          ? 'bg-green-600 text-white'
+                          : 'bg-gray-700 text-white hover:bg-gray-600'
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  );
+                } else if (i === 2 && pageIndex > 3) {
+                  return <span key={i} className="px-1 text-gray-400">...</span>;
+                } else if (i === pageCount - 3 && pageIndex < pageCount - 4) {
+                  return <span key={i} className="px-1 text-gray-400">...</span>;
+                }
+                return null;
+              })}
             </div>
           )}
           <button
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="px-2 py-0.5 text-sm bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-2 py-1 text-xs bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             Next
           </button>
@@ -1122,7 +1137,7 @@ const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; sta
       header: 'Type',
       cell: () => (
         <div className="flex items-center justify-center">
-          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
         </div>
@@ -1134,15 +1149,15 @@ const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; sta
     }),
     columnHelper.accessor('deviceInfoOpen', {
       header: 'Device Info - Open',
-      cell: ({ getValue }) => <span className="text-white">{getValue()}</span>,
+      cell: ({ getValue }) => <span className="text-white text-xs sm:text-sm">{getValue()}</span>,
     }),
     columnHelper.accessor('deviceInfoClose', {
       header: 'Device Info - Close',
-      cell: ({ getValue }) => <span className="text-white">{getValue()}</span>,
+      cell: ({ getValue }) => <span className="text-white text-xs sm:text-sm">{getValue()}</span>,
     }),
     columnHelper.accessor('symbol', {
       header: 'Symbol',
-      cell: ({ getValue }) => <span className="font-medium text-white">{getValue()}</span>,
+      cell: ({ getValue }) => <span className="font-medium text-white text-xs sm:text-sm">{getValue()}</span>,
     }),
     columnHelper.accessor('openTime', {
       header: 'Open Time (UTC+0)',
@@ -1155,14 +1170,14 @@ const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; sta
     columnHelper.accessor('realizedPnL', {
       header: 'Realized PnL',
       cell: ({ getValue }) => (
-        <span className={`font-medium ${getValue() >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+        <span className={`font-medium text-xs sm:text-sm ${getValue() >= 0 ? 'text-green-500' : 'text-red-500'}`}>
           {getValue().toFixed(2)}
         </span>
       ),
     }),
     columnHelper.accessor('swapFee', {
       header: 'Swap Fee',
-      cell: ({ getValue }) => <span className="text-white">{getValue() || '---'}</span>,
+      cell: ({ getValue }) => <span className="text-white text-xs sm:text-sm">{getValue() || '---'}</span>,
     }),
     columnHelper.display({
       id: 'actions',
@@ -1170,10 +1185,10 @@ const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; sta
       cell: ({ row }) => (
         <button 
           onClick={() => handleViewPosition(row.original)}
-          className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors"
+          className="w-5 h-5 sm:w-6 sm:h-6 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors"
           title="View Position Details"
         >
-          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.639 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.639 0-8.573-3.007-9.963-7.178z" />
           </svg>
@@ -1229,14 +1244,14 @@ const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; sta
     <div className="space-y-1">
       {/* Table */}
       <div className="overflow-auto max-h-[400px] scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 hover:scrollbar-thumb-gray-500 border border-gray-700 rounded-lg">
-        <table className="w-full min-w-[1200px] text-xs">
+        <table className="w-full min-w-[1000px] sm:min-w-[1200px] text-xs">
           <thead className="bg-gray-700 text-white sticky top-0 z-10">
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                   <th
                     key={header.id}
-                    className="px-2 py-1 text-left font-medium cursor-pointer hover:bg-gray-600 transition-colors border-r border-gray-600 first:border-l border-gray-600"
+                    className="px-1 sm:px-2 py-1 text-left font-medium cursor-pointer hover:bg-gray-600 transition-colors border-r border-gray-600 first:border-l border-gray-600"
                     onClick={header.column.getToggleSortingHandler()}
                   >
                     <div className="flex items-center space-x-1">
@@ -1256,7 +1271,7 @@ const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; sta
             {table.getRowModel().rows.map(row => (
               <tr key={row.id} className="hover:bg-gray-700 transition-colors">
                 {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="px-2 py-1 border-r border-gray-600 first:border-l border-gray-600">
+                  <td key={cell.id} className="px-1 sm:px-2 py-1 border-r border-gray-600 first:border-l border-gray-600">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
@@ -1267,9 +1282,9 @@ const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; sta
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="text-sm text-white">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs space-y-3 sm:space-y-0">
+        <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+          <div className="text-white text-center sm:text-left">
             Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{' '}
             {Math.min(
               (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
@@ -1279,14 +1294,14 @@ const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; sta
           </div>
           
           {/* Records per page selector */}
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-300">Show:</span>
+          <div className="flex items-center justify-center sm:justify-start space-x-2">
+            <span className="text-gray-300 text-xs">Show:</span>
             <select
               value={table.getState().pagination.pageSize}
               onChange={e => {
                 table.setPageSize(Number(e.target.value))
               }}
-              className="px-2 py-1 text-sm bg-gray-700 border border-gray-600 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-2 py-1 text-xs bg-gray-700 border border-gray-600 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               {[10, 20, 30, 50].map(pageSize => (
                 <option key={pageSize} value={pageSize}>
@@ -1294,39 +1309,52 @@ const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; sta
                 </option>
               ))}
             </select>
-            <span className="text-sm text-gray-300">entries</span>
+            <span className="text-gray-300 text-xs">entries</span>
           </div>
         </div>
         
-        <div className="flex items-center space-x-1">
-                      <button
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="px-2 py-0.5 text-sm bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              Previous
-            </button>
-            {table.getPageCount() > 1 && (
+        <div className="flex items-center justify-center space-x-1">
+          <button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="px-2 py-1 text-xs bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            Previous
+          </button>
+          {table.getPageCount() > 1 && (
             <div className="flex items-center space-x-1">
-              {Array.from({ length: table.getPageCount() }, (_, i) => (
-                <button
-                  key={i}
-                  onClick={() => table.setPageIndex(i)}
-                  className={`px-2 py-0.5 text-sm rounded transition-colors ${
-                    table.getState().pagination.pageIndex === i
-                      ? 'bg-green-600 text-white'
-                      : 'bg-gray-700 text-white hover:bg-gray-600'
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
+              {Array.from({ length: Math.min(table.getPageCount(), 5) }, (_, i) => {
+                const pageIndex = table.getState().pagination.pageIndex;
+                const pageCount = table.getPageCount();
+                
+                // Show first 2 pages, current page, and last 2 pages
+                if (i === 0 || i === 1 || i === pageCount - 2 || i === pageCount - 1 || Math.abs(i - pageIndex) <= 1) {
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => table.setPageIndex(i)}
+                      className={`px-2 py-1 text-xs rounded transition-colors ${
+                        table.getState().pagination.pageIndex === i
+                          ? 'bg-green-600 text-white'
+                          : 'bg-gray-700 text-white hover:bg-gray-600'
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  );
+                } else if (i === 2 && pageIndex > 3) {
+                  return <span key={i} className="px-1 text-gray-400">...</span>;
+                } else if (i === pageCount - 3 && pageIndex < pageCount - 4) {
+                  return <span key={i} className="px-1 text-gray-400">...</span>;
+                }
+                return null;
+              })}
             </div>
           )}
           <button
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="px-2 py-0.5 text-sm bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-2 py-1 text-xs bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             Next
           </button>
@@ -1573,124 +1601,124 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
       label: 'Account Settings',
       icon: <Settings className="w-4 h-4" />,
       content: (
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Account Type
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
                 <option value="cfd-hedging">CFD Hedging</option>
                 <option value="cfd-net">CFD Net</option>
                 <option value="spot">Spot</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Total Margin Calculation Type
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
                 <option value="sum">Sum</option>
                 <option value="net">Net</option>
                 <option value="gross">Gross</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Currency
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
                 <option value="eur">EUR</option>
                 <option value="usd">USD</option>
                 <option value="gbp">GBP</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Minimum Margin Level Call
               </label>
               <input
                 type="number"
                 defaultValue="0"
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Group <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
                 <option value="default-group">DefaultGroup</option>
                 <option value="premium">Premium</option>
                 <option value="vip">VIP</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Assign Tags <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
                 <option value="1-tag">1 Tags selected</option>
                 <option value="2-tags">2 Tags selected</option>
                 <option value="no-tags">No Tags</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Platform Access Rights
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
                 <option value="full-access">Full Access</option>
                 <option value="limited-access">Limited Access</option>
                 <option value="read-only">Read Only</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 User's Panel Access Right <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
                 <option value="default-user-panel">Default User_panel</option>
                 <option value="admin-panel">Admin Panel</option>
                 <option value="user-panel">User Panel</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Leverage
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
                 <option value="1-100">1:100</option>
                 <option value="1-200">1:200</option>
                 <option value="1-500">1:500</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Max Leverage
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
                 <option value="1-1000">1:1000</option>
                 <option value="1-2000">1:2000</option>
                 <option value="1-5000">1:5000</option>
               </select>
             </div>
-            <div className="col-span-3">
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+            <div className="col-span-1 sm:col-span-2 lg:col-span-3">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Domain Name
               </label>
               <input
                 type="url"
                 defaultValue="https://backoffice.dtrader.tech"
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
               />
             </div>
           </div>
           
 
           
-          <div className="flex justify-end">
-            <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+          <div className="flex justify-center sm:justify-end">
+            <button className="w-full sm:w-auto px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs sm:text-sm">
               Update
             </button>
           </div>
@@ -2052,34 +2080,34 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
       label: 'Affiliate Links',
       icon: <Users2 className="w-4 h-4" />,
       content: (
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {/* Header Section */}
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold text-blue-400">Affiliate Links (1)</h3>
-            <button className="text-blue-400 hover:text-blue-300 transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h3 className="text-base sm:text-lg font-semibold text-blue-400">Affiliate Links (1)</h3>
+            <button className="text-blue-400 hover:text-blue-300 transition-colors p-1">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
             </button>
           </div>
 
           {/* Search and Add Section */}
-          <div className="flex justify-between items-center">
-            <div className="flex-1 max-w-md">
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
+            <div className="flex-1 max-w-full sm:max-w-md">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Search Affiliate Links
               </label>
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
               />
             </div>
             <button 
               onClick={() => setShowAddForm(!showAddForm)}
-              className="p-2 border border-white rounded-lg hover:bg-gray-600 transition-colors"
+              className="w-full sm:w-auto p-2 border border-white rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center sm:justify-start"
             >
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
             </button>
@@ -2087,42 +2115,42 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
 
           {/* Add New Affiliate Link Form */}
           {showAddForm && (
-            <div className="bg-gray-700 p-6 rounded-lg border border-gray-600">
-              <h4 className="text-lg font-semibold text-white mb-4">Add New Affiliate Link</h4>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-gray-700 p-3 sm:p-4 lg:p-6 rounded-lg border border-gray-600">
+              <h4 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Add New Affiliate Link</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                     Code (Leave empty to auto-generate) <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Enter custom referral code"
-                    className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                     Campaign Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Enter campaign name"
-                    className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                     Status
                   </label>
-                  <select className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                  <select className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
                     <option value="pending">Pending</option>
                   </select>
                 </div>
               </div>
-              <div className="flex justify-end mt-6">
-                <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+              <div className="flex justify-center sm:justify-end mt-4 sm:mt-6">
+                <button className="w-full sm:w-auto px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs sm:text-sm">
                   Save Link
                 </button>
               </div>
@@ -2135,41 +2163,41 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <table className="w-full">
                 <thead className="bg-gray-800">
                   <tr>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-300">
-                      <div className="flex items-center space-x-2">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300">
+                      <div className="flex items-center space-x-1 sm:space-x-2">
                         <span>Referral Link</span>
-                        <button className="text-blue-400 hover:text-blue-300 transition-colors">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button className="text-blue-400 hover:text-blue-300 transition-colors p-1">
+                          <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                           </svg>
                         </button>
                       </div>
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-300">
-                      <div className="flex items-center space-x-2">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300">
+                      <div className="flex items-center space-x-1 sm:space-x-2">
                         <span>Campaign</span>
-                        <button className="text-blue-400 hover:text-blue-300 transition-colors">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button className="text-blue-400 hover:text-blue-300 transition-colors p-1">
+                          <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                           </svg>
                         </button>
                       </div>
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-300">
-                      <div className="flex items-center space-x-2">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300">
+                      <div className="flex items-center space-x-1 sm:space-x-2">
                         <span>Status</span>
-                        <button className="text-blue-400 hover:text-blue-300 transition-colors">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button className="text-blue-400 hover:text-blue-300 transition-colors p-1">
+                          <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                           </svg>
                         </button>
                       </div>
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-300">
-                      <div className="flex items-center space-x-2">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300">
+                      <div className="flex items-center space-x-1 sm:space-x-2">
                         <span>Action</span>
-                        <button className="text-blue-400 hover:text-blue-300 transition-colors">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button className="text-blue-400 hover:text-blue-300 transition-colors p-1">
+                          <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                           </svg>
                         </button>
@@ -2179,9 +2207,9 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                 </thead>
                 <tbody className="divide-y divide-gray-600">
                   <tr className="hover:bg-gray-600">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm text-gray-300 truncate max-w-xs">
+                    <td className="px-2 sm:px-4 py-2 sm:py-3">
+                      <div className="flex items-center space-x-1 sm:space-x-2">
+                        <span className="text-xs sm:text-sm text-gray-300 truncate max-w-[120px] sm:max-w-xs">
                           https://backoffice.dtrader.tech/r...
                         </span>
                         <button className="p-1 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
@@ -2191,17 +2219,17 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                         </button>
                       </div>
                     </td>
-                    <td className="px-4 py-3">
-                      <span className="text-sm text-gray-300">Registered</span>
+                    <td className="px-2 sm:px-4 py-2 sm:py-3">
+                      <span className="text-xs sm:text-sm text-gray-300">Registered</span>
                     </td>
-                    <td className="px-4 py-3">
-                      <span className="text-sm text-gray-300">Active</span>
+                    <td className="px-2 sm:px-4 py-2 sm:py-3">
+                      <span className="text-xs sm:text-sm text-gray-300">Active</span>
                     </td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center space-x-2">
+                    <td className="px-2 sm:px-4 py-2 sm:py-3">
+                      <div className="flex items-center space-x-1 sm:space-x-2">
                         <button className="p-1 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
                           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.586z" />
                           </svg>
                         </button>
                         <button className="p-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors">
@@ -2225,24 +2253,24 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
       label: 'Transactions',
       icon: <CreditCard className="w-4 h-4" />,
       content: (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Header Section */}
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold text-blue-400">Transaction Management</h3>
-            <button className="text-blue-400 hover:text-blue-300 transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0">
+            <h3 className="text-base sm:text-lg font-semibold text-blue-400">Transaction Management</h3>
+            <button className="text-blue-400 hover:text-blue-300 transition-colors self-start sm:self-auto">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
             </button>
           </div>
 
           {/* Transaction Type Selector */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-300 mb-3">
+          <div className="mb-4 sm:mb-6">
+            <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2 sm:mb-3">
               Select Transaction Type
             </label>
             <select 
-              className="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-600 border border-gray-500 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-lg"
               onChange={(e) => setTransactionType(e.target.value)}
               value={transactionType}
             >
@@ -2255,38 +2283,38 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
 
           {/* Dynamic Transaction Forms */}
           {transactionType === 'transaction-history' && (
-            <div className="space-y-6">
-              <h4 className="text-lg font-semibold text-white border-b border-gray-600 pb-2">Transaction History</h4>
+            <div className="space-y-4 sm:space-y-6">
+              <h4 className="text-base sm:text-lg font-semibold text-white border-b border-gray-600 pb-2">Transaction History</h4>
               
-              <div className="space-y-3">
-                <div className="flex justify-between items-center p-3 bg-gray-600 rounded-lg">
+              <div className="space-y-2 sm:space-y-3">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-2 sm:p-3 bg-gray-600 rounded-lg space-y-2 sm:space-y-0">
                   <div>
-                    <p className="text-white font-medium">Deposit</p>
-                    <p className="text-sm text-gray-400">Bank Transfer</p>
+                    <p className="text-white font-medium text-sm sm:text-base">Deposit</p>
+                    <p className="text-xs sm:text-sm text-gray-400">Bank Transfer</p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-green-400 font-medium">+€5,000.00</p>
-                    <p className="text-sm text-gray-400">2024-01-15 14:30</p>
+                  <div className="text-left sm:text-right">
+                    <p className="text-green-400 font-medium text-sm sm:text-base">+€5,000.00</p>
+                    <p className="text-xs sm:text-sm text-gray-400">2024-01-15 14:30</p>
                   </div>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-gray-600 rounded-lg">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-2 sm:p-3 bg-gray-600 rounded-lg space-y-2 sm:space-y-0">
                   <div>
-                    <p className="text-white font-medium">Withdrawal</p>
-                    <p className="text-sm text-gray-400">Bank Transfer</p>
+                    <p className="text-white font-medium text-sm sm:text-base">Withdrawal</p>
+                    <p className="text-xs sm:text-sm text-gray-400">Bank Transfer</p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-red-400 font-medium">-€2,500.00</p>
-                    <p className="text-sm text-gray-400">2024-01-10 09:15</p>
+                  <div className="text-left sm:text-right">
+                    <p className="text-red-400 font-medium text-sm sm:text-base">-€2,500.00</p>
+                    <p className="text-xs sm:text-sm text-gray-400">2024-01-10 09:15</p>
                   </div>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-gray-600 rounded-lg">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-2 sm:p-3 bg-gray-600 rounded-lg space-y-2 sm:space-y-0">
                   <div>
-                    <p className="text-white font-medium">Trading Fee</p>
-                    <p className="text-sm text-gray-400">EUR/USD</p>
+                    <p className="text-white font-medium text-sm sm:text-base">Trading Fee</p>
+                    <p className="text-xs sm:text-sm text-gray-400">EUR/USD</p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-red-400 font-medium">-€12.50</p>
-                    <p className="text-sm text-gray-400">2024-01-08 16:45</p>
+                  <div className="text-left sm:text-right">
+                    <p className="text-red-400 font-medium text-sm sm:text-base">-€12.50</p>
+                    <p className="text-xs sm:text-sm text-gray-400">2024-01-08 16:45</p>
                   </div>
                 </div>
               </div>
@@ -2294,22 +2322,22 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
           )}
 
           {transactionType === 'direct-deposit-withdraw' && (
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Transaction Details */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Transaction Type <span className="text-red-500">*</span></label>
-                  <select className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">Transaction Type <span className="text-red-500">*</span></label>
+                  <select className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-600 border border-gray-500 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
                     <option value="deposit">Deposit</option>
                     <option value="withdraw">Withdraw</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Amount <span className="text-red-500">*</span></label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">Amount <span className="text-red-500">*</span></label>
                   <input
                     type="number"
                     placeholder="Enter amount"
-                    className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
                   />
                 </div>
               </div>
@@ -2490,46 +2518,46 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
       label: 'Positions',
       icon: <TrendingUp className="w-4 h-4" />,
       content: (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Top Section - Summary Metrics */}
-          <div className="bg-gray-700 p-6 rounded-lg">
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+          <div className="bg-gray-700 p-3 sm:p-6 rounded-lg relative">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-4">
               <div className="text-center">
                 <div className="text-xs text-gray-400 mb-1">Balance</div>
-                <div className="text-lg font-bold text-white">10034.90</div>
+                <div className="text-sm sm:text-lg font-bold text-white">10034.90</div>
               </div>
               <div className="text-center">
                 <div className="text-xs text-gray-400 mb-1">Equity</div>
-                <div className="text-lg font-bold text-white">10034.90</div>
+                <div className="text-sm sm:text-lg font-bold text-white">10034.90</div>
               </div>
               <div className="text-center">
                 <div className="text-xs text-gray-400 mb-1">Margin</div>
-                <div className="text-lg font-bold text-white">0.00</div>
+                <div className="text-sm sm:text-lg font-bold text-white">0.00</div>
               </div>
               <div className="text-center">
                 <div className="text-xs text-gray-400 mb-1">Free Margin</div>
-                <div className="text-lg font-bold text-white">10034.90</div>
+                <div className="text-sm sm:text-lg font-bold text-white">10034.90</div>
               </div>
               <div className="text-center">
                 <div className="text-xs text-gray-400 mb-1">Bonus</div>
-                <div className="text-lg font-bold text-white">0.00</div>
+                <div className="text-sm sm:text-lg font-bold text-white">0.00</div>
               </div>
               <div className="text-center">
                 <div className="text-xs text-gray-400 mb-1">Commission</div>
-                <div className="text-lg font-bold text-white">0.00</div>
+                <div className="text-sm sm:text-lg font-bold text-white">0.00</div>
               </div>
               <div className="text-center">
                 <div className="text-xs text-gray-400 mb-1">Margin Level</div>
-                <div className="text-lg font-bold text-white">0.00 %</div>
+                <div className="text-sm sm:text-lg font-bold text-white">0.00 %</div>
               </div>
               <div className="text-center">
                 <div className="text-xs text-gray-400 mb-1">Unrealized PnL</div>
-                <div className="text-lg font-bold text-white">0.00</div>
+                <div className="text-sm sm:text-lg font-bold text-white">0.00</div>
               </div>
             </div>
-            <div className="absolute top-4 right-4">
-              <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="absolute top-2 sm:top-4 right-2 sm:right-4">
+              <button className="p-1.5 sm:p-2 text-gray-400 hover:text-white transition-colors">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
               </button>
@@ -2539,67 +2567,67 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
           {/* Middle Section - Position Management */}
           <div className="bg-gray-700 p-3 rounded-lg">
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-lg font-semibold text-white">Positions (0 - 20)</h3>
-              <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <h3 className="text-base sm:text-lg font-semibold text-white">Positions (0 - 20)</h3>
+              <button className="p-1.5 sm:p-2 text-gray-400 hover:text-white transition-colors">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
               </button>
             </div>
 
             {/* Position Tabs */}
-            <div className="flex space-x-1 mb-3">
+            <div className="flex space-x-1 mb-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
               <button 
                 onClick={() => setActivePositionTab('open')}
-                className={`px-2 py-1 transition-colors border-b-2 ${
+                className={`px-2 py-1 transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
                   activePositionTab === 'open' 
                     ? 'text-white border-green-500' 
                     : 'text-gray-400 border-transparent hover:text-white hover:border-gray-500'
                 }`}
               >
                 <div className="flex items-center space-x-1">
-                  <svg className={`w-4 h-4 ${activePositionTab === 'open' ? 'text-green-500' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-3 h-3 sm:w-4 sm:h-4 ${activePositionTab === 'open' ? 'text-green-500' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2zm0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
-                  <span>Open Positions</span>
+                  <span className="text-xs sm:text-sm">Open Positions</span>
                 </div>
               </button>
               <button 
                 onClick={() => setActivePositionTab('closed')}
-                className={`px-2 py-1 transition-colors border-b-2 ${
+                className={`px-2 py-1 transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
                   activePositionTab === 'closed' 
                     ? 'text-white border-green-500' 
                     : 'text-gray-400 border-transparent hover:text-white hover:border-gray-500'
                 }`}
               >
                 <div className="flex items-center space-x-1">
-                  <svg className={`w-4 h-4 ${activePositionTab === 'closed' ? 'text-green-500' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  <svg className={`w-3 h-3 sm:w-4 sm:h-4 ${activePositionTab === 'closed' ? 'text-green-500' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2zm0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
-                  <span>Closed Positions</span>
+                  <span className="text-xs sm:text-sm">Closed Positions</span>
                 </div>
               </button>
             </div>
 
             {/* Search and Filters */}
-            <div className="mb-3 flex flex-wrap gap-2">
+            <div className="mb-3 space-y-3 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-2">
               {/* Search Bar */}
-              <div className="flex-1 min-w-[300px]">
-                <label className="block text-sm font-medium text-gray-300 mb-1">Search</label>
+              <div className="w-full sm:flex-1 sm:min-w-[200px] lg:min-w-[300px]">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Search</label>
                 <div className="relative">
                   <input
                     type="text"
                     placeholder="Search positions..."
                     value={positionSearchQuery}
                     onChange={(e) => setPositionSearchQuery(e.target.value)}
-                    className="w-full px-2 py-1 pr-8 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-2 py-1 pr-8 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   />
                   {positionSearchQuery && (
                     <button
                       onClick={() => setPositionSearchQuery('')}
                       className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-gray-400 hover:text-white transition-colors"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
@@ -2608,21 +2636,21 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               </div>
 
               {/* Date Range Filter */}
-              <div className="flex-1 min-w-[300px]">
-                <label className="block text-sm font-medium text-gray-300 mb-1">Date Range</label>
+              <div className="w-full sm:flex-1 sm:min-w-[200px] lg:min-w-[300px]">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Date Range</label>
                 <div className="flex gap-1">
                   <input
                     type="date"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="flex-1 px-2 py-1 bg-gray-600 border border-gray-500 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-2 py-1 bg-gray-600 border border-gray-500 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   />
-                  <span className="text-gray-400 self-center">to</span>
+                  <span className="text-gray-400 self-center text-xs sm:text-sm">to</span>
                   <input
                     type="date"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="flex-1 px-2 py-1 bg-gray-600 border border-gray-500 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-2 py-1 bg-gray-600 border border-gray-500 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   />
                   {(startDate || endDate) && (
                     <button
@@ -2630,7 +2658,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                       className="px-2 py-1 bg-gray-600 text-gray-300 rounded-lg hover:bg-gray-500 hover:text-white transition-colors"
                       title="Clear date filters"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
@@ -2669,34 +2697,34 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               label: 'Orders',
               icon: <FileText className="w-4 h-4" />,
               content: (
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {/* Filter Panel */}
-                  <div className="bg-gray-700 p-4 rounded-lg">
-                    <div className="flex justify-between items-center mb-4">
-                      <h4 className="text-sm font-medium text-gray-300">Filter Panel</h4>
-                      <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="bg-gray-700 p-3 sm:p-4 rounded-lg">
+                    <div className="flex justify-between items-center mb-3 sm:mb-4">
+                      <h4 className="text-xs sm:text-sm font-medium text-gray-300">Filter Panel</h4>
+                      <button className="p-1.5 sm:p-2 text-gray-400 hover:text-white transition-colors">
+                        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
                         </svg>
                       </button>
                     </div>
                     
-                    <div className="flex flex-wrap gap-4">
+                    <div className="space-y-3 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-4">
                       {/* Search */}
-                      <div className="flex-1 min-w-[200px]">
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Search</label>
+                      <div className="w-full sm:flex-1 sm:min-w-[200px]">
+                        <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">Search</label>
                         <div className="relative">
                           <input
                             type="text"
                             placeholder="Search orders..."
                             value={orderSearchQuery}
                             onChange={(e) => setOrderSearchQuery(e.target.value)}
-                            className="w-full px-3 py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-2 sm:px-3 py-1.5 sm:py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
                           />
                           {orderSearchQuery && (
                             <button
                               onClick={() => setOrderSearchQuery('')}
-                              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors p-1"
                               title="Clear search"
                               >
                               ×
@@ -2706,13 +2734,13 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                       </div>
 
                       {/* All Statuses */}
-                      <div className="flex-1 min-w-[200px]">
-                        <label className="block text-sm font-medium text-gray-300 mb-2">All Statuses</label>
+                      <div className="w-full sm:flex-1 sm:min-w-[200px]">
+                        <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">All Statuses</label>
                         <div className="relative">
                           <select 
                             value={selectedStatus}
                             onChange={(e) => setSelectedStatus(e.target.value)}
-                            className="w-full px-3 py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-2 sm:px-3 py-1.5 sm:py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
                           >
                             <option value="">All Statuses</option>
                             <option value="filled">Filled</option>
@@ -2723,7 +2751,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                           {selectedStatus && (
                             <button
                               onClick={() => setSelectedStatus('')}
-                              className="absolute right-8 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                              className="absolute right-8 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors p-1"
                               title="Clear status filter"
                             >
                               ×
@@ -2733,13 +2761,13 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                       </div>
 
                       {/* All Groups */}
-                      <div className="flex-1 min-w-[200px]">
-                        <label className="block text-sm font-medium text-gray-300 mb-2">All Groups</label>
+                      <div className="w-full sm:flex-1 sm:min-w-[200px]">
+                        <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">All Groups</label>
                         <div className="relative">
                           <select 
                             value={selectedGroup}
                             onChange={(e) => setSelectedGroup(e.target.value)}
-                            className="w-full px-3 py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-2 sm:px-3 py-1.5 sm:py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
                           >
                             <option value="">All Groups</option>
                             <option value="default">Default</option>
@@ -2749,7 +2777,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                           {selectedGroup && (
                             <button
                               onClick={() => setSelectedGroup('')}
-                              className="absolute right-8 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                              className="absolute right-8 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors p-1"
                               title="Clear group filter"
                             >
                               ×
@@ -2759,19 +2787,19 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                       </div>
 
                       {/* Order Updated At */}
-                      <div className="flex-1 min-w-[200px]">
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Order Updated At</label>
+                      <div className="w-full sm:flex-1 sm:min-w-[200px]">
+                        <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">Order Updated At</label>
                         <div className="relative">
                           <input
                             type="date"
                             value={orderUpdatedAt}
                             onChange={(e) => setOrderUpdatedAt(e.target.value)}
-                            className="w-full px-3 py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-2 sm:px-3 py-1.5 sm:py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
                           />
                           {orderUpdatedAt && (
                             <button
                               onClick={() => setOrderUpdatedAt('')}
-                              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors p-1"
                               title="Clear date filter"
                             >
                               ×
@@ -2783,7 +2811,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                   </div>
 
                   {/* Orders Table */}
-                  <div className="bg-gray-700 p-4 rounded-lg">
+                  <div className="bg-gray-700 p-3 sm:p-4 rounded-lg">
                     <OrderTable 
                       data={mockOrderData} 
                       searchQuery={orderSearchQuery}
@@ -2799,34 +2827,34 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               label: 'Deal History',
               icon: <History className="w-4 h-4" />,
               content: (
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {/* Filter Panel */}
-                  <div className="bg-gray-700 p-4 rounded-lg">
-                    <div className="flex justify-between items-center mb-4">
-                      <h4 className="text-sm font-medium text-gray-300">Filter Panel</h4>
-                      <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="bg-gray-700 p-3 sm:p-4 rounded-lg">
+                    <div className="flex justify-between items-center mb-3 sm:mb-4">
+                      <h4 className="text-xs sm:text-sm font-medium text-gray-300">Filter Panel</h4>
+                      <button className="p-1.5 sm:p-2 text-gray-400 hover:text-white transition-colors">
+                        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
                         </svg>
                       </button>
                     </div>
                     
-                    <div className="flex flex-wrap gap-4">
+                    <div className="space-y-3 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-4">
                       {/* Search */}
-                      <div className="flex-1 min-w-[200px]">
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Search</label>
+                      <div className="w-full sm:flex-1 sm:min-w-[200px]">
+                        <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">Search</label>
                         <div className="relative">
                           <input
                             type="text"
                             placeholder="Search deals..."
                             value={dealHistorySearchQuery}
                             onChange={(e) => setDealHistorySearchQuery(e.target.value)}
-                            className="w-full px-3 py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-2 sm:px-3 py-1.5 sm:py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
                           />
                           {dealHistorySearchQuery && (
                             <button
                               onClick={() => setDealHistorySearchQuery('')}
-                              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors p-1"
                               title="Clear search"
                             >
                               ×
@@ -2836,13 +2864,13 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                       </div>
 
                       {/* All Position Impacts */}
-                      <div className="flex-1 min-w-[200px]">
-                        <label className="block text-sm font-medium text-gray-300 mb-2">All Position Impacts</label>
+                      <div className="w-full sm:flex-1 sm:min-w-[200px]">
+                        <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">All Position Impacts</label>
                         <div className="relative">
                           <select 
                             value={selectedPositionImpact}
                             onChange={(e) => setSelectedPositionImpact(e.target.value)}
-                            className="w-full px-3 py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-2 sm:px-3 py-1.5 sm:py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
                           >
                             <option value="">All Position Impacts</option>
                             <option value="opening">Opening</option>
@@ -2851,7 +2879,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                           {selectedPositionImpact && (
                             <button
                               onClick={() => setSelectedPositionImpact('')}
-                              className="absolute right-8 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                              className="absolute right-8 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors p-1"
                               title="Clear position impact filter"
                             >
                               ×
@@ -2861,13 +2889,13 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                       </div>
 
                       {/* All Groups */}
-                      <div className="flex-1 min-w-[200px]">
-                        <label className="block text-sm font-medium text-gray-300 mb-2">All Groups</label>
+                      <div className="w-full sm:flex-1 sm:min-w-[200px]">
+                        <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">All Groups</label>
                         <div className="relative">
                           <select 
                             value={dealHistoryGroup}
                             onChange={(e) => setDealHistoryGroup(e.target.value)}
-                            className="w-full px-3 py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-2 sm:px-3 py-1.5 sm:py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
                           >
                             <option value="">All Groups</option>
                             <option value="default">Default</option>
@@ -2877,7 +2905,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                           {dealHistoryGroup && (
                             <button
                               onClick={() => setDealHistoryGroup('')}
-                              className="absolute right-8 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                              className="absolute right-8 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors p-1"
                               title="Clear group filter"
                             >
                               ×
@@ -2887,19 +2915,19 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                       </div>
 
                       {/* History per deal Created At */}
-                      <div className="flex-1 min-w-[200px]">
-                        <label className="block text-sm font-medium text-gray-300 mb-2">History per deal Created At</label>
+                      <div className="w-full sm:flex-1 sm:min-w-[200px]">
+                        <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">History per deal Created At</label>
                         <div className="relative">
                           <input
                             type="date"
                             value={dealHistoryCreatedAt}
                             onChange={(e) => setDealHistoryCreatedAt(e.target.value)}
-                            className="w-full px-3 py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-2 sm:px-3 py-1.5 sm:py-2 pr-8 bg-gray-600 border border-gray-500 rounded text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
                           />
                           {dealHistoryCreatedAt && (
                             <button
                               onClick={() => setDealHistoryCreatedAt('')}
-                              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors p-1"
                               title="Clear date filter"
                             >
                               ×
@@ -2911,7 +2939,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                   </div>
 
                   {/* Deal History Table */}
-                  <div className="bg-gray-700 p-4 rounded-lg">
+                  <div className="bg-gray-700 p-3 sm:p-4 rounded-lg">
                     <DealHistoryTable 
                       data={mockDealHistoryData} 
                       searchQuery={dealHistorySearchQuery}
@@ -2921,7 +2949,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                   </div>
                 </div>
               )
-            }
+            },
+
           ]
 
   return (

@@ -364,8 +364,8 @@
 @media (max-width: 640px) {
   /* Ensure touch targets are at least 44px */
   button, a, input, select, textarea {
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 20px;
+    min-width: 20px;
   }
   
   /* Optimize form elements for mobile */
@@ -688,6 +688,428 @@
 /* Mobile Assign Tags Styles */
 .mobile-assign-tags {
   @apply max-h-[95vh] sm:max-h-[90vh];
+}
+
+/* Mobile Account Settings Styles */
+.mobile-account-settings {
+  @apply space-y-3 sm:space-y-4;
+}
+
+/* Mobile Affiliate Links Styles */
+.mobile-affiliate-links {
+  @apply space-y-3 sm:space-y-4;
+}
+
+.mobile-affiliate-links-header {
+  @apply flex justify-between items-center;
+}
+
+.mobile-affiliate-links-title {
+  @apply text-base sm:text-lg font-semibold text-blue-400;
+}
+
+.mobile-affiliate-links-header-button {
+  @apply text-blue-400 hover:text-blue-300 transition-colors p-1;
+}
+
+.mobile-affiliate-links-header-icon {
+  @apply w-4 h-4 sm:w-5 sm:h-5;
+}
+
+.mobile-affiliate-links-search-section {
+  @apply flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0;
+}
+
+.mobile-affiliate-links-search-container {
+  @apply flex-1 max-w-full sm:max-w-md;
+}
+
+.mobile-affiliate-links-search-label {
+  @apply block text-xs sm:text-sm font-medium text-gray-300 mb-2;
+}
+
+.mobile-affiliate-links-search-input {
+  @apply w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm;
+}
+
+.mobile-affiliate-links-add-button {
+  @apply w-full sm:w-auto p-2 border border-white rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center sm:justify-start;
+}
+
+.mobile-affiliate-links-add-icon {
+  @apply w-4 h-4 sm:w-5 sm:h-5 text-white;
+}
+
+.mobile-affiliate-links-form {
+  @apply bg-gray-700 p-3 sm:p-4 lg:p-6 rounded-lg border border-gray-600;
+}
+
+.mobile-affiliate-links-form-title {
+  @apply text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4;
+}
+
+.mobile-affiliate-links-form-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4;
+}
+
+.mobile-affiliate-links-form-field {
+  @apply space-y-2;
+}
+
+.mobile-affiliate-links-form-label {
+  @apply block text-xs sm:text-sm font-medium text-gray-300 mb-2;
+}
+
+.mobile-affiliate-links-form-input {
+  @apply w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm;
+}
+
+.mobile-affiliate-links-form-select {
+  @apply w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm;
+}
+
+.mobile-affiliate-links-form-button-container {
+  @apply flex justify-center sm:justify-end mt-4 sm:mt-6;
+}
+
+.mobile-affiliate-links-form-button {
+  @apply w-full sm:w-auto px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs sm:text-sm;
+}
+
+.mobile-affiliate-links-table {
+  @apply bg-gray-700 rounded-lg overflow-hidden;
+}
+
+.mobile-affiliate-links-table-header {
+  @apply bg-gray-800;
+}
+
+.mobile-affiliate-links-table-header-cell {
+  @apply px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300;
+}
+
+.mobile-affiliate-links-table-header-content {
+  @apply flex items-center space-x-1 sm:space-x-2;
+}
+
+.mobile-affiliate-links-table-header-button {
+  @apply text-blue-400 hover:text-blue-300 transition-colors p-1;
+}
+
+.mobile-affiliate-links-table-header-icon {
+  @apply w-3 h-3 sm:w-4 sm:h-4;
+}
+
+.mobile-affiliate-links-table-body-cell {
+  @apply px-2 sm:px-4 py-2 sm:py-3;
+}
+
+.mobile-affiliate-links-table-content {
+  @apply flex items-center space-x-1 sm:space-x-2;
+}
+
+.mobile-affiliate-links-table-text {
+  @apply text-xs sm:text-sm text-gray-300;
+}
+
+.mobile-affiliate-links-table-link {
+  @apply text-xs sm:text-sm text-gray-300 truncate max-w-[120px] sm:max-w-xs;
+}
+
+.mobile-affiliate-links-table-action-button {
+  @apply p-1 rounded hover:transition-colors;
+}
+
+.mobile-affiliate-links-table-action-icon {
+  @apply w-3 h-3;
+}
+
+/* Mobile-specific affiliate links improvements */
+@media (max-width: 640px) {
+  .mobile-affiliate-links {
+    @apply space-y-3;
+  }
+  
+  .mobile-affiliate-links-title {
+    @apply text-base;
+  }
+  
+  .mobile-affiliate-links-header-icon {
+    @apply w-4 h-4;
+  }
+  
+  .mobile-affiliate-links-search-section {
+    @apply gap-3;
+  }
+  
+  .mobile-affiliate-links-search-container {
+    @apply max-w-full;
+  }
+  
+  .mobile-affiliate-links-search-label {
+    @apply text-xs;
+  }
+  
+  .mobile-affiliate-links-search-input {
+    @apply text-xs py-2;
+  }
+  
+  .mobile-affiliate-links-add-button {
+    @apply w-full;
+  }
+  
+  .mobile-affiliate-links-add-icon {
+    @apply w-4 h-4;
+  }
+  
+  .mobile-affiliate-links-form {
+    @apply p-3;
+  }
+  
+  .mobile-affiliate-links-form-title {
+    @apply text-base mb-3;
+  }
+  
+  .mobile-affiliate-links-form-grid {
+    @apply gap-3;
+  }
+  
+  .mobile-affiliate-links-form-label {
+    @apply text-xs;
+  }
+  
+  .mobile-affiliate-links-form-input,
+  .mobile-affiliate-links-form-select {
+    @apply text-xs py-2;
+  }
+  
+  .mobile-affiliate-links-form-button-container {
+    @apply mt-4;
+  }
+  
+  .mobile-affiliate-links-form-button {
+    @apply w-full px-4 py-2.5 text-xs;
+  }
+  
+  .mobile-affiliate-links-table-header-cell {
+    @apply px-2 py-2 text-xs;
+  }
+  
+  .mobile-affiliate-links-table-header-content {
+    @apply space-x-1;
+  }
+  
+  .mobile-affiliate-links-table-header-icon {
+    @apply w-3 h-3;
+  }
+  
+  .mobile-affiliate-links-table-body-cell {
+    @apply px-2 py-2;
+  }
+  
+  .mobile-affiliate-links-table-content {
+    @apply space-x-1;
+  }
+  
+  .mobile-affiliate-links-table-text {
+    @apply text-xs;
+  }
+  
+  .mobile-affiliate-links-table-link {
+    @apply text-xs max-w-[120px];
+  }
+}
+
+/* Tablet-specific affiliate links improvements */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mobile-affiliate-links {
+    @apply space-y-4;
+  }
+  
+  .mobile-affiliate-links-title {
+    @apply text-lg;
+  }
+  
+  .mobile-affiliate-links-header-icon {
+    @apply w-5 h-5;
+  }
+  
+  .mobile-affiliate-links-search-section {
+    @apply gap-0;
+  }
+  
+  .mobile-affiliate-links-search-container {
+    @apply max-w-md;
+  }
+  
+  .mobile-affiliate-links-search-label {
+    @apply text-sm;
+  }
+  
+  .mobile-affiliate-links-search-input {
+    @apply text-sm py-2;
+  }
+  
+  .mobile-affiliate-links-add-button {
+    @apply w-auto;
+  }
+  
+  .mobile-affiliate-links-add-icon {
+    @apply w-5 h-5;
+  }
+  
+  .mobile-affiliate-links-form {
+    @apply p-4;
+  }
+  
+  .mobile-affiliate-links-form-title {
+    @apply text-lg mb-4;
+  }
+  
+  .mobile-affiliate-links-form-grid {
+    @apply gap-4;
+  }
+  
+  .mobile-affiliate-links-form-label {
+    @apply text-sm;
+  }
+  
+  .mobile-affiliate-links-form-input,
+  .mobile-affiliate-links-form-select {
+    @apply text-sm py-2;
+  }
+  
+  .mobile-affiliate-links-form-button-container {
+    @apply mt-6;
+  }
+  
+  .mobile-affiliate-links-form-button {
+    @apply w-auto px-6 py-2 text-sm;
+  }
+  
+  .mobile-affiliate-links-table-header-cell {
+    @apply px-4 py-3 text-sm;
+  }
+  
+  .mobile-affiliate-links-table-header-content {
+    @apply space-x-2;
+  }
+  
+  .mobile-affiliate-links-table-header-icon {
+    @apply w-4 h-4;
+  }
+  
+  .mobile-affiliate-links-table-body-cell {
+    @apply px-4 py-3;
+  }
+  
+  .mobile-affiliate-links-table-content {
+    @apply space-x-2;
+  }
+  
+  .mobile-affiliate-links-table-text {
+    @apply text-sm;
+  }
+  
+  .mobile-affiliate-links-table-link {
+    @apply text-sm max-w-xs;
+  }
+}
+
+.mobile-account-settings-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4;
+}
+
+.mobile-account-settings-field {
+  @apply space-y-2;
+}
+
+.mobile-account-settings-label {
+  @apply block text-xs sm:text-sm font-medium text-gray-300 mb-2;
+}
+
+.mobile-account-settings-input {
+  @apply w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm;
+}
+
+.mobile-account-settings-select {
+  @apply w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm;
+}
+
+.mobile-account-settings-domain {
+  @apply col-span-1 sm:col-span-2 lg:col-span-3;
+}
+
+.mobile-account-settings-button-container {
+  @apply flex justify-center sm:justify-end;
+}
+
+.mobile-account-settings-button {
+  @apply w-full sm:w-auto px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs sm:text-sm;
+}
+
+/* Mobile-specific account settings improvements */
+@media (max-width: 640px) {
+  .mobile-account-settings {
+    @apply space-y-3;
+  }
+  
+  .mobile-account-settings-grid {
+    @apply gap-3;
+  }
+  
+  .mobile-account-settings-label {
+    @apply text-xs;
+  }
+  
+  .mobile-account-settings-input,
+  .mobile-account-settings-select {
+    @apply text-xs py-2;
+  }
+  
+  .mobile-account-settings-domain {
+    @apply col-span-1;
+  }
+  
+  .mobile-account-settings-button-container {
+    @apply justify-center;
+  }
+  
+  .mobile-account-settings-button {
+    @apply w-full px-4 py-2.5 text-xs;
+  }
+}
+
+/* Tablet-specific account settings improvements */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mobile-account-settings {
+    @apply space-y-4;
+  }
+  
+  .mobile-account-settings-grid {
+    @apply gap-4;
+  }
+  
+  .mobile-account-settings-label {
+    @apply text-sm;
+  }
+  
+  .mobile-account-settings-input,
+  .mobile-account-settings-select {
+    @apply text-sm py-2;
+  }
+  
+  .mobile-account-settings-domain {
+    @apply col-span-2;
+  }
+  
+  .mobile-account-settings-button-container {
+    @apply justify-end;
+  }
+  
+  .mobile-account-settings-button {
+    @apply w-auto px-6 py-2 text-sm;
+  }
 }
 
 .mobile-assign-tags-header {

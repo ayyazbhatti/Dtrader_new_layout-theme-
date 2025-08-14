@@ -39,6 +39,7 @@ import {
   Bell,
   Menu,
   X,
+  RefreshCw,
 } from 'lucide-react'
 
 interface SidebarProps {
@@ -74,7 +75,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onMobileClose, 
           icon: UserCog,
         },
         { name: 'Calls', href: '/general-setting/calls', icon: Phone },
-        { name: 'Agents', href: '/general-setting/agents', icon: UserCog },
         { name: 'Leads', href: '/general-setting/leads', icon: Target },
         {
           name: 'Call Logs',
@@ -102,8 +102,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onMobileClose, 
       href: '/markets',
       icon: Store,
       subMenus: [
-        { name: 'Market Overview', href: '/markets/overview', icon: BarChart3 },
-        { name: 'Market Analysis', href: '/markets/analysis', icon: TrendingUp },
+        { name: 'Symbols', href: '/markets/symbols', icon: Tag },
+        { name: 'Assets', href: '/markets/assets', icon: Building },
+        { name: 'Swaps', href: '/markets/swaps', icon: RefreshCw },
+        { name: 'Price Streams', href: '/markets/price-streams', icon: TrendingUp },
       ],
     },
     {

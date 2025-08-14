@@ -46,6 +46,16 @@ export { AddNewUserPopup } from './AddNewUserPopup'
 // User Details Components
 export { default as UserDetailsPopup } from './UserDetailsPopup'
 
+// Access Rights Components
+export { default as AccessRightsTable } from './AccessRightsTable'
+export { default as AccessRightsPopup } from './AccessRightsPopup'
+
+// Market Components
+export { default as SymbolsTable } from './SymbolsTable'
+export { default as EditSymbolPopup } from './EditSymbolPopup'
+export { default as AssetsTable } from './AssetsTable'
+export { default as CreateAssetPopup } from './CreateAssetPopup'
+
 // Manager Details Components
 export { default as ManagerDetailsPopup } from './ManagerDetailsPopup'
 export { default as AddManagerPopup } from './AddManagerPopup'

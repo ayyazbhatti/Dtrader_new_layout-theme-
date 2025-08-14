@@ -25,6 +25,8 @@ import DataTable from '../components/DataTable/DataTable'
 import GroupsTable from '../components/DataTable/GroupsTable'
 import GroupProfilesTable from '../components/DataTable/GroupProfilesTable'
 import ManagerTable from '../components/DataTable/ManagerTable'
+import CallsTable from '../components/DataTable/CallsTable'
+
 
 const GeneralSettingSub: React.FC = () => {
   const { subPage } = useParams<{ subPage: string }>()
@@ -102,21 +104,7 @@ const GeneralSettingSub: React.FC = () => {
             { title: 'Response Time', value: '2.1m', change: '-0.3m', icon: Activity, color: 'teal' }
           ]
         }
-      case 'agents':
-        return {
-          title: 'Agent Management',
-          description: 'Manage and monitor all support agents and their performance',
-          icon: User,
-          color: 'teal',
-          stats: [
-            { title: 'Total Agents', value: '18', change: '+3', icon: User, color: 'teal' },
-            { title: 'Active Agents', value: '15', change: '+2', icon: User, color: 'green' },
-            { title: 'Tickets Handled', value: '89', change: '+12', icon: Activity, color: 'blue' },
-            { title: 'Avg. Rating', value: '4.7', change: '+0.1', icon: User, color: 'emerald' },
-            { title: 'Response Time', value: '1.8m', change: '-0.2m', icon: Clock, color: 'orange' },
-            { title: 'Success Rate', value: '93.2%', change: '+2%', icon: TrendingUp, color: 'purple' }
-          ]
-        }
+
       case 'leads':
         return {
           title: 'Lead Management',
@@ -206,6 +194,9 @@ const GeneralSettingSub: React.FC = () => {
         return <GroupProfilesTable />
       case 'manager':
         return <ManagerTable />
+      case 'calls':
+        return <CallsTable />
+
       case 'user':
       default:
   return (

@@ -1,574 +1,591 @@
 import React, { useState, useEffect } from 'react'
-import { X, Save, AlertCircle, CheckCircle, Loader2 } from 'lucide-react'
-
-interface SymbolData {
-  symbolId: string
-  symbol: string
-  pipPosition: number
-  digit: number
-  bid: string
-  ask: string
-  assetClass: string
-  leverageProfile: string
-  status: string
-  baseAsset?: string
-  quoteAsset?: string
-  description?: string
-  category?: string
-  lotSize?: number
-  units?: string
-  timeZone?: string
-  maintenanceMargin?: string
-  lastTradeDate?: string
-  expirationDate?: string
-}
+import { X, Save, Tag, Globe, Settings, Calendar, Clock, DollarSign } from 'lucide-react'
 
 interface EditSymbolPopupProps {
   isOpen: boolean
   onClose: () => void
-  onSubmit: (symbol: SymbolData) => Promise<void>
-  symbol: SymbolData | null
+  onSubmit: (data: SymbolFormData) => void
+  initialData?: SymbolFormData
 }
 
-interface ValidationErrors {
-  [key: string]: string
+interface SymbolFormData {
+  symbolName: string
+  assetClass: string
+  digit: number
+  maintenanceMargin: string
+  baseAsset: string
+  category: string
+  lotSize: number
+  lastTradeDate: string
+  quoteAsset: string
+  status: string
+  units: string
+  expirationDate: string
+  description: string
+  pipPosition: number
+  timeZone: string
+  leverageProfile: string
 }
 
 const EditSymbolPopup: React.FC<EditSymbolPopupProps> = ({
   isOpen,
   onClose,
   onSubmit,
-  symbol
+  initialData
 }) => {
-  const [formData, setFormData] = useState<SymbolData | null>(null)
-  const [errors, setErrors] = useState<ValidationErrors>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isDirty, setIsDirty] = useState(false)
-
-  // Initialize form data when symbol changes
-  useEffect(() => {
-    if (symbol) {
-      setFormData({ ...symbol })
-      setErrors({})
-      setIsDirty(false)
+  const [formData, setFormData] = useState<SymbolFormData>(() => {
+    if (initialData) {
+      return initialData
     }
-  }, [symbol])
+    return {
+      symbolName: '',
+      assetClass: '',
+      digit: 2,
+      maintenanceMargin: '',
+      baseAsset: '',
+      category: '',
+      lotSize: 10000,
+      lastTradeDate: '',
+      quoteAsset: '',
+      status: 'Active',
+      units: '',
+      expirationDate: '',
+      description: '',
+      pipPosition: 2,
+      timeZone: '',
+      leverageProfile: ''
+    }
+  })
 
-  // Handle input changes
-  const handleInputChange = (field: keyof SymbolData, value: any) => {
-    if (!formData) return
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
-    setFormData(prev => prev ? { ...prev, [field]: value } : null)
-    setIsDirty(true)
+  const assetClasses = [
+    'Forex',
+    'Crypto',
+    'Stock',
+    'Commodity',
+    'Index',
+    'Bond',
+    'ETF'
+  ]
 
+  const categories = [
+    'Default Category',
+    'Major Pairs',
+    'Minor Pairs',
+    'Exotic Pairs',
+    'Crypto Pairs',
+    'Stock Pairs',
+    'Commodity Pairs'
+  ]
+
+  const statuses = [
+    'Active',
+    'Inactive',
+    'Suspended',
+    'Maintenance'
+  ]
+
+  const timeZones = [
+    '(UTC-6:00- With DST )US(Chicago)',
+    '(UTC-5:00- With DST )US(New York)',
+    '(UTC+0:00)GMT(London)',
+    '(UTC+1:00)Europe(Paris)',
+    '(UTC+2:00)Europe(Athens)',
+    '(UTC+3:00)Europe(Moscow)',
+    '(UTC+5:30)Asia(Kolkata)',
+    '(UTC+8:00)Asia(Shanghai)',
+    '(UTC+9:00)Asia(Tokyo)'
+  ]
+
+  const leverageProfiles = [
+    '19_Feb',
+    '20_Mar',
+    '21_Apr',
+    '22_May',
+    '23_Jun',
+    '24_Jul'
+  ]
+
+  // Update form data when initialData changes (for editing mode)
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData)
+    }
+  }, [initialData])
+
+  const handleInputChange = (field: keyof SymbolFormData, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }))
+      setErrors(prev => {
+        const newErrors = { ...prev }
+        delete newErrors[field]
+        return newErrors
+      })
     }
   }
 
-  // Validate form data
   const validateForm = (): boolean => {
-    const newErrors: ValidationErrors = {}
+    const newErrors: Record<string, string> = {}
 
-    if (!formData) return false
-
-    // Required fields validation
-    if (!formData.symbol?.trim()) {
-      newErrors.symbol = 'Symbol name is required'
-    }
-    if (!formData.baseAsset?.trim()) {
-      newErrors.baseAsset = 'Base asset is required'
-    }
-    if (!formData.quoteAsset?.trim()) {
-      newErrors.quoteAsset = 'Quote asset is required'
+    if (!formData.symbolName.trim()) {
+      newErrors.symbolName = 'Symbol name is required'
     }
     if (!formData.assetClass) {
       newErrors.assetClass = 'Asset class is required'
     }
+    if (!formData.digit || formData.digit < 0) {
+      newErrors.digit = 'Valid digit is required'
+    }
+    if (!formData.baseAsset.trim()) {
+      newErrors.baseAsset = 'Base asset is required'
+    }
     if (!formData.category) {
       newErrors.category = 'Category is required'
     }
-    if (formData.pipPosition < 0) {
-      newErrors.pipPosition = 'Pip position must be non-negative'
+    if (!formData.lotSize || formData.lotSize <= 0) {
+      newErrors.lotSize = 'Valid lot size is required'
     }
-    if (formData.digit < 0) {
-      newErrors.digit = 'Digit must be non-negative'
+    if (!formData.quoteAsset.trim()) {
+      newErrors.quoteAsset = 'Quote asset is required'
     }
-
-    // Business logic validation
-    if (formData.lotSize && formData.lotSize <= 0) {
-      newErrors.lotSize = 'Lot size must be positive'
+    if (!formData.units.trim()) {
+      newErrors.units = 'Units are required'
+    }
+    if (!formData.pipPosition || formData.pipPosition < 0) {
+      newErrors.pipPosition = 'Valid pip position is required'
+    }
+    if (!formData.leverageProfile) {
+      newErrors.leverageProfile = 'Leverage profile is required'
     }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
-  // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
-    if (!formData) return
-
-    if (!validateForm()) {
-      return
-    }
-
-    setIsSubmitting(true)
-    try {
-      await onSubmit(formData)
+    if (validateForm()) {
+      onSubmit(formData)
       onClose()
-    } catch (error) {
-      console.error('Error saving symbol:', error)
-      // You could show a toast notification here
-    } finally {
-      setIsSubmitting(false)
     }
   }
 
-  // Handle close with unsaved changes warning
   const handleClose = () => {
-    if (isDirty) {
-      const confirmed = window.confirm('You have unsaved changes. Are you sure you want to close?')
-      if (!confirmed) return
-    }
+    setFormData({
+      symbolName: '',
+      assetClass: '',
+      digit: 2,
+      maintenanceMargin: '',
+      baseAsset: '',
+      category: '',
+      lotSize: 10000,
+      lastTradeDate: '',
+      quoteAsset: '',
+      status: 'Active',
+      units: '',
+      expirationDate: '',
+      description: '',
+      pipPosition: 2,
+      timeZone: '',
+      leverageProfile: ''
+    })
+    setErrors({})
     onClose()
   }
 
-  if (!isOpen || !symbol || !formData) return null
+  if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-6xl max-h-[95vh] sm:max-h-[85vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 w-full max-w-6xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-              <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <Tag className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
-                Edit Symbol: {symbol.symbol}
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                {initialData ? 'Edit Symbol' : 'Add New Symbol'}
               </h2>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                Modify symbol configuration and settings
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {initialData ? 'Modify existing symbol details' : 'Create a new trading symbol'}
               </p>
             </div>
           </div>
           <button
             onClick={handleClose}
-            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 self-end sm:self-auto"
+            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-4">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Symbol Details Section */}
-            <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 sm:p-6">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6 flex items-center">
-                <span className="mr-2">📊</span>
-                Symbol Details
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {/* Symbol Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Symbol Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.symbol}
-                    onChange={(e) => handleInputChange('symbol', e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 text-sm ${
-                      errors.symbol 
-                        ? 'border-red-500 focus:border-red-500' 
-                        : 'border-gray-300 dark:border-gray-600 focus:border-blue-500'
-                    }`}
-                    placeholder="e.g., AAPL, EURUSD"
-                    required
-                  />
-                  {errors.symbol && (
-                    <p className="mt-1 text-xs text-red-600 dark:text-red-400 flex items-center">
-                      <AlertCircle className="w-3 h-3 mr-1" />
-                      {errors.symbol}
-                    </p>
-                  )}
-                </div>
-
-                {/* Base Asset */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Base Asset <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.baseAsset || ''}
-                    onChange={(e) => handleInputChange('baseAsset', e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 text-sm ${
-                      errors.baseAsset 
-                        ? 'border-red-500 focus:border-red-500' 
-                        : 'border-gray-300 dark:border-gray-600 focus:border-blue-500'
-                    }`}
-                    placeholder="e.g., AAPL, EUR"
-                    required
-                  />
-                  {errors.baseAsset && (
-                    <p className="mt-1 text-xs text-red-600 dark:text-red-400 flex items-center">
-                      <AlertCircle className="w-3 h-3 mr-1" />
-                      {errors.baseAsset}
-                    </p>
-                  )}
-                </div>
-
-                {/* Quote Asset */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Quote Asset <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.quoteAsset || ''}
-                    onChange={(e) => handleInputChange('quoteAsset', e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 text-sm ${
-                      errors.quoteAsset 
-                        ? 'border-red-500 focus:border-red-500' 
-                        : 'border-gray-300 dark:border-gray-600 focus:border-blue-500'
-                    }`}
-                    placeholder="e.g., USD, BTC"
-                    required
-                  />
-                  {errors.quoteAsset && (
-                    <p className="mt-1 text-xs text-red-600 dark:text-red-400 flex items-center">
-                      <AlertCircle className="w-3 h-3 mr-1" />
-                      {errors.quoteAsset}
-                    </p>
-                  )}
-                </div>
-
-                {/* Description */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Description
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.description || ''}
-                    onChange={(e) => handleInputChange('description', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm"
-                    placeholder="Symbol description"
-                  />
-                </div>
-
-                {/* Asset Class */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Asset Class <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={formData.assetClass}
-                    onChange={(e) => handleInputChange('assetClass', e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 text-sm ${
-                      errors.assetClass 
-                        ? 'border-red-500 focus:border-red-500' 
-                        : 'border-gray-300 dark:border-gray-600 focus:border-blue-500'
-                    }`}
-                    required
-                  >
-                    <option value="">Select Asset Class</option>
-                    <option value="Stocks">Stocks</option>
-                    <option value="Forex">Forex</option>
-                    <option value="Crypto">Crypto</option>
-                    <option value="Commodities">Commodities</option>
-                    <option value="Indices">Indices</option>
-                    <option value="Bonds">Bonds</option>
-                  </select>
-                  {errors.assetClass && (
-                    <p className="mt-1 text-xs text-red-600 dark:text-red-400 flex items-center">
-                      <AlertCircle className="w-3 h-3 mr-1" />
-                      {errors.assetClass}
-                    </p>
-                  )}
-                </div>
-
-                {/* Category */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Category <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={formData.category || ''}
-                    onChange={(e) => handleInputChange('category', e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 text-sm ${
-                      errors.category 
-                        ? 'border-red-500 focus:border-red-500' 
-                        : 'border-gray-300 dark:border-gray-600 focus:border-blue-500'
-                    }`}
-                    required
-                  >
-                    <option value="">Select Category</option>
-                    <option value="Default Category">Default Category</option>
-                    <option value="Premium Category">Premium Category</option>
-                    <option value="VIP Category">VIP Category</option>
-                  </select>
-                  {errors.category && (
-                    <p className="mt-1 text-xs text-red-600 dark:text-red-400 flex items-center">
-                      <AlertCircle className="w-3 h-3 mr-1" />
-                      {errors.category}
-                    </p>
-                  )}
-                </div>
-
-                {/* Status */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Status
-                  </label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) => handleInputChange('status', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm"
-                  >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                    <option value="suspended">Suspended</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* Trading Parameters Section */}
-            <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 sm:p-6">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6 flex items-center">
-                <span className="mr-2">⚙️</span>
-                Trading Parameters
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {/* Pip Position */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Pip Position <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.pipPosition}
-                    onChange={(e) => handleInputChange('pipPosition', parseInt(e.target.value) || 0)}
-                    className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 text-sm ${
-                      errors.pipPosition 
-                        ? 'border-red-500 focus:border-red-500' 
-                        : 'border-gray-300 dark:border-gray-600 focus:border-blue-500'
-                    }`}
-                    min="0"
-                    step="1"
-                    placeholder="0"
-                    required
-                  />
-                  {errors.pipPosition && (
-                    <p className="mt-1 text-xs text-red-600 dark:text-red-400 flex items-center">
-                      <AlertCircle className="w-3 h-3 mr-1" />
-                      {errors.pipPosition}
-                    </p>
-                  )}
-                </div>
-
-                {/* Digit */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Digit <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.digit}
-                    onChange={(e) => handleInputChange('digit', parseInt(e.target.value) || 0)}
-                    className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 text-sm ${
-                      errors.digit 
-                        ? 'border-red-500 focus:border-red-500' 
-                        : 'border-gray-300 dark:border-gray-600 focus:border-blue-500'
-                    }`}
-                    min="0"
-                    step="1"
-                    placeholder="0"
-                    required
-                  />
-                  {errors.digit && (
-                    <p className="mt-1 text-xs text-red-600 dark:text-red-400 flex items-center">
-                      <AlertCircle className="w-3 h-3 mr-1" />
-                      {errors.digit}
-                    </p>
-                  )}
-                </div>
-
-                {/* Lot Size */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Lot Size
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.lotSize || ''}
-                    onChange={(e) => handleInputChange('lotSize', e.target.value ? parseFloat(e.target.value) : undefined)}
-                    className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 text-sm ${
-                      errors.lotSize 
-                        ? 'border-red-500 focus:border-red-500' 
-                        : 'border-gray-300 dark:border-gray-600 focus:border-blue-500'
-                    }`}
-                    step="0.01"
-                    min="0.01"
-                    placeholder="100.00"
-                  />
-                  {errors.lotSize && (
-                    <p className="mt-1 text-xs text-red-600 dark:text-red-400 flex items-center">
-                      <AlertCircle className="w-3 h-3 mr-1" />
-                      {errors.lotSize}
-                    </p>
-                  )}
-                </div>
-
-                {/* Units */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Units
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.units || ''}
-                    onChange={(e) => handleInputChange('units', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm"
-                    placeholder="e.g., Shares, Units"
-                  />
-                </div>
-
-                {/* Time Zone */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Time Zone
-                  </label>
-                  <select
-                    value={formData.timeZone || ''}
-                    onChange={(e) => handleInputChange('timeZone', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm"
-                  >
-                    <option value="">Select Time Zone</option>
-                    <option value="(UTC-6:00- With DST )US(Chicago)">(UTC-6:00) US (Chicago)</option>
-                    <option value="(UTC+0:00) GMT">(UTC+0:00) GMT</option>
-                    <option value="(UTC+1:00) CET">(UTC+1:00) CET</option>
-                    <option value="(UTC+8:00) CST">(UTC+8:00) CST</option>
-                  </select>
-                </div>
-
-                {/* Maintenance Margin */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Maintenance Margin
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.maintenanceMargin || ''}
-                    onChange={(e) => handleInputChange('maintenanceMargin', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm"
-                    placeholder="e.g., 25%"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Dates Section */}
-            <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 sm:p-6">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6 flex items-center">
-                <span className="mr-2">📅</span>
-                Important Dates
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                {/* Last Trade Date */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Last Trade Date
-                  </label>
-                  <input
-                    type="date"
-                    value={formData.lastTradeDate || ''}
-                    onChange={(e) => handleInputChange('lastTradeDate', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm"
-                  />
-                </div>
-
-                {/* Expiration Date */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Expiration Date
-                  </label>
-                  <input
-                    type="date"
-                    value={formData.expirationDate || ''}
-                    onChange={(e) => handleInputChange('expirationDate', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Default Profiles Section */}
-            <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 sm:p-6">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6 flex items-center">
-                <span className="mr-2">🎯</span>
-                Default Profiles
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {/* Leverage Profile */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Leverage Profile <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={formData.leverageProfile}
-                    onChange={(e) => handleInputChange('leverageProfile', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm"
-                    required
-                  >
-                    <option value="Default Leverage">Default Leverage</option>
-                    <option value="Conservative">Conservative (1:100)</option>
-                    <option value="Moderate">Moderate (1:200)</option>
-                    <option value="Aggressive">Aggressive (1:500)</option>
-                    <option value="Professional">Professional (1:1000)</option>
-                    <option value="Institutional">Institutional (1:2000)</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-              <button
-                type="button"
-                onClick={handleClose}
-                disabled={isSubmitting}
-                className="w-full sm:w-auto px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={isSubmitting || !isDirty}
-                className="w-full sm:w-auto px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Saving...</span>
-                  </>
-                ) : (
-                  <>
-                    <Save className="w-4 h-4" />
-                    <span>Save Changes</span>
-                  </>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Main Symbol Details - 3 Fields per Row */}
+          <div className="space-y-6">
+            {/* Row 1: Symbol Name, Asset Class, Digit */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Symbol Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Symbol Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={formData.symbolName}
+                  onChange={(e) => handleInputChange('symbolName', e.target.value)}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                    errors.symbolName
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
+                  }`}
+                  placeholder="e.g., GBPUSD"
+                />
+                {errors.symbolName && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.symbolName}</p>
                 )}
-              </button>
+              </div>
+
+              {/* Asset Class */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Asset Class <span className="text-red-500">*</span>
+                </label>
+                <select
+                  value={formData.assetClass}
+                  onChange={(e) => handleInputChange('assetClass', e.target.value)}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                    errors.assetClass
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
+                  }`}
+                >
+                  <option value="">Select asset class</option>
+                  {assetClasses.map(assetClass => (
+                    <option key={assetClass} value={assetClass}>{assetClass}</option>
+                  ))}
+                </select>
+                {errors.assetClass && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.assetClass}</p>
+                )}
+              </div>
+
+              {/* Digit */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Digit <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  value={formData.digit}
+                  onChange={(e) => handleInputChange('digit', parseInt(e.target.value))}
+                  min="0"
+                  max="10"
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                    errors.digit
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
+                  }`}
+                  placeholder="e.g., 6"
+                />
+                {errors.digit && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.digit}</p>
+                )}
+              </div>
             </div>
-          </form>
-        </div>
+
+            {/* Row 2: Maintenance Margin, Base Asset, Category */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Maintenance Margin */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Maintenance Margin
+                </label>
+                <input
+                  type="text"
+                  value={formData.maintenanceMargin}
+                  onChange={(e) => handleInputChange('maintenanceMargin', e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                  placeholder="e.g., 0.5%"
+                />
+              </div>
+
+              {/* Base Asset */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Base Asset <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={formData.baseAsset}
+                  onChange={(e) => handleInputChange('baseAsset', e.target.value)}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                    errors.baseAsset
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
+                  }`}
+                  placeholder="e.g., GBP"
+                />
+                {errors.baseAsset && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.baseAsset}</p>
+                )}
+              </div>
+
+              {/* Category */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Category <span className="text-red-500">*</span>
+                </label>
+                <select
+                  value={formData.category}
+                  onChange={(e) => handleInputChange('category', e.target.value)}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                    errors.category
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
+                  }`}
+                >
+                  <option value="">Select category</option>
+                  {categories.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
+                {errors.category && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.category}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Row 3: Lot Size, Last Trade Date, Quote Asset */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Lot Size */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Lot Size <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  value={formData.lotSize}
+                  onChange={(e) => handleInputChange('lotSize', parseInt(e.target.value))}
+                  min="1"
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                    errors.lotSize
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
+                  }`}
+                  placeholder="e.g., 10000"
+                />
+                {errors.lotSize && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.lotSize}</p>
+                )}
+              </div>
+
+              {/* Last Trade Date */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Last Trade Date
+                </label>
+                <input
+                  type="date"
+                  value={formData.lastTradeDate}
+                  onChange={(e) => handleInputChange('lastTradeDate', e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                />
+              </div>
+
+              {/* Quote Asset */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Quote Asset <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={formData.quoteAsset}
+                  onChange={(e) => handleInputChange('quoteAsset', e.target.value)}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                    errors.quoteAsset
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
+                  }`}
+                  placeholder="e.g., USD"
+                />
+                {errors.quoteAsset && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.quoteAsset}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Row 4: Status, Units, Expiration Date */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Status */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Status
+                </label>
+                <select
+                  value={formData.status}
+                  onChange={(e) => handleInputChange('status', e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                >
+                  {statuses.map(status => (
+                    <option key={status} value={status}>{status}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Units */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Units <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={formData.units}
+                  onChange={(e) => handleInputChange('units', e.target.value)}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                    errors.units
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
+                  }`}
+                  placeholder="e.g., GBP"
+                />
+                {errors.units && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.units}</p>
+                )}
+              </div>
+
+              {/* Expiration Date */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Expiration Date
+                </label>
+                <input
+                  type="date"
+                  value={formData.expirationDate}
+                  onChange={(e) => handleInputChange('expirationDate', e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                />
+              </div>
+            </div>
+
+            {/* Row 5: Description, Pip Position, Time Zone */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Description */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Description
+                </label>
+                <input
+                  type="text"
+                  value={formData.description}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                  placeholder="e.g., British Pound vs US Dollar"
+                />
+              </div>
+
+              {/* Pip Position */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Pip Position <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  value={formData.pipPosition}
+                  onChange={(e) => handleInputChange('pipPosition', parseInt(e.target.value))}
+                  min="0"
+                  max="10"
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                    errors.pipPosition
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
+                  }`}
+                  placeholder="e.g., 2"
+                />
+                {errors.pipPosition && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.pipPosition}</p>
+                )}
+              </div>
+
+              {/* Time Zone */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Time Zone
+                </label>
+                <select
+                  value={formData.timeZone}
+                  onChange={(e) => handleInputChange('timeZone', e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                >
+                  <option value="">Select time zone</option>
+                  {timeZones.map(timeZone => (
+                    <option key={timeZone} value={timeZone}>{timeZone}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Default Profiles Section */}
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
+              <Calendar className="w-5 h-5 text-indigo-600" />
+              <span>Default Profiles</span>
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Leverage Profile */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Leverage Profile <span className="text-red-500">*</span>
+                </label>
+                <select
+                  value={formData.leverageProfile}
+                  onChange={(e) => handleInputChange('leverageProfile', e.target.value)}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                    errors.leverageProfile
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
+                  }`}
+                >
+                  <option value="">Select leverage profile</option>
+                  {leverageProfiles.map(profile => (
+                    <option key={profile} value={profile}>{profile}</option>
+                  ))}
+                </select>
+                {errors.leverageProfile && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.leverageProfile}</p>
+                )}
+              </div>
+              
+              {/* Empty space for balance */}
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+
+          {/* Footer Actions */}
+          <div className="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <button
+              type="button"
+              onClick={handleClose}
+              className="px-6 py-3 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg font-medium transition-colors duration-200"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium flex items-center space-x-2 transition-colors duration-200"
+            >
+              <Save className="w-4 h-4" />
+              <span>{initialData ? 'Update Symbol' : 'Create Symbol'}</span>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   )

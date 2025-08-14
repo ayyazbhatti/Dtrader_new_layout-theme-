@@ -213,65 +213,65 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+        <div className="bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-700">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
                 <Activity className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-base sm:text-lg font-semibold text-white">
                   Edit Price Stream
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-400">
                   Update price stream configuration
                 </p>
               </div>
               {hasUnsavedChanges && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-400">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-yellow-900/30 text-yellow-400">
                   Unsaved Changes
                 </span>
               )}
             </div>
             <button
               onClick={handleClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              className="text-gray-400 hover:text-white transition-colors p-1"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           </div>
 
           {/* Tabs */}
-          <div className="border-b border-gray-200 dark:border-gray-700">
-            <nav className="flex space-x-8 px-6">
+          <div className="border-b border-gray-700">
+            <nav className="flex space-x-4 px-3 sm:px-4">
               <button
                 onClick={() => setActiveTab('basic')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`py-2 sm:py-3 px-1 border-b-2 text-xs sm:text-sm font-medium transition-colors ${
                   activeTab === 'basic'
-                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+                    ? 'border-green-600 text-white'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
                 }`}
               >
                 Basic Info
               </button>
               <button
                 onClick={() => setActiveTab('markups')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`py-2 sm:py-3 px-1 border-b-2 text-xs sm:text-sm font-medium transition-colors ${
                   activeTab === 'markups'
-                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+                    ? 'border-green-600 text-white'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
                 }`}
               >
                 Symbol Markups
               </button>
               <button
                 onClick={() => setActiveTab('groups')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`py-2 sm:py-3 px-1 border-b-2 text-xs sm:text-sm font-medium transition-colors ${
                   activeTab === 'groups'
-                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+                    ? 'border-green-600 text-white'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
                 }`}
               >
                 Used in Groups
@@ -280,33 +280,33 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
           </div>
 
           {/* Tab Content */}
-          <div className="p-6">
+          <div className="p-3 sm:p-4">
             {/* Basic Info Tab */}
             {activeTab === 'basic' && (
               <div className="space-y-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white flex items-center">
-                  <Globe className="w-5 h-5 mr-2 text-blue-600" />
+                <h3 className="text-base sm:text-lg font-semibold text-white flex items-center">
+                  <Globe className="w-5 h-5 mr-2 text-green-600" />
                   Basic Information
                 </h3>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-xs sm:text-sm font-medium text-white mb-2">
                       Stream Name *
                     </label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => handleInputChange('name', e.target.value)}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                      className={`w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white text-xs sm:text-sm ${
                         errors.name 
-                          ? 'border-red-500 dark:border-red-400' 
-                          : 'border-gray-300 dark:border-gray-600'
-                      } bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400`}
+                          ? 'border-red-500' 
+                          : 'border-gray-600'
+                      } placeholder-gray-400`}
                       placeholder="e.g., Price Stream One"
                     />
                     {errors.name && (
-                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
+                      <p className="mt-1 text-xs sm:text-sm text-red-400 flex items-center">
                         <AlertCircle className="w-4 h-4 mr-1" />
                         {errors.name}
                       </p>
@@ -314,13 +314,13 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-xs sm:text-sm font-medium text-white mb-2">
                       Status
                     </label>
                     <select
                       value={formData.status}
                       onChange={(e) => handleInputChange('status', e.target.value as any)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="active">Active</option>
                       <option value="inactive">Inactive</option>
@@ -331,22 +331,22 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-white mb-2">
                     Description *
                   </label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => handleInputChange('description', e.target.value)}
                     rows={3}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white text-xs sm:text-sm ${
                       errors.description 
-                        ? 'border-red-500 dark:border-red-400' 
-                        : 'border-gray-300 dark:border-gray-600'
-                    } bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400`}
+                        ? 'border-red-500' 
+                        : 'border-gray-600'
+                    } placeholder-gray-400`}
                     placeholder="Describe the price stream and its purpose..."
                   />
                   {errors.description && (
-                    <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
+                    <p className="mt-1 text-xs sm:text-sm text-red-400 flex items-center">
                       <AlertCircle className="w-4 h-4 mr-1" />
                       {errors.description}
                     </p>
@@ -354,13 +354,13 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-white mb-2">
                     Tags
                   </label>
                   <input
                     type="text"
                     placeholder="Enter tags separated by commas"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors"
+                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
                   />
                 </div>
               </div>
@@ -370,11 +370,11 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
             {activeTab === 'markups' && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white flex items-center">
+                  <h3 className="text-base sm:text-lg font-semibold text-white flex items-center">
                     <Settings className="w-5 h-5 mr-2 text-green-600" />
                     Symbol Markups
                   </h3>
-                  <button className="inline-flex items-center px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                  <button className="inline-flex items-center px-3 py-2 bg-blue-600 text-white text-xs sm:text-sm font-medium rounded hover:bg-blue-700 transition-colors">
                     <Plus className="w-4 h-4 mr-2" />
                     Add Markup
                   </button>
@@ -483,8 +483,8 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
             {activeTab === 'groups' && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white flex items-center">
-                    <Users className="w-5 h-5 mr-2 text-purple-600" />
+                  <h3 className="text-base sm:text-lg font-semibold text-white flex items-center">
+                    <Users className="w-5 h-5 mr-2 text-green-600" />
                     Groups Using This Profile
                   </h3>
                   <p className="text-gray-400 text-xs sm:text-sm">
@@ -597,29 +597,29 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700 px-6 pb-6">
+          <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-700 px-3 sm:px-4 pb-3 sm:pb-4">
             <button
               type="button"
               onClick={handleReset}
               disabled={!hasUnsavedChanges}
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-white bg-gray-700 border border-gray-600 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <RotateCcw className="w-4 h-4 mr-2" />
               Reset
             </button>
             
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 sm:space-x-3">
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-white bg-gray-700 border border-gray-600 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isLoading || !hasUnsavedChanges}
-                className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="inline-flex items-center px-4 sm:px-5 py-2 bg-green-600 text-white text-xs sm:text-sm font-medium rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 onClick={handleSubmit}
               >
                 {isLoading ? (
@@ -641,68 +641,68 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
 
       {/* Symbol Markup Popup */}
       {showSymbolMarkupPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-2 sm:p-4">
+          <div className="bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+            <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-700">
+              <h3 className="text-base sm:text-lg font-semibold text-white">
                 Add Markup for {selectedSymbol}
               </h3>
               <button
                 onClick={() => setShowSymbolMarkupPopup(false)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                className="text-gray-400 hover:text-white transition-colors p-1"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             
-            <div className="p-4 space-y-4">
+            <div className="p-3 sm:p-4 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-white mb-2">
                   Markup Type
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors">
+                <select className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                   <option value="percentage">Percentage</option>
                   <option value="point">Point</option>
                 </select>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-white mb-2">
                     Markup Bid
                   </label>
                   <input
                     type="number"
                     step="0.01"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="0.00"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-white mb-2">
                     Markup Ask
                   </label>
                   <input
                     type="number"
                     step="0.01"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-700 border border-gray-600 rounded text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="0.00"
                   />
                 </div>
               </div>
             </div>
             
-            <div className="flex items-center justify-end space-x-3 p-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-end space-x-2 sm:space-x-3 p-3 sm:p-4 border-t border-gray-700">
               <button
                 onClick={() => setShowSymbolMarkupPopup(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-white bg-gray-700 border border-gray-600 rounded hover:bg-gray-600 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleSymbolMarkupSave({})}
-                className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white text-xs sm:text-sm font-medium rounded hover:bg-blue-700 transition-colors"
               >
                 Save Markup
               </button>

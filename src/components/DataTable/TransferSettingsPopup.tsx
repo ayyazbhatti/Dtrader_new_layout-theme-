@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react'
-import { X, Search, Transfer, AlertCircle, CheckCircle, Loader2, Settings, Users, Coins } from 'lucide-react'
+import { X, Search, ArrowLeftRight, AlertCircle, CheckCircle, Loader2, Settings, Users, Coins } from 'lucide-react'
 
 interface TransferItem {
   id: string
@@ -47,7 +47,7 @@ const TransferSettingsPopup: React.FC<TransferSettingsPopupProps> = ({
   const [activeTab, setActiveTab] = useState<'settings' | 'symbols' | 'groups'>('settings')
 
   // Mock data - in real app, this would come from props or API
-  const allSettings = useMemo(() => [
+  const allSettings = useMemo<TransferItem[]>(() => [
     { id: 'all-settings', label: 'All Settings', type: 'main', description: 'Transfer all configuration settings', count: 15 },
     { id: 'enabled', label: 'Enabled', type: 'sub', description: 'Enable/disable status', count: 1 },
     { id: 'leverage-profile', label: 'Leverage Profile', type: 'sub', description: 'Risk management settings', count: 1 },
@@ -58,13 +58,13 @@ const TransferSettingsPopup: React.FC<TransferSettingsPopupProps> = ({
     { id: 'access-controls', label: 'Access Controls', type: 'sub', description: 'User permissions and restrictions', count: 1 }
   ], [])
 
-  const allSymbols = useMemo(() => [
+  const allSymbols = useMemo<TransferItem[]>(() => [
     { id: 'all-symbols', label: 'All Symbols', type: 'main', description: 'Transfer to all available symbols', count: 150 },
     { id: 'cryptocurrencies', label: 'Cryptocurrencies', type: 'main', description: 'All crypto trading pairs', count: 45 },
     { id: 'forex-pairs', label: 'Forex Pairs', type: 'main', description: 'All currency pairs', count: 28 },
     { id: 'stocks', label: 'Stocks', type: 'main', description: 'All stock symbols', count: 67 },
     { id: 'commodities', label: 'Commodities', type: 'main', description: 'All commodity symbols', count: 10 },
-    ...['ADAUSDT', 'APTUSDT', 'BCHUSDT', 'CHRUSDT', 'CRVUSDT', 'DOTUSDT', 'EIGENUSDT', 'LDOUSDT', 'MINAUSDT', 'PHAUSDT', 'PYTHUSDT', 'DLCLUSDT'].map(symbol => ({
+    ...['ADAUSDT', 'APTUSDT', 'BCHUSDT', 'CHRUSDT', 'CRVUSDT', 'DOTUSDT', 'EIGENUSDT', 'LDOUSDT', 'MINAUSDT', 'PHAUSDT', 'PYTHUSDT', 'DLCLUSDT'].map((symbol): TransferItem => ({
       id: symbol,
       label: symbol,
       type: 'symbol',
@@ -72,9 +72,9 @@ const TransferSettingsPopup: React.FC<TransferSettingsPopupProps> = ({
     }))
   ], [])
 
-  const allGroups = useMemo(() => [
+  const allGroups = useMemo<TransferItem[]>(() => [
     { id: 'all-groups', label: 'All Groups', type: 'main', description: 'Transfer to all user groups', count: 25 },
-    ...['DefaultGroup', '17_Feb_Group', 'profitxbt', '21_Feb', 'Bot_group', 'Testing_25Feb', 'Tuesday_GROUP', 'new', 'abctestprice', 'Forex', 'maxuser'].map(group => ({
+    ...['DefaultGroup', '17_Feb_Group', 'profitxbt', '21_Feb', 'Bot_group', 'Testing_25Feb', 'Tuesday_GROUP', 'new', 'abctestprice', 'Forex', 'maxuser'].map((group): TransferItem => ({
       id: group,
       label: group,
       type: 'group',
@@ -223,7 +223,7 @@ const TransferSettingsPopup: React.FC<TransferSettingsPopupProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-              <Transfer className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
+              <ArrowLeftRight className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
               <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
@@ -491,11 +491,11 @@ const TransferSettingsPopup: React.FC<TransferSettingsPopupProps> = ({
                             {symbol.description}
                           </p>
                         )}
-                        {symbol.count && (
-                          <span className="inline-block px-2 py-1 text-xs bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full mt-1">
-                            {symbol.count} items
-                          </span>
-                        )}
+                        {symbol.count !== undefined && (
+                              <span className="inline-block px-2 py-1 text-xs bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full mt-1">
+                                {symbol.count} items
+                              </span>
+                            )}
                       </div>
                     </div>
                   ))}
@@ -610,7 +610,7 @@ const TransferSettingsPopup: React.FC<TransferSettingsPopupProps> = ({
                 </>
               ) : (
                 <>
-                  <Transfer className="w-4 h-4" />
+                  <ArrowLeftRight className="w-4 h-4" />
                   <span>Transfer Settings</span>
                 </>
               )}

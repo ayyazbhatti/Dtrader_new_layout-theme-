@@ -1042,7 +1042,7 @@ const GroupsTable: React.FC = () => {
                       <input
                         type="text"
                         value={editingGroup.name}
-                        onChange={(e) => setEditingGroup((prev: GroupData | null) => prev ? {...prev, name: e.target.value} : null)}
+                        onChange={(e) => setEditingGroup(prev => prev ? {...prev, name: e.target.value} : prev)}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                         required
                       />
@@ -1054,11 +1054,11 @@ const GroupsTable: React.FC = () => {
                         Price Stream Profile <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
-                        <select
-                          value={editingGroup.priceStream || 'Default Price Stream'}
-                          onChange={(e) => setEditingGroup((prev: GroupData) => prev ? {...prev, priceStream: e.target.value} : null)}
-                          className="w-full px-3 py-2 pr-20 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
-                          required
+                                                  <select
+                            value={editingGroup.priceStream || 'Default Price Stream'}
+                            onChange={(e) => setEditingGroup(prev => prev ? {...prev, priceStream: e.target.value} : prev)}
+                            className="w-full px-3 py-2 pr-20 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                            required
                         >
                           <option value="Default Price Stream">Default Price Stream</option>
                           <option value="Premium Price Stream">Premium Price Stream</option>
@@ -1091,7 +1091,7 @@ const GroupsTable: React.FC = () => {
                       <div className="relative">
                         <select
                           value={editingGroup.swapsProfile || 'Default Swap Dividend'}
-                          onChange={(e) => setEditingGroup((prev: GroupData) => prev ? {...prev, swapsProfile: e.target.value} : null)}
+                          onChange={(e) => setEditingGroup(prev => prev ? {...prev, swapsProfile: e.target.value} : prev)}
                           className="w-full px-3 py-2 pr-20 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                           required
                         >
@@ -1125,7 +1125,7 @@ const GroupsTable: React.FC = () => {
                       </label>
                       <select
                         value={editingGroup.tags || '1 Tags selected'}
-                        onChange={(e) => setEditingGroup((prev: GroupData) => prev ? {...prev, tags: e.target.value} : null)}
+                        onChange={(e) => setEditingGroup(prev => prev ? {...prev, tags: e.target.value} : prev)}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                       >
                         <option value="1 Tags selected">1 Tags selected</option>
@@ -1148,7 +1148,7 @@ const GroupsTable: React.FC = () => {
                       <input
                         type="number"
                         value={editingGroup.stopOutLevel || 0}
-                        onChange={(e) => setEditingGroup((prev: GroupData) => prev ? {...prev, stopOutLevel: parseFloat(e.target.value)} : null)}
+                        onChange={(e) => setEditingGroup(prev => prev ? {...prev, stopOutLevel: parseFloat(e.target.value)} : prev)}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                         min="0"
                         step="0.1"
@@ -1163,7 +1163,7 @@ const GroupsTable: React.FC = () => {
                       <input
                         type="number"
                         value={editingGroup.openPositionDelay || 0}
-                        onChange={(e) => setEditingGroup((prev: GroupData) => prev ? {...prev, openPositionDelay: parseInt(e.target.value)} : null)}
+                        onChange={(e) => setEditingGroup(prev => prev ? {...prev, openPositionDelay: parseInt(e.target.value)} : prev)}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                         min="0"
                       />
@@ -1177,7 +1177,7 @@ const GroupsTable: React.FC = () => {
                       <input
                         type="number"
                         value={editingGroup.tradeExecutionDelay || 0}
-                        onChange={(e) => setEditingGroup((prev: GroupData) => prev ? {...prev, tradeExecutionDelay: parseInt(e.target.value)} : null)}
+                        onChange={(e) => setEditingGroup(prev => prev ? {...prev, tradeExecutionDelay: parseInt(e.target.value)} : prev)}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                         min="0"
                       />
@@ -1191,7 +1191,7 @@ const GroupsTable: React.FC = () => {
                       <input
                         type="number"
                         value={editingGroup.minMarginLevel || 0}
-                        onChange={(e) => setEditingGroup((prev: GroupData) => prev ? {...prev, minMarginLevel: parseFloat(e.target.value)} : null)}
+                        onChange={(e) => setEditingGroup(prev => prev ? {...prev, minMarginLevel: parseFloat(e.target.value)} : prev)}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                         min="0"
                         step="0.1"
@@ -1211,7 +1211,7 @@ const GroupsTable: React.FC = () => {
                       <input
                         type="number"
                         value={editingGroup.memberCount || 0}
-                        onChange={(e) => setEditingGroup((prev: GroupData) => prev ? {...prev, memberCount: parseInt(e.target.value)} : null)}
+                        onChange={(e) => setEditingGroup(prev => prev ? {...prev, memberCount: parseInt(e.target.value)} : prev)}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                         min="0"
                       />
@@ -1225,7 +1225,7 @@ const GroupsTable: React.FC = () => {
                       <input
                         type="text"
                         value={editingGroup.description || ''}
-                        onChange={(e) => setEditingGroup((prev: GroupData) => prev ? {...prev, description: e.target.value} : null)}
+                        onChange={(e) => setEditingGroup(prev => prev ? {...prev, description: e.target.value} : prev)}
                         placeholder="Comment"
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                       />

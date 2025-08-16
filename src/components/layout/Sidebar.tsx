@@ -40,6 +40,9 @@ import {
   Menu,
   X,
   RefreshCw,
+  DollarSign,
+  Server,
+  AlertTriangle,
 } from 'lucide-react'
 
 interface SidebarProps {
@@ -115,6 +118,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onMobileClose, 
       subMenus: [
         { name: 'All Affiliates', href: '/affiliate-users/all', icon: Users },
         { name: 'Add Affiliate', href: '/affiliate-users/add', icon: UserPlus },
+        { name: 'Commission Layers', href: '/affiliate-users/commission-layers', icon: TrendingUp },
+        { name: 'Withdrawal Rule', href: '/affiliate-users/withdrawal-rule', icon: CreditCard },
+        { name: 'Commissions', href: '/affiliate-users/commissions', icon: DollarSign },
       ],
     },
     {
@@ -124,6 +130,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onMobileClose, 
       subMenus: [
         { name: 'Active Trades', href: '/trading/active', icon: Activity },
         { name: 'Trade History', href: '/trading/history', icon: History },
+        { name: 'Pending Order', href: '/trading/pending-order', icon: Clock },
+        { name: 'Done Order', href: '/trading/done-order', icon: CheckCircle },
+        { name: 'Deals', href: '/trading/deals', icon: BarChart3 },
       ],
     },
     {
@@ -170,6 +179,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onMobileClose, 
       ],
     },
     {
+      name: 'Promotion',
+      href: '/promotion',
+      icon: Gift,
+      subMenus: [
+        {
+          name: 'Promotion Management',
+          href: '/promotion/management',
+          icon: PlusCircle,
+        },
+      ],
+    },
+    {
       name: 'Settings',
       href: '/settings',
       icon: Settings,
@@ -183,6 +204,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onMobileClose, 
           icon: Bell,
         },
         { name: 'Promotion Settings', href: '/settings/promotion', icon: Gift },
+      ],
+    },
+    {
+      name: 'Server Logs',
+      href: '/server-logs',
+      icon: Activity,
+      subMenus: [
+        { name: 'System Logs', href: '/server-logs/system', icon: Activity },
+        { name: 'Server Logs', href: '/server-logs/server', icon: Server },
+        { name: 'Application Logs', href: '/server-logs/application', icon: FileText },
+        { name: 'Error Logs', href: '/server-logs/errors', icon: AlertTriangle },
+        { name: 'Performance Logs', href: '/server-logs/performance', icon: BarChart3 },
       ],
     },
   ]

@@ -4,6 +4,7 @@ import { UserData, PositionData, OpenPositionData, OrderData, DealHistoryData } 
 import { mockPositionData, mockOpenPositionData, mockOrderData, mockDealHistoryData } from './data'
 import { PriceDropAlertPopup } from './PriceDropAlertPopup'
 import { ScheduleMeetingPopup } from './ScheduleMeetingPopup'
+import PositionDetailsPopup from './PositionDetailsPopup'
 import {
   useReactTable,
   getCoreRowModel,
@@ -30,243 +31,9 @@ interface TabData {
   content: React.ReactNode
 }
 
-// Position Details Popup Component
-interface PositionDetailsPopupProps {
-  position: PositionData | null
-  isOpen: boolean
-  onClose: () => void
-}
 
-const PositionDetailsPopup: React.FC<PositionDetailsPopupProps> = ({ position, isOpen, onClose }) => {
-  if (!isOpen || !position) return null
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-700">
-          <h3 className="text-base sm:text-lg font-semibold text-white">Position Details</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors p-1"
-          >
-            <X className="w-4 h-4 sm:w-5 sm:h-5" />
-          </button>
-        </div>
 
-        {/* Content */}
-        <div className="p-3 sm:p-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
-            {/* Row 1 */}
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400 flex items-center gap-1">
-                Account ID
-                <ExternalLink className="w-3 h-3" />
-              </label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">71836450</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Account Name</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">MuhammadAyyaz</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Position ID</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.positionId}</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Open Time</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.openTime}</div>
-            </div>
-
-            {/* Row 2 */}
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Symbol</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.symbol}</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Is Bot Trade</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">Yes</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Entry Price</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">0.91610000</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Account Type</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">cfd_hedging</div>
-            </div>
-
-            {/* Row 3 */}
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Exit Price</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">0.92190000</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Quantity</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">498.07215220</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Direction</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm capitalize">{position.type}</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">T/P (Take Profit)</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">0.92190000</div>
-            </div>
-
-            {/* Row 4 */}
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">S/L (Stop Loss)</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">0.00000000</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Margin</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">4.00000000</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Trade Type</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">units</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Gross Realized PnL</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">Not Provided</div>
-            </div>
-
-            {/* Row 5 */}
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Realized PnL</label>
-              <div className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded text-xs sm:text-sm font-medium ${
-                position.realizedPnL >= 0 ? 'bg-green-900 text-green-400' : 'bg-red-900 text-red-400'
-              }`}>
-                {position.realizedPnL.toFixed(2)}
-              </div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Close Time</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.closeTime}</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Swap Fee</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.swapFee || '0.00'}</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Device Info - Open</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.deviceInfoOpen}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// Open Position Details Popup Component
-interface OpenPositionDetailsPopupProps {
-  position: OpenPositionData | null
-  isOpen: boolean
-  onClose: () => void
-}
-
-const OpenPositionDetailsPopup: React.FC<OpenPositionDetailsPopupProps> = ({ position, isOpen, onClose }) => {
-  if (!isOpen || !position) return null
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-700">
-          <h3 className="text-base sm:text-lg font-semibold text-white">Open Position Details</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors p-1"
-          >
-            <X className="w-4 h-4 sm:w-5 sm:h-5" />
-          </button>
-        </div>
-
-        {/* Content */}
-        <div className="p-3 sm:p-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
-            {/* Row 1 */}
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400 flex items-center gap-1">
-                Account ID
-                <ExternalLink className="w-3 h-3" />
-              </label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">4557622101</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Account Name</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">aayz</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Position ID</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.positionId}</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Open Time</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.openTime}</div>
-            </div>
-
-            {/* Row 2 */}
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Symbol</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.symbol}</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Is Bot Trade</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">Yes</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Entry Price</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">184.43000000</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Account Type</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">cfd_hedging</div>
-            </div>
-
-            {/* Row 3 */}
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Quantity</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.quantity}</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Direction</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm capitalize">{position.direction}</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">T/P</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.takeProfit || '---'}</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">S/L</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.stopLoss || '---'}</div>
-            </div>
-
-            {/* Row 4 */}
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Margin</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.marginUsed.toFixed(8)}</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Trade Type</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">units</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Type</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm capitalize">{position.type}</div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-400">Device Info</label>
-              <div className="bg-gray-700 px-2 sm:px-3 py-1.5 sm:py-2 rounded text-white text-xs sm:text-sm">{position.deviceInfo}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 // Edit Position Popup Component
 interface EditPositionPopupProps {
@@ -848,7 +615,15 @@ const OpenPositionsTable: React.FC<{ data: OpenPositionData[]; searchQuery?: str
     }),
     columnHelper.accessor('positionId', {
       header: 'Position ID',
-      cell: ({ getValue }) => <span className="font-mono text-xs text-white">{getValue()}</span>,
+      cell: ({ getValue, row }) => (
+        <button
+          onClick={() => handleViewPosition(row.original)}
+          className="font-mono text-xs text-blue-400 hover:text-blue-300 hover:underline cursor-pointer transition-colors"
+          title="Click to view position details"
+        >
+          {getValue()}
+        </button>
+      ),
     }),
     columnHelper.accessor('openTime', {
       header: 'Open Time',
@@ -1091,8 +866,10 @@ const OpenPositionsTable: React.FC<{ data: OpenPositionData[]; searchQuery?: str
         </div>
       </div>
       
-      {/* Open Position Details Popup */}
-      <OpenPositionDetailsPopup
+
+      
+      {/* Position Details Popup */}
+      <PositionDetailsPopup
         position={selectedPosition}
         isOpen={isPositionDetailsOpen}
         onClose={() => {
@@ -1118,20 +895,13 @@ const OpenPositionsTable: React.FC<{ data: OpenPositionData[]; searchQuery?: str
 const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; startDate?: string; endDate?: string }> = ({ data, searchQuery = '', startDate = '', endDate = '' }) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [pagination, setPagination] = useState<PaginationState>({
+    const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   })
-  const [selectedPosition, setSelectedPosition] = useState<PositionData | null>(null)
-  const [isPositionDetailsOpen, setIsPositionDetailsOpen] = useState(false)
 
   const columnHelper = createColumnHelper<PositionData>()
-
-  const handleViewPosition = (position: PositionData) => {
-    setSelectedPosition(position)
-    setIsPositionDetailsOpen(true)
-  }
-
+  
   const columns = [
     columnHelper.accessor('type', {
       header: 'Type',
@@ -1145,7 +915,11 @@ const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; sta
     }),
     columnHelper.accessor('positionId', {
       header: 'Position ID',
-      cell: ({ getValue }) => <span className="font-mono text-xs text-white">{getValue()}</span>,
+      cell: ({ getValue }) => (
+        <span className="font-mono text-xs text-gray-400">
+          {getValue()}
+        </span>
+      ),
     }),
     columnHelper.accessor('deviceInfoOpen', {
       header: 'Device Info - Open',
@@ -1184,9 +958,7 @@ const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; sta
       header: 'Action',
       cell: ({ row }) => (
         <button 
-          onClick={() => handleViewPosition(row.original)}
-          className="w-5 h-5 sm:w-6 sm:h-6 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors"
-          title="View Position Details"
+          className="w-5 h-5 sm:w-6 sm:h-6 bg-gray-600 rounded-full flex items-center justify-center"
         >
           <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1360,16 +1132,6 @@ const PositionsTable: React.FC<{ data: PositionData[]; searchQuery?: string; sta
           </button>
         </div>
       </div>
-      
-      {/* Position Details Popup */}
-      <PositionDetailsPopup
-        position={selectedPosition}
-        isOpen={isPositionDetailsOpen}
-        onClose={() => {
-          setIsPositionDetailsOpen(false)
-          setSelectedPosition(null)
-        }}
-      />
     </div>
   )
 }
@@ -1397,6 +1159,64 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
   const [showCurrentPassword, setShowCurrentPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+  // Form data states for editing
+  const [userDetailsForm, setUserDetailsForm] = useState({
+    fullName: user?.name || 'apex',
+    displayName: user?.name || 'apex',
+    email: user?.email || 'apex@gmail.com',
+    phone: '+3343243354544',
+    country: 'pakistan',
+    city: 'lahore',
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  })
+
+  const [accountSettingsForm, setAccountSettingsForm] = useState({
+    accountType: 'cfd-hedging',
+    marginCalculationType: 'sum',
+    currency: 'eur',
+    minimumMarginLevel: '0',
+    group: 'default-group',
+    assignTags: '1-tag',
+    platformAccessRights: 'full-access',
+    userPanelAccessRight: 'default-user-panel',
+    leverage: '1-100',
+    maxLeverage: '1-1000',
+    domainName: 'https://backoffice.dtrader.tech'
+  })
+
+  // Update handlers
+  const handleUpdateUserDetails = () => {
+    // TODO: Implement API call to update user details
+    console.log('Updating user details:', userDetailsForm)
+    // Here you would typically make an API call to update the user
+    // For now, we'll just log the data
+    alert('User details updated successfully!')
+  }
+
+  const handleUpdateAccountSettings = () => {
+    // TODO: Implement API call to update account settings
+    console.log('Updating account settings:', accountSettingsForm)
+    // Here you would typically make an API call to update the account settings
+    // For now, we'll just log the data
+    alert('Account settings updated successfully!')
+  }
+
+  const handleUserDetailsFormChange = (field: string, value: string) => {
+    setUserDetailsForm(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const handleAccountSettingsFormChange = (field: string, value: string) => {
+    setAccountSettingsForm(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
 
   if (!isOpen || !user) return null
 
@@ -1442,7 +1262,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               </label>
               <input
                 type="text"
-                defaultValue={user.name || 'apex'}
+                value={userDetailsForm.fullName}
+                onChange={(e) => handleUserDetailsFormChange('fullName', e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
@@ -1452,7 +1273,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               </label>
               <input
                 type="text"
-                defaultValue={user.name || 'apex'}
+                value={userDetailsForm.displayName}
+                onChange={(e) => handleUserDetailsFormChange('displayName', e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
@@ -1462,7 +1284,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               </label>
               <input
                 type="email"
-                defaultValue={user.email || 'apex@gmail.com'}
+                value={userDetailsForm.email}
+                onChange={(e) => handleUserDetailsFormChange('email', e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
@@ -1472,7 +1295,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               </label>
               <input
                 type="tel"
-                defaultValue="+3343243354544"
+                value={userDetailsForm.phone}
+                onChange={(e) => handleUserDetailsFormChange('phone', e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
@@ -1480,7 +1304,11 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Country <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
+              <select 
+                value={userDetailsForm.country}
+                onChange={(e) => handleUserDetailsFormChange('country', e.target.value)}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+              >
                 <option value="american-samoa">American Samoa</option>
                 <option value="pakistan">Pakistan</option>
                 <option value="usa">United States</option>
@@ -1493,7 +1321,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               </label>
               <input
                 type="text"
-                defaultValue="lahore"
+                value={userDetailsForm.city}
+                onChange={(e) => handleUserDetailsFormChange('city', e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
@@ -1510,6 +1339,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                 <div className="relative">
                   <input
                     type={showCurrentPassword ? "text" : "password"}
+                    value={userDetailsForm.currentPassword}
+                    onChange={(e) => handleUserDetailsFormChange('currentPassword', e.target.value)}
                     placeholder="Enter current password"
                     className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                   />
@@ -1538,6 +1369,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                 <div className="relative">
                   <input
                     type={showNewPassword ? "text" : "password"}
+                    value={userDetailsForm.newPassword}
+                    onChange={(e) => handleUserDetailsFormChange('newPassword', e.target.value)}
                     placeholder="Enter new password"
                     className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                   />
@@ -1565,6 +1398,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
                 <div className="relative">
                   <input
                     type={showConfirmPassword ? "text" : "password"}
+                    value={userDetailsForm.confirmPassword}
+                    onChange={(e) => handleUserDetailsFormChange('confirmPassword', e.target.value)}
                     placeholder="Confirm new password"
                     className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                   />
@@ -1589,7 +1424,10 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
           </div>
           
           <div className="flex justify-center sm:justify-end">
-            <button className="w-full sm:w-auto px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm sm:text-base">
+            <button 
+              onClick={handleUpdateUserDetails}
+              className="w-full sm:w-auto px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm sm:text-base"
+            >
               Update
             </button>
           </div>
@@ -1607,7 +1445,11 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Account Type
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
+              <select 
+                value={accountSettingsForm.accountType}
+                onChange={(e) => handleAccountSettingsFormChange('accountType', e.target.value)}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+              >
                 <option value="cfd-hedging">CFD Hedging</option>
                 <option value="cfd-net">CFD Net</option>
                 <option value="spot">Spot</option>
@@ -1617,7 +1459,11 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Total Margin Calculation Type
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
+              <select 
+                value={accountSettingsForm.marginCalculationType}
+                onChange={(e) => handleAccountSettingsFormChange('marginCalculationType', e.target.value)}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+              >
                 <option value="sum">Sum</option>
                 <option value="net">Net</option>
                 <option value="gross">Gross</option>
@@ -1627,7 +1473,11 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Currency
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
+              <select 
+                value={accountSettingsForm.currency}
+                onChange={(e) => handleAccountSettingsFormChange('currency', e.target.value)}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+              >
                 <option value="eur">EUR</option>
                 <option value="usd">USD</option>
                 <option value="gbp">GBP</option>
@@ -1639,7 +1489,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               </label>
               <input
                 type="number"
-                defaultValue="0"
+                value={accountSettingsForm.minimumMarginLevel}
+                onChange={(e) => handleAccountSettingsFormChange('minimumMarginLevel', e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
               />
             </div>
@@ -1647,7 +1498,11 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Group <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
+              <select 
+                value={accountSettingsForm.group}
+                onChange={(e) => handleAccountSettingsFormChange('group', e.target.value)}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+              >
                 <option value="default-group">DefaultGroup</option>
                 <option value="premium">Premium</option>
                 <option value="vip">VIP</option>
@@ -1657,7 +1512,11 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Assign Tags <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
+              <select 
+                value={accountSettingsForm.assignTags}
+                onChange={(e) => handleAccountSettingsFormChange('assignTags', e.target.value)}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+              >
                 <option value="1-tag">1 Tags selected</option>
                 <option value="2-tags">2 Tags selected</option>
                 <option value="no-tags">No Tags</option>
@@ -1667,7 +1526,11 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Platform Access Rights
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
+              <select 
+                value={accountSettingsForm.platformAccessRights}
+                onChange={(e) => handleAccountSettingsFormChange('platformAccessRights', e.target.value)}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+              >
                 <option value="full-access">Full Access</option>
                 <option value="limited-access">Limited Access</option>
                 <option value="read-only">Read Only</option>
@@ -1677,7 +1540,11 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 User's Panel Access Right <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
+              <select 
+                value={accountSettingsForm.userPanelAccessRight}
+                onChange={(e) => handleAccountSettingsFormChange('userPanelAccessRight', e.target.value)}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+              >
                 <option value="default-user-panel">Default User_panel</option>
                 <option value="admin-panel">Admin Panel</option>
                 <option value="user-panel">User Panel</option>
@@ -1687,7 +1554,11 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Leverage
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
+              <select 
+                value={accountSettingsForm.leverage}
+                onChange={(e) => handleAccountSettingsFormChange('leverage', e.target.value)}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+              >
                 <option value="1-100">1:100</option>
                 <option value="1-200">1:200</option>
                 <option value="1-500">1:500</option>
@@ -1697,7 +1568,11 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Max Leverage
               </label>
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm">
+              <select 
+                value={accountSettingsForm.maxLeverage}
+                onChange={(e) => handleAccountSettingsFormChange('maxLeverage', e.target.value)}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+              >
                 <option value="1-1000">1:1000</option>
                 <option value="1-2000">1:2000</option>
                 <option value="1-5000">1:5000</option>
@@ -1709,7 +1584,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
               </label>
               <input
                 type="url"
-                defaultValue="https://backoffice.dtrader.tech"
+                value={accountSettingsForm.domainName}
+                onChange={(e) => handleAccountSettingsFormChange('domainName', e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
               />
             </div>
@@ -1718,7 +1594,10 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = ({ user, isOpen, onClo
 
           
           <div className="flex justify-center sm:justify-end">
-            <button className="w-full sm:w-auto px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs sm:text-sm">
+            <button 
+              onClick={handleUpdateAccountSettings}
+              className="w-full sm:w-auto px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs sm:text-sm"
+            >
               Update
             </button>
           </div>

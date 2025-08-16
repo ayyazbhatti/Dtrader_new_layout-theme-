@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { MessageSquare } from 'lucide-react'
+import { MessageSquare, Ticket, AlertCircle, Clock, CheckCircle, AlertTriangle, TrendingUp, Eye, Reply, Edit, Settings, Activity, Target, Percent, Users, Building, MapPin, Phone, Mail, Globe, Banknote, Wallet, Lock, Unlock, UserCheck, UserX, Tag, User, Send, Archive, Star, StarOff, Flag, HelpCircle, Bug, Lightbulb, ThumbsUp, ThumbsDown } from 'lucide-react'
+import TicketSystem from '@/components/DataTable/TicketSystemMain'
 
 const TicketSub: React.FC = () => {
   const { subPage } = useParams<{ subPage: string }>()
@@ -12,18 +13,45 @@ const TicketSub: React.FC = () => {
     return titles[subPage || ''] || 'Ticket'
   }
 
+  // Render different content based on subPage
+  if (subPage === 'all-tickets') {
+    return (
+      <div className="p-2 sm:p-4 md:p-6 lg:p-6 space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-6">
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center">
+            <Ticket className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-bold text-white truncate">
+              All Tickets
+            </h1>
+            <p className="text-gray-400 text-xs sm:text-sm truncate">Manage and monitor support tickets</p>
+          </div>
+        </div>
+
+        <TicketSystem />
+      </div>
+    )
+  }
+
+  // Default content for other subpages
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center space-x-3">
-        <MessageSquare className="w-6 h-6 text-primary-600" />
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          {getPageTitle(subPage)}
-        </h1>
+    <div className="p-2 sm:p-4 md:p-6 lg:p-6 space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-6">
+      <div className="flex items-center space-x-2 sm:space-x-3">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center">
+          <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <h1 className="text-lg sm:text-xl font-bold text-white truncate">
+            {getPageTitle(subPage)}
+          </h1>
+          <p className="text-gray-400 text-xs sm:text-sm truncate">Ticket management and support</p>
+        </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          {getPageTitle(subPage)}
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+        <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">
+          {getPageTitle(subPage || '').toLowerCase()}
         </h2>
 
         <div className="space-y-4">

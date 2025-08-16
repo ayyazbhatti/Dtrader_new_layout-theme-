@@ -214,20 +214,18 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
   return (
     <>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
-        <div className="bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="bg-gray-800 rounded-lg shadow-xl w-full sm:w-auto max-w-[95vw] sm:max-w-[90vw] max-h-[95vh] sm:max-h-[90vh] overflow-auto">
           {/* Header */}
-          <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-700">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
-                <Activity className="w-5 h-5 text-white" />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 lg:p-6 border-b border-gray-700 space-y-3 sm:space-y-0">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
-              <div>
-                <h2 className="text-base sm:text-lg font-semibold text-white">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg sm:text-xl font-bold text-white truncate">
                   Edit Price Stream
                 </h2>
-                <p className="text-xs sm:text-sm text-gray-400">
-                  Update price stream configuration
-                </p>
+                <p className="text-gray-400 text-xs sm:text-sm truncate">Update price stream configuration</p>
               </div>
               {hasUnsavedChanges && (
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-yellow-900/30 text-yellow-400">
@@ -245,38 +243,39 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
 
           {/* Tabs */}
           <div className="border-b border-gray-700">
-            <nav className="flex space-x-4 px-3 sm:px-4">
+            <div className="flex space-x-1 p-2 sm:p-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+              
               <button
                 onClick={() => setActiveTab('basic')}
-                className={`py-2 sm:py-3 px-1 border-b-2 text-xs sm:text-sm font-medium transition-colors ${
+                className={`flex items-center space-x-1 px-2 py-1.5 rounded-md whitespace-nowrap transition-colors text-xs font-medium min-w-fit flex-shrink-0 ${
                   activeTab === 'basic'
-                    ? 'border-green-600 text-white'
-                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-gray-400 hover:text-white hover:bg-gray-700'
                 }`}
               >
                 Basic Info
               </button>
               <button
                 onClick={() => setActiveTab('markups')}
-                className={`py-2 sm:py-3 px-1 border-b-2 text-xs sm:text-sm font-medium transition-colors ${
+                className={`flex items-center space-x-1 px-2 py-1.5 rounded-md whitespace-nowrap transition-colors text-xs font-medium min-w-fit flex-shrink-0 ${
                   activeTab === 'markups'
-                    ? 'border-green-600 text-white'
-                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-gray-400 hover:text-white hover:bg-gray-700'
                 }`}
               >
                 Symbol Markups
               </button>
               <button
                 onClick={() => setActiveTab('groups')}
-                className={`py-2 sm:py-3 px-1 border-b-2 text-xs sm:text-sm font-medium transition-colors ${
+                className={`flex items-center space-x-1 px-2 py-1.5 rounded-md whitespace-nowrap transition-colors text-xs font-medium min-w-fit flex-shrink-0 ${
                   activeTab === 'groups'
-                    ? 'border-green-600 text-white'
-                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-gray-400 hover:text-white hover:bg-gray-700'
                 }`}
               >
                 Used in Groups
               </button>
-            </nav>
+            </div>
           </div>
 
           {/* Tab Content */}
@@ -285,7 +284,7 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
             {activeTab === 'basic' && (
               <div className="space-y-6">
                 <h3 className="text-base sm:text-lg font-semibold text-white flex items-center">
-                  <Globe className="w-5 h-5 mr-2 text-green-600" />
+                  <Globe className="w-5 h-5 mr-2 text-blue-600" />
                   Basic Information
                 </h3>
                 
@@ -642,7 +641,7 @@ const EditPriceStreamPopup: React.FC<EditPriceStreamPopupProps> = ({
       {/* Symbol Markup Popup */}
       {showSymbolMarkupPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-2 sm:p-4">
-          <div className="bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+          <div className="bg-gray-800 rounded-lg shadow-xl w-full sm:w-auto max-w-[95vw] sm:max-w-lg">
             <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-700">
               <h3 className="text-base sm:text-lg font-semibold text-white">
                 Add Markup for {selectedSymbol}

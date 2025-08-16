@@ -34,6 +34,8 @@ import {
 import { CSS_CLASSES } from './constants'
 import CreatePriceStreamPopup from './CreatePriceStreamPopup'
 import EditPriceStreamPopup from './EditPriceStreamPopup'
+import { ColumnVisibilityPopup } from './ColumnVisibilityPopup'
+import { useColumnVisibility } from './useColumnVisibility'
 
 // Types
 export interface PriceStreamData {
@@ -164,6 +166,291 @@ const mockPriceStreamsData: PriceStreamData[] = [
     isRealTime: false,
     retryAttempts: 3,
     maxRetries: 3
+  },
+  {
+    id: '6',
+    name: 'Price Stream Six',
+    symbol: 'GBP/USD',
+    source: 'FXCM',
+    status: 'active',
+    lastUpdate: '2024-01-15 14:29:55',
+    updateFrequency: '1 second',
+    price: 1.2650,
+    change: -0.0085,
+    changePercent: -0.67,
+    volume: 3200000.00,
+    high24h: 1.2750,
+    low24h: 1.2600,
+    description: 'Real-time GBP/USD forex price stream',
+    isRealTime: true,
+    retryAttempts: 0,
+    maxRetries: 3
+  },
+  {
+    id: '7',
+    name: 'Price Stream Seven',
+    symbol: 'USD/JPY',
+    source: 'OANDA',
+    status: 'active',
+    lastUpdate: '2024-01-15 14:29:50',
+    updateFrequency: '500ms',
+    price: 148.25,
+    change: 0.75,
+    changePercent: 0.51,
+    volume: 4500000.00,
+    high24h: 149.00,
+    low24h: 147.50,
+    description: 'High-frequency USD/JPY forex price stream',
+    isRealTime: true,
+    retryAttempts: 0,
+    maxRetries: 5
+  },
+  {
+    id: '8',
+    name: 'Price Stream Eight',
+    symbol: 'ADA/USD',
+    source: 'Binance',
+    status: 'active',
+    lastUpdate: '2024-01-15 14:29:45',
+    updateFrequency: '2 seconds',
+    price: 0.4850,
+    change: 0.0250,
+    changePercent: 5.43,
+    volume: 750000.00,
+    high24h: 0.4950,
+    low24h: 0.4600,
+    description: 'Cardano price stream with 2-second updates',
+    isRealTime: true,
+    retryAttempts: 0,
+    maxRetries: 3
+  },
+  {
+    id: '9',
+    name: 'Price Stream Nine',
+    symbol: 'DOT/USD',
+    source: 'Coinbase',
+    status: 'active',
+    lastUpdate: '2024-01-15 14:29:40',
+    updateFrequency: '1 second',
+    price: 7.85,
+    change: -0.15,
+    changePercent: -1.88,
+    volume: 450000.00,
+    high24h: 8.10,
+    low24h: 7.70,
+    description: 'Polkadot price stream from Coinbase',
+    isRealTime: true,
+    retryAttempts: 0,
+    maxRetries: 3
+  },
+  {
+    id: '10',
+    name: 'Price Stream Ten',
+    symbol: 'LINK/USD',
+    source: 'Binance',
+    status: 'active',
+    lastUpdate: '2024-01-15 14:29:35',
+    updateFrequency: '1 second',
+    price: 15.75,
+    change: 0.45,
+    changePercent: 2.94,
+    volume: 680000.00,
+    high24h: 16.00,
+    low24h: 15.30,
+    description: 'Chainlink price stream with real-time updates',
+    isRealTime: true,
+    retryAttempts: 0,
+    maxRetries: 3
+  },
+  {
+    id: '11',
+    name: 'Price Stream Eleven',
+    symbol: 'SOL/USD',
+    source: 'Coinbase',
+    status: 'active',
+    lastUpdate: '2024-01-15 14:29:30',
+    updateFrequency: '500ms',
+    price: 98.50,
+    change: 2.75,
+    changePercent: 2.87,
+    volume: 920000.00,
+    high24h: 100.00,
+    low24h: 95.75,
+    description: 'Solana high-frequency price stream',
+    isRealTime: true,
+    retryAttempts: 0,
+    maxRetries: 5
+  },
+  {
+    id: '12',
+    name: 'Price Stream Twelve',
+    symbol: 'MATIC/USD',
+    source: 'Binance',
+    status: 'maintenance',
+    lastUpdate: '2024-01-15 14:25:25',
+    updateFrequency: '5 seconds',
+    price: 0.8750,
+    change: -0.0250,
+    changePercent: -2.78,
+    volume: 380000.00,
+    high24h: 0.9000,
+    low24h: 0.8700,
+    description: 'Polygon price stream under maintenance',
+    isRealTime: false,
+    retryAttempts: 1,
+    maxRetries: 3
+  },
+  {
+    id: '13',
+    name: 'Price Stream Thirteen',
+    symbol: 'AVAX/USD',
+    source: 'Coinbase',
+    status: 'active',
+    lastUpdate: '2024-01-15 14:29:20',
+    updateFrequency: '1 second',
+    price: 32.45,
+    change: 0.85,
+    changePercent: 2.69,
+    volume: 520000.00,
+    high24h: 33.00,
+    low24h: 31.60,
+    description: 'Avalanche price stream with real-time data',
+    isRealTime: true,
+    retryAttempts: 0,
+    maxRetries: 3
+  },
+  {
+    id: '14',
+    name: 'Price Stream Fourteen',
+    symbol: 'UNI/USD',
+    source: 'Binance',
+    status: 'active',
+    lastUpdate: '2024-01-15 14:29:15',
+    updateFrequency: '2 seconds',
+    price: 6.85,
+    change: -0.15,
+    changePercent: -2.14,
+    volume: 280000.00,
+    high24h: 7.00,
+    low24h: 6.80,
+    description: 'Uniswap price stream with 2-second updates',
+    isRealTime: true,
+    retryAttempts: 0,
+    maxRetries: 3
+  },
+  {
+    id: '15',
+    name: 'Price Stream Fifteen',
+    symbol: 'ATOM/USD',
+    source: 'Coinbase',
+    status: 'error',
+    lastUpdate: '2024-01-15 14:20:10',
+    updateFrequency: '10 seconds',
+    price: 9.75,
+    change: 0.25,
+    changePercent: 2.63,
+    volume: 180000.00,
+    high24h: 9.90,
+    low24h: 9.50,
+    description: 'Cosmos price stream experiencing errors',
+    isRealTime: false,
+    retryAttempts: 3,
+    maxRetries: 3
+  },
+  {
+    id: '16',
+    name: 'Price Stream Sixteen',
+    symbol: 'LTC/USD',
+    source: 'Binance',
+    status: 'active',
+    lastUpdate: '2024-01-15 14:29:05',
+    updateFrequency: '1 second',
+    price: 72.50,
+    change: 1.25,
+    changePercent: 1.76,
+    volume: 420000.00,
+    high24h: 73.00,
+    low24h: 71.25,
+    description: 'Litecoin real-time price stream',
+    isRealTime: true,
+    retryAttempts: 0,
+    maxRetries: 3
+  },
+  {
+    id: '17',
+    name: 'Price Stream Seventeen',
+    symbol: 'BCH/USD',
+    source: 'Coinbase',
+    status: 'active',
+    lastUpdate: '2024-01-15 14:29:00',
+    updateFrequency: '2 seconds',
+    price: 245.75,
+    change: -3.25,
+    changePercent: -1.30,
+    volume: 150000.00,
+    high24h: 250.00,
+    low24h: 243.00,
+    description: 'Bitcoin Cash price stream with 2-second updates',
+    isRealTime: true,
+    retryAttempts: 0,
+    maxRetries: 3
+  },
+  {
+    id: '18',
+    name: 'Price Stream Eighteen',
+    symbol: 'XRP/USD',
+    source: 'Binance',
+    status: 'active',
+    lastUpdate: '2024-01-15 14:28:55',
+    updateFrequency: '500ms',
+    price: 0.5850,
+    change: 0.0150,
+    changePercent: 2.63,
+    volume: 850000.00,
+    high24h: 0.5900,
+    low24h: 0.5700,
+    description: 'Ripple high-frequency price stream',
+    isRealTime: true,
+    retryAttempts: 0,
+    maxRetries: 5
+  },
+  {
+    id: '19',
+    name: 'Price Stream Nineteen',
+    symbol: 'DOGE/USD',
+    source: 'Coinbase',
+    status: 'active',
+    lastUpdate: '2024-01-15 14:28:50',
+    updateFrequency: '1 second',
+    price: 0.0825,
+    change: 0.0025,
+    changePercent: 3.13,
+    volume: 1200000.00,
+    high24h: 0.0830,
+    low24h: 0.0800,
+    description: 'Dogecoin real-time price stream',
+    isRealTime: true,
+    retryAttempts: 0,
+    maxRetries: 3
+  },
+  {
+    id: '20',
+    name: 'Price Stream Twenty',
+    symbol: 'SHIB/USD',
+    source: 'Binance',
+    status: 'maintenance',
+    lastUpdate: '2024-01-15 14:25:45',
+    updateFrequency: '5 seconds',
+    price: 0.00000985,
+    change: 0.00000015,
+    changePercent: 1.55,
+    volume: 2500000.00,
+    high24h: 0.00001000,
+    low24h: 0.00000970,
+    description: 'Shiba Inu price stream under maintenance',
+    isRealTime: false,
+    retryAttempts: 2,
+    maxRetries: 3
   }
 ]
 
@@ -186,7 +473,7 @@ const PriceStreamsTable: React.FC = () => {
   const [data, setData] = useState<PriceStreamData[]>(mockPriceStreamsData)
   const [showEditPopup, setShowEditPopup] = useState(false)
   const [editingPriceStream, setEditingPriceStream] = useState<PriceStreamData | null>(null)
-  const [showColumnVisibility, setShowColumnVisibility] = useState(false)
+  const { columnVisibilityMenu, handleColumnVisibilityMenu, closeColumnVisibilityMenu } = useColumnVisibility<PriceStreamData>()
   const [showCreatePopup, setShowCreatePopup] = useState(false)
 
   // Column helper
@@ -207,9 +494,9 @@ const PriceStreamsTable: React.FC = () => {
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">
               {row.original.symbol} • {row.original.source}
-            </div>
-          </div>
+                      </div>
         </div>
+      </div>
       ),
     }),
     columnHelper.accessor('description', {
@@ -410,7 +697,7 @@ const PriceStreamsTable: React.FC = () => {
                 </div>
               </button>
               <button 
-                onClick={() => setShowColumnVisibility(!showColumnVisibility)}
+                onClick={(e) => handleColumnVisibilityMenu(e, table)}
                 className="p-2 text-white hover:bg-gray-600 dark:hover:bg-gray-500 rounded-md transition-colors duration-200 border border-transparent hover:border-gray-400 relative group overflow-visible" 
                 title="Column Visibility"
               >
@@ -496,6 +783,144 @@ const PriceStreamsTable: React.FC = () => {
         </div>
       </div>
 
+      {/* Summary Section */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+        <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-700 dark:text-gray-300">Total Price Streams:</span>
+              <span className="font-semibold text-lg text-gray-900 dark:text-white">
+                {table.getFilteredRowModel().rows.length}
+              </span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-700 dark:text-gray-300">Active:</span>
+              <span className="font-semibold text-green-600 dark:text-green-400">
+                {data.filter(item => item.status === 'active').length}
+              </span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-700 dark:text-gray-300">Inactive:</span>
+              <span className="font-semibold text-gray-600 dark:text-gray-400">
+                {data.filter(item => item.status === 'inactive').length}
+              </span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-700 dark:text-gray-300">Error:</span>
+              <span className="font-semibold text-red-600 dark:text-red-400">
+                {data.filter(item => item.status === 'error').length}
+              </span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-700 dark:text-gray-300">Maintenance:</span>
+              <span className="font-semibold text-yellow-600 dark:text-yellow-400">
+                {data.filter(item => item.status === 'maintenance').length}
+              </span>
+            </div>
+          </div>
+          
+          <div className="text-sm text-gray-700 dark:text-gray-300">
+            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+          </div>
+        </div>
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+        <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-700 dark:text-gray-300">Show</span>
+              <select
+                value={table.getState().pagination.pageSize}
+                onChange={e => {
+                  table.setPageSize(Number(e.target.value))
+                }}
+                className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                {[10, 20, 30, 40, 50].map(pageSize => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+              <span className="text-sm text-gray-700 dark:text-gray-300">entries</span>
+            </div>
+            <div className="text-sm text-gray-700 dark:text-gray-300">
+              Showing{' '}
+              <span className="font-medium text-gray-900 dark:text-white">
+                {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}
+              </span>{' '}
+              to{' '}
+              <span className="font-medium text-gray-900 dark:text-white">
+                {Math.min(
+                  (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
+                  table.getFilteredRowModel().rows.length
+                )}
+              </span>{' '}
+              of{' '}
+              <span className="font-medium text-gray-900 dark:text-white">
+                {table.getFilteredRowModel().rows.length}
+              </span>{' '}
+              results
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className="px-3 py-1 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Previous
+            </button>
+            
+            <div className="flex items-center space-x-1">
+              {Array.from({ length: table.getPageCount() }, (_, i) => {
+                const pageIndex = i
+                const isCurrentPage = pageIndex === table.getState().pagination.pageIndex
+                
+                // Show first page, last page, current page, and pages around current page
+                if (
+                  pageIndex === 0 ||
+                  pageIndex === table.getPageCount() - 1 ||
+                  (pageIndex >= table.getState().pagination.pageIndex - 1 && 
+                   pageIndex <= table.getState().pagination.pageIndex + 1)
+                ) {
+                  return (
+                    <button
+                      key={pageIndex}
+                      onClick={() => table.setPageIndex(pageIndex)}
+                      className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+                        isCurrentPage
+                          ? 'bg-blue-600 text-white'
+                          : 'text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-300'
+                      }`}
+                    >
+                      {pageIndex + 1}
+                    </button>
+                  )
+                } else if (
+                  pageIndex === table.getState().pagination.pageIndex - 2 ||
+                  pageIndex === table.getState().pagination.pageIndex + 2
+                ) {
+                  return <span key={pageIndex} className="px-2 text-gray-500 dark:text-gray-400">...</span>
+                }
+                return null
+              })}
+            </div>
+            
+            <button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className="px-3 py-1 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Popups */}
       {showCreatePopup && (
         <CreatePriceStreamPopup
@@ -516,6 +941,13 @@ const PriceStreamsTable: React.FC = () => {
           initialData={editingPriceStream}
         />
       )}
+
+      {/* Column Visibility Popup */}
+      <ColumnVisibilityPopup 
+        table={table}
+        columnVisibilityMenu={columnVisibilityMenu}
+        onClose={closeColumnVisibilityMenu}
+      />
     </div>
   )
 }

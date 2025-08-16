@@ -24,7 +24,21 @@ export { useColumnVisibility } from './useColumnVisibility'
 
 // Column Visibility Components
 export { ColumnVisibilityButton } from './ColumnVisibilityButton'
-export { ColumnVisibilityPopup } from './ColumnVisibilityPopup'
+export { default as ModernColumnVisibilityPopup } from './ModernColumnVisibilityPopup'
+export { AddBotSettingPopup, BotSettingDetailsPopup } from './BotTradingSettings'
+export { default as BotTradingSettings } from './BotTradingSettingsMain'
+export { default as AddBankAccountPopup } from './BankAccountsSystem'
+export { default as BankAccountsSystem } from './BankAccountsSystemMain'
+export { default as AddTicketPopup } from './TicketSystem'
+export { default as TicketSystem } from './TicketSystemMain'
+export { default as AddExchangePopup } from './ExchangeSettingsSystem'
+export { default as ExchangeSettingsSystem } from './ExchangeSettingsSystemMain'
+export { default as AddEmailTemplatePopup } from './EmailSettingsSystem'
+export { default as EmailSettingsSystem } from './EmailSettingsSystemMain'
+export { default as AddPanelSettingPopup } from './PanelSettingsSystem'
+export { default as PanelSettingsSystem } from './PanelSettingsSystemMain'
+export { default as AddNotificationSettingPopup } from './NotificationsSettingsSystem'
+export { default as NotificationsSettingsSystem } from './NotificationsSettingsSystemMain'
 export { MobileColumnVisibility } from './MobileColumnVisibility'
 
 // Group Management Components
@@ -75,4 +89,8 @@ export {
 // Data
 export {
   mockUserData,
-} from './data' 
+} from './data'
+
+// Commission Components
+export { default as CommissionsTable } from './CommissionsTable'
+export { default as TransactionsSystem } from './TransactionsSystemMain' 

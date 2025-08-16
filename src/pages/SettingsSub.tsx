@@ -1,6 +1,10 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { Settings } from 'lucide-react'
+import { Settings, Building2, Mail, PanelLeft, Bell, Megaphone } from 'lucide-react'
+import ExchangeSettingsSystem from '@/components/DataTable/ExchangeSettingsSystemMain'
+import EmailSettingsSystem from '@/components/DataTable/EmailSettingsSystemMain'
+import PanelSettingsSystem from '@/components/DataTable/PanelSettingsSystemMain'
+import NotificationsSettingsSystem from '@/components/DataTable/NotificationsSettingsSystemMain'
 
 const SettingsSub: React.FC = () => {
   const { subPage } = useParams<{ subPage: string }>()
@@ -16,6 +20,91 @@ const SettingsSub: React.FC = () => {
     return titles[subPage || ''] || 'Settings'
   }
 
+  // Render exchange settings for exchange subpage
+  if (subPage === 'exchange') {
+    return (
+      <div className="p-2 sm:p-4 md:p-6 lg:p-6 space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-6">
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center">
+            <Building2 className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-bold text-white truncate">
+              Exchange Settings
+            </h1>
+            <p className="text-gray-400 text-xs sm:text-sm truncate">Manage exchange configurations and trading parameters</p>
+          </div>
+        </div>
+        
+        <ExchangeSettingsSystem />
+      </div>
+    )
+  }
+
+  // Render email settings for email subpage
+  if (subPage === 'email') {
+    return (
+      <div className="p-2 sm:p-4 md:p-6 lg:p-6 space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-6">
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-600 rounded-full flex items-center justify-center">
+            <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-bold text-white truncate">
+              Email Settings
+            </h1>
+            <p className="text-gray-400 text-xs sm:text-sm truncate">Manage email templates and notification preferences</p>
+          </div>
+        </div>
+        
+        <EmailSettingsSystem />
+      </div>
+    )
+  }
+
+  // Render panel settings for panel subpage
+  if (subPage === 'panel') {
+    return (
+      <div className="p-2 sm:p-4 md:p-6 lg:p-6 space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-6">
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-600 rounded-full flex items-center justify-center">
+            <PanelLeft className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-bold text-white truncate">
+              Panel Settings
+            </h1>
+            <p className="text-gray-400 text-xs sm:text-sm truncate">Customize panel layouts, themes, and appearance</p>
+          </div>
+        </div>
+        
+        <PanelSettingsSystem />
+      </div>
+    )
+  }
+
+  // Render notifications settings for notifications subpage
+  if (subPage === 'notifications') {
+    return (
+      <div className="p-2 sm:p-4 md:p-6 lg:p-6 space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-6">
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-orange-600 rounded-full flex items-center justify-center">
+            <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-bold text-white truncate">
+              System Notifications
+            </h1>
+            <p className="text-gray-400 text-xs sm:text-sm truncate">Configure notification settings and delivery preferences</p>
+          </div>
+        </div>
+        
+        <NotificationsSettingsSystem />
+      </div>
+    )
+  }
+
+  // Default content for other subpages
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center space-x-3">

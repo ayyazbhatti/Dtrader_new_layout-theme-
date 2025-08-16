@@ -24,7 +24,9 @@ import BankDetails from './pages/BankDetails'
 import BankDetailsSub from './pages/BankDetailsSub'
 import Ticket from './pages/Ticket'
 import TicketSub from './pages/TicketSub'
+import Promotion from './pages/Promotion'
 import SettingsSub from './pages/SettingsSub'
+import ServerLogs from './pages/ServerLogs'
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -113,9 +115,12 @@ function App() {
                 />
                 <Route path="/ticket" element={<Ticket />} />
                 <Route path="/ticket/:subPage" element={<TicketSub />} />
+                <Route path="/promotion/*" element={<Promotion />} />
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/settings/:subPage" element={<SettingsSub />} />
+                <Route path="/server-logs" element={<ServerLogs />} />
+                <Route path="/server-logs/:subPage" element={<ServerLogs />} />
               </Routes>
             </main>
           </div>

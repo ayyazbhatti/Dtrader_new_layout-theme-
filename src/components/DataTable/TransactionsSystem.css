@@ -1,0 +1,55 @@
+/* Table Footer Styles */
+.table-footer {
+  @apply bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 px-4 py-3;
+}
+
+.table-footer-content {
+  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0;
+}
+
+.table-footer-left {
+  @apply flex items-center;
+}
+
+.table-footer-right {
+  @apply flex items-center;
+}
+
+.results-info {
+  @apply text-sm text-gray-700 dark:text-gray-300;
+}
+
+/* Data Table Styles */
+.data-table-header {
+  @apply relative;
+}
+
+.data-table-row {
+  @apply relative;
+}
+
+.data-table-cell {
+  @apply relative;
+}
+
+/* Scrollbar Styles */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  @apply bg-gray-200 dark:bg-gray-700;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 dark:bg-gray-600 rounded;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500 dark:bg-gray-500;
+} 

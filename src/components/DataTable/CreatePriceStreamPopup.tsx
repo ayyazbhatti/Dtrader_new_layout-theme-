@@ -103,18 +103,7 @@ const CreatePriceStreamPopup: React.FC<CreatePriceStreamPopupProps> = ({
   }
 
   const handleClose = () => {
-    if (Object.keys(formData).some(key => {
-      const value = formData[key as keyof PriceStreamFormData]
-      if (typeof value === 'string') return value !== ''
-      if (typeof value === 'number') return value !== 0
-      return false
-    })) {
-      if (window.confirm('You have unsaved changes. Are you sure you want to close?')) {
-        onClose()
-      }
-    } else {
-      onClose()
-    }
+    onClose()
   }
 
   if (!isOpen) return null
